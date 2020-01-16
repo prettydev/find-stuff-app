@@ -1,5 +1,4 @@
-// import {PropTypes} from 'prop-types'
-import React, {createRef} from 'react';
+import React, {createRef, ReactElement} from 'react';
 import {Image, Linking, Text, View} from 'react-native';
 import {
   createBottomTabNavigator,
@@ -7,13 +6,14 @@ import {
   BottomTabBar,
 } from 'react-navigation';
 import AddInfoView from 'src/Containers/AddInfo/AddInfo';
-// import CategoryView from 'src/Containers/Category/CategoryList/CategoryList'
 import ProfileView from 'src/Containers/Profile/Profile';
 import HomeView from 'src/Containers/Home';
 import Style from './BottomTabNavStyle';
 import ChatView from 'src/Containers/Chat/Chat';
 import NotificationView from 'src/Containers/Notification/NotificationList/NotificationList';
 import {Colors, Images} from 'src/Theme';
+
+import LostCategoryView from 'src/Containers/Category/CategoryList/LostCategoryView';
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
@@ -51,6 +51,12 @@ const HomeStackNavigator = createStackNavigator({
       header: null,
     },
   },
+  LostCategoryView: {
+    screen: LostCategoryView,
+    navigationOptions: {
+      header: null,
+    },
+  },
 });
 
 const ChatStackNavigator = createStackNavigator({
@@ -81,12 +87,12 @@ const BottomTabNavigator = createBottomTabNavigator(
     },
   },
   {
-    tabBarComponent: props => (
+    tabBarComponent: (props: any): ReactElement => (
       <TabBarComponent {...props} style={Style.BottomNavTabContainer} />
     ),
     initialRouteName: 'Home',
     backBehavior: null,
-    defaultNavigationOptions: ({navigation}) => ({
+    defaultNavigationOptions: ({navigation}: any): ReactElement => ({
       tabBarIcon: ({focused}) => {
         const {routeName} = navigation.state;
         if (routeName === 'Home') {
@@ -163,13 +169,9 @@ const BottomTabNavigator = createBottomTabNavigator(
 );
 export default class MainScreenWithBottomNav extends React.Component {
   public props: any;
-  public navigation: any;
   static router = BottomTabNavigator.router;
 
   render() {
-    const {navigation} = this.props;
-    return <BottomTabNavigator navigation={navigation} />;
+    return <BottomTabNavigator navigation={this.props.navigation} />;
   }
 }
-
-// export default BottomTabNav

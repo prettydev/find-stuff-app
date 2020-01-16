@@ -17,10 +17,13 @@ const AppNavigator = createStackNavigator(
     Signin: SigninScreen,
     SignUp: SignUpScreen,
     ForgotPwdScreen: ForgotPwdScreen,
+
     LostStuffScreen: LostStuffScreen,
     FoundStuffScreen: FoundStuffScreen,
-    Published: Published,
+
     CategoryDetail: CategoryDetail,
+
+    Published: Published,
     Attention: Attention,
     Notification: Notification,
   },
@@ -36,4 +39,4 @@ const RootApp: FC = (): ReactElement => {
   return <AppContainer />;
 };
 
-export default AppContainer;
+export default RootApp;

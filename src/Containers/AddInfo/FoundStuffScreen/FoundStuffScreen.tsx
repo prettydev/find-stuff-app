@@ -15,6 +15,8 @@ import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import {baseUrl} from 'src/constants';
+
 const axios = require('axios');
 
 export default function FoundStuffScreen(props) {
@@ -62,11 +64,11 @@ export default function FoundStuffScreen(props) {
       });
 
       await axios
-        .post('http://10.0.2.2:8000/upload/photo', formData)
+        .post(baseUrl + 'upload/photo', formData)
         .then(response => {
           const photos = response.data.photo;
           axios
-            .post('http://10.0.2.2:8000/api/foundpost', {
+            .post(baseUrl + 'api/foundpost', {
               tag,
               place,
               address,
@@ -76,6 +78,7 @@ export default function FoundStuffScreen(props) {
             .then(function(response2) {
               if (response2.data) {
                 Toast.show('Success!');
+                props.navigation.navigate('MainScreenWithBottomNav');
               } else {
                 Toast.show('Failed!');
               }

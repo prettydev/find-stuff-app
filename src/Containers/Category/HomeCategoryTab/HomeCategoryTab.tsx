@@ -21,7 +21,7 @@ const ThirdRoute = () => (
 );
 
 export default class HomeCategoryTab extends React.Component {
-	public setState: any;
+  public setState: any;
   state = {
     index: 0,
     routes: [

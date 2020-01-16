@@ -100,7 +100,8 @@ export default StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     marginBottom: 10,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
   },
   FindStuffSubBtnContainer: {
     marginTop: 10,
@@ -119,40 +120,5 @@ export default StyleSheet.create({
   FindStuffSubBtnText: {
     color: '#fff',
     fontSize: 18,
-  },
-
-  main: {
-    flex: 1,
-    backgroundColor: '#f4f4f8',
-  },
-  areaWrap: {
-    marginTop: 10,
-    height: 48,
-    paddingHorizontal: 14,
-    paddingLeft: 14,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  areaLabel: {
-    paddingVertical: 15,
-    fontSize: 15,
-    color: '#333',
-  },
-  areaHolder: {
-    flex: 1,
-  },
-  areaPlaceHolder: {
-    color: '#bbb',
-  },
-  areaButton: {
-    marginTop: 24,
-    marginHorizontal: 14,
-  },
-  arrow: {
-    position: 'absolute',
-    right: 14,
-    top: 19,
   },
 });
