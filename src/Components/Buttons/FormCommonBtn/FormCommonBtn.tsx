@@ -1,16 +1,11 @@
 import React from 'react';
-import { View, Button, Text, TouchableHighlight } from 'react-native';
-import Styles from './FormCommonBtnStyle'
+import {View, Button, Text, TouchableHighlight} from 'react-native';
+import Styles from './FormCommonBtnStyle';
 
-export default class FormCommonBtn extends React.Component {
-	public props: any;
-
-    render() {
-      return (
-         <TouchableHighlight
-            style={Styles.FormCommonBtn} >
-               <Text style={Styles.FormCommonBtnText}>{this.props.CustomBtnTitle}</Text>
-         </TouchableHighlight>
-      )
-    }
-  }
+export default function FormCommonBtn(props) {
+  return (
+    <TouchableHighlight style={Styles.FormCommonBtn} onPress={props.proc}>
+      <Text style={Styles.FormCommonBtnText}>{props.CustomBtnTitle}</Text>
+    </TouchableHighlight>
+  );
+}

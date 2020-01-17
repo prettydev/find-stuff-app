@@ -8,15 +8,13 @@ import {
   TextInput,
 } from 'react-native';
 import Styles from './FoundStuffScreenStyle';
-import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 import CustomFormSelect from 'src/Components/CustomForm/CustomFormSelect/CustomFormSelect';
 import {Images, Colors} from 'src/Theme';
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
+
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
-import RNFetchBlob from 'rn-fetch-blob';
 import {baseUrl} from 'src/constants';
-
 const axios = require('axios');
 
 export default function FoundStuffScreen(props) {
@@ -117,8 +115,8 @@ export default function FoundStuffScreen(props) {
         />
 
         <View style={Styles.FindStuffAreaContainer}>
-          <View style={Styles.FindStuffAreaLabelContainer}>
-            <Text style={Styles.FindStuffAreaLabel}>选择地点</Text>
+          <View>
+            <Text>选择地点</Text>
           </View>
 
           <ChinaRegionWheelPicker
@@ -139,24 +137,24 @@ export default function FoundStuffScreen(props) {
           </ChinaRegionWheelPicker>
         </View>
         <View style={Styles.FindStuffDetailAreaContainer}>
-          <View style={Styles.FindStuffDetailAreaTextContainer}>
-            <Text style={Styles.FindStuffDetailAreaText}>详细地址</Text>
+          <View>
+            <Text>详细地址</Text>
           </View>
-          <View style={Styles.FindStuffDetailAreaInputContainer}>
+          <View>
             <TextInput
               style={Styles.FindStuffDetailAreaInput}
               onChangeText={value => setAddress(value)}
             />
           </View>
-          <TouchableOpacity style={Styles.FindStuffDetailAreaBtnContainer}>
+          <TouchableOpacity>
             <Text style={Styles.FindStuffDetailAreaBtn}>定位</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={Styles.FindStuffFooter}>
-        <View style={Styles.FindStuffDescription}>
-          <Text style={Styles.FindStuffDescription}>物品描述</Text>
+        <View>
+          <Text>物品描述</Text>
           <TextInput
             style={Styles.FindStuffTextArea}
             multiline={true}

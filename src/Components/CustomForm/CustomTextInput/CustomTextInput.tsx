@@ -1,19 +1,16 @@
 import React from 'react';
-import { View, Text, TextInput } from 'react-native';
-import Styles from './CustomTextInputStyle'
+import {View, Text, TextInput} from 'react-native';
+import Styles from './CustomTextInputStyle';
 
-export default class CustomTextInput extends React.Component {
-	public props: any;
-
-    render() {
-      return (
-          <View style={{flex: 1}}>
-            <Text>{this.props.CustomLabel}</Text>
-            <TextInput
-               style={Styles.CustomTextInput}
-               placeholder={this.props.CustomPlaceholder}
-            />
-          </View>
-      )
-    }
-  }
+export default function CustomTextInput(props) {
+  return (
+    <View style={{flex: 1}}>
+      <Text>{props.CustomLabel}</Text>
+      <TextInput
+        style={Styles.CustomTextInput}
+        placeholder={props.CustomPlaceholder}
+        onChangeText={props.proc}
+      />
+    </View>
+  );
+}

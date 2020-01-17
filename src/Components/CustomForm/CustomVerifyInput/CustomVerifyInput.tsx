@@ -1,36 +1,27 @@
-import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, TextInput, Text} from 'react-native';
-import Styles from './CustomVerifyInputStyle'
+import React, {useEffect, useState} from 'react';
+import {View, Image, TouchableOpacity, TextInput, Text} from 'react-native';
+import Styles from './CustomVerifyInputStyle';
 
-export default class CustomPwdInput extends React.Component {
-	public state: any;
-	public setState: any;
-	public props: any;
+export default function CustomPwdInput(props) {
+  const [hidePassword, setHidePassword] = useState(true);
 
-   constructor(props) {
-      super(props);
-      this.state = { hidePassword: true }
-    }
-  
-    setPasswordVisibility = () => {
-      this.setState({ hidePassword: !this.state.hidePassword });
-    }
-
-    render() {
-      return (
-         <View style={Styles.container}>
-            <View style={Styles.textBoxContainer}>
-               <Text>{this.props.CustomVerifyLabel}</Text>
-               <TextInput 
-                  secureTextEntry={this.state.hidePassword} 
-                  style={Styles.textBox} 
-                  placeholder={this.props.CustomPlaceholder}
-               />
-               <TouchableOpacity activeOpacity={0.8} style={Styles.touachableButton} onPress={this.setPasswordVisibility}>
-                  <Text style={Styles.buttonImage}>| 获取验证码</Text>
-               </TouchableOpacity>
-            </View>
-         </View>
-      )
-    }
-  }
+  return (
+    <View>
+      <View style={Styles.textBoxContainer}>
+        <Text>{props.CustomVerifyLabel}</Text>
+        <TextInput
+          secureTextEntry={hidePassword}
+          style={Styles.textBox}
+          placeholder={props.CustomPlaceholder}
+          onChangeText={props.proc}
+        />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={Styles.touachableButton}
+          onPress={() => setHidePassword(!hidePassword)}>
+          <Text style={Styles.buttonImage}>| 获取验证码</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
