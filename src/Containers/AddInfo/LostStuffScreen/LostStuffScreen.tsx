@@ -14,8 +14,8 @@ import {Colors, Images} from 'src/Theme';
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
-import {baseUrl} from 'src/constants';
 
+import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
 export default function FindStuffScreen(props) {

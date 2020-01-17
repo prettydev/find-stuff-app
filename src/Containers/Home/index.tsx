@@ -18,7 +18,6 @@ export default function HomeView({navigation}) {
       <View style={styles.homeScrollView}>
         <View style={styles.HomeBannerContainer}>
           <Image source={Images.HomeBannerImg} style={styles.HomeBannerImg} />
-          <Image source={Images.Message2} style={styles.HomeBannerMsg} />
         </View>
         <View style={styles.HomeSearchContainer}>
           <View style={styles.HomeSearchArea}>

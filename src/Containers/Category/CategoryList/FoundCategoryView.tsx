@@ -12,7 +12,7 @@ import {
 import {Images, Colors} from 'src/Theme';
 import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn';
 import Styles from './CategoryListStyle';
-import LostCard from 'src/Components/Card/LostCard';
+import FoundCard from 'src/Components/Card/FoundCard';
 import {tagJson} from 'src/constants';
 
 import {baseUrl} from 'src/constants';
@@ -31,7 +31,7 @@ export default function CategoryList(props) {
 
   useEffect(() => {
     axios
-      .get(baseUrl + 'api/lostpost', {
+      .get(baseUrl + 'api/foundpost', {
         params: {
           tag,
           key,
@@ -104,14 +104,14 @@ export default function CategoryList(props) {
       </View>
       <View style={Styles.CardsContainer}>
         {list.map((item, i) => (
-          <LostCard
+          <FoundCard
             key={i}
             item={item}
             proc={() => {
               {
-                props.navigation.navigate('LostCategoryDetail', {item});
+                props.navigation.navigate('FoundCategoryDetail', {item});
               }
-            }}></LostCard>
+            }}></FoundCard>
         ))}
       </View>
     </ScrollView>

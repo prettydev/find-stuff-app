@@ -1,12 +1,12 @@
 import React from 'react';
-import {ScrollView, View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text} from 'react-native';
 import Styles from './CustomFormSelectStyle';
 import RNPickerSelect from 'react-native-picker-select';
-import {Images, Colors} from 'src/Theme';
+import {Colors} from 'src/Theme';
+import {tagArr} from 'src/constants';
 
 export default function CustomFormSelect(props) {
   const {CustomFormSelectPlaceholder, CustomFormSelectLabel, procFunc} = props;
-
   const placeholder = {
     label: CustomFormSelectPlaceholder,
     value: null,
@@ -15,17 +15,13 @@ export default function CustomFormSelect(props) {
   return (
     <View style={Styles.CustomFormSelectContainer}>
       <View style={Styles.CustomFormSelectTextContainer}>
-        <Text style={Styles.CustomFormSelectText}>{CustomFormSelectLabel}</Text>
+        <Text>{CustomFormSelectLabel}</Text>
       </View>
       <View style={Styles.CustomFormSelectPickerContainer}>
         <RNPickerSelect
           placeholder={placeholder}
           onValueChange={procFunc}
-          items={[
-            {label: 'key', value: 'key'},
-            {label: 'wallet', value: 'wallet'},
-            {label: 'bag', value: 'bag'},
-          ]}
+          items={tagArr}
         />
       </View>
     </View>

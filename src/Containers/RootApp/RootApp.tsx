@@ -7,7 +7,6 @@ import ForgotPwdScreen from 'src/Containers/Authentication/ForgotPwdScreen/Forgo
 import LostStuffScreen from 'src/Containers/AddInfo/LostStuffScreen/LostStuffScreen';
 import FoundStuffScreen from 'src/Containers/AddInfo/FoundStuffScreen/FoundStuffScreen';
 import Published from 'src/Containers/Profile/Published/Published';
-import CategoryDetail from 'src/Containers/Category/CategoryDetail/CategoryDetail';
 import Attention from 'src/Containers/Profile/Attention/Attention';
 import Notification from 'src/Containers/Notification/NotificationList/NotificationList';
 
@@ -20,8 +19,6 @@ const AppNavigator = createStackNavigator(
 
     LostStuffScreen: LostStuffScreen,
     FoundStuffScreen: FoundStuffScreen,
-
-    CategoryDetail: CategoryDetail,
 
     Published: Published,
     Attention: Attention,

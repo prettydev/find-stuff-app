@@ -14,6 +14,10 @@ import NotificationView from 'src/Containers/Notification/NotificationList/Notif
 import {Colors, Images} from 'src/Theme';
 
 import LostCategoryView from 'src/Containers/Category/CategoryList/LostCategoryView';
+import LostCategoryDetail from 'src/Containers/Category/CategoryDetail/LostCategoryDetail';
+
+import FoundCategoryView from 'src/Containers/Category/CategoryList/FoundCategoryView';
+import FoundCategoryDetail from 'src/Containers/Category/CategoryDetail/FoundCategoryDetail';
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
@@ -53,6 +57,24 @@ const HomeStackNavigator = createStackNavigator({
   },
   LostCategoryView: {
     screen: LostCategoryView,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  LostCategoryDetail: {
+    screen: LostCategoryDetail,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  FoundCategoryView: {
+    screen: FoundCategoryView,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  FoundCategoryDetail: {
+    screen: FoundCategoryDetail,
     navigationOptions: {
       header: null,
     },
