@@ -56,6 +56,7 @@ export default function SignUpScreen(props) {
       await axios
         .post(baseUrl + 'upload/file', formData)
         .then(response => {
+          console.log(response.data.file.path);
           axios
             .post(baseUrl + 'api/user', {
               name,
