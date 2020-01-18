@@ -1,8 +1,21 @@
 import React from 'react';
-import {View, Text, ImageBackground, Image, ScrollView} from 'react-native';
+import {
+  AsyncStorage,
+  View,
+  Text,
+  ImageBackground,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {Images} from 'src/Theme';
 import Style from './ProfileStyle';
 export default function Profile(props) {
+  const handleSignout = async () => {
+    await AsyncStorage.clear();
+    props.navigation.navigate('Signin');
+  };
+
   return (
     <ScrollView style={Style.ProfileContainer}>
       <ImageBackground
@@ -78,9 +91,11 @@ export default function Profile(props) {
         </View>
       </View>
       <View style={Style.BottomContainer}>
-        <View style={Style.BottomBtnWrap}>
-          <Text style={Style.BottomBtnText}>安全退出</Text>
-        </View>
+        <TouchableOpacity onPress={handleSignout}>
+          <View style={Style.BottomBtnWrap}>
+            <Text style={Style.BottomBtnText}>安全退出</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

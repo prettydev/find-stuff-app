@@ -1,11 +1,51 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, AsyncStorage} from 'react-native';
 import Styles from './SignInScreenStyle';
 import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 import CustomPwdInput from 'src/Components/CustomForm/CustomPwdInput/CustomPwdInput';
 import FormCommonBtn from 'src/Components/Buttons/FormCommonBtn/FormCommonBtn';
 
+import Toast from 'react-native-simple-toast';
+import {baseUrl} from 'src/constants';
+const axios = require('axios');
+
 export default function SignInScreen(props) {
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+
+  const storeToken = async token => {
+    try {
+      await AsyncStorage.setItem('auth_token', token);
+    } catch (error) {
+      console.log('Something went wrong', error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (phone === '' || password === '') {
+      Toast.show('正确输入值！');
+      return;
+    }
+
+    axios
+      .post(baseUrl + 'auth/signin', {
+        phone,
+        password,
+      })
+      .then(response => {
+        if (response.data.success) {
+          storeToken(response.headers.auth_token);
+          Toast.show('Success!');
+          props.navigation.navigate('MainScreenWithBottomNav');
+        } else {
+          Toast.show('Failed!');
+        }
+      })
+      .catch(error => {
+        Toast.show(error);
+      });
+  };
+
   return (
     <View style={{flex: 1}}>
       <View style={Styles.SignInHeader}>
@@ -16,12 +56,14 @@ export default function SignInScreen(props) {
           <CustomTextInput
             CustomLabel={'手机'}
             CustomPlaceholder={'请输入手机号码'}
+            proc={value => setPhone(value)}
           />
         </View>
         <View style={Styles.SignPwdInput}>
           <CustomPwdInput
             CustomPwdLabel={'密码'}
             CustomPwdPlaceholder={'请输入密码'}
+            proc={value => setPassword(value)}
           />
         </View>
         <View style={Styles.SignOtherFunc}>
@@ -34,7 +76,7 @@ export default function SignInScreen(props) {
           </TouchableOpacity>
         </View>
         <View style={Styles.SignBtn}>
-          <FormCommonBtn CustomBtnTitle={'登录'} />
+          <FormCommonBtn CustomBtnTitle={'登录'} proc={handleSubmit} />
         </View>
       </View>
     </View>

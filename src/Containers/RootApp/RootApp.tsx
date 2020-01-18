@@ -25,8 +25,7 @@ const AppNavigator = createStackNavigator(
     Notification: Notification,
   },
   {
-    // initialRouteName: 'MainScreenWithBottomNav',
-    initialRouteName: 'SignUp',
+    initialRouteName: 'MainScreenWithBottomNav',
     headerMode: 'none',
   },
 );

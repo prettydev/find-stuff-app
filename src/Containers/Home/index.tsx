@@ -1,6 +1,7 @@
 // React
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  AsyncStorage,
   Text,
   TextInput,
   View,
@@ -13,6 +14,18 @@ import {Images} from 'src/Theme';
 import HomeCategoryTab from 'src/Containers/Category/HomeCategoryTab/HomeCategoryTab';
 
 export default function HomeView({navigation}) {
+  const getToken = async key => {
+    try {
+      await AsyncStorage.getItem(key);
+    } catch (error) {
+      console.log('Something went wrong', error);
+    }
+  };
+
+  useEffect(() => {
+    getToken('auth_token');
+  }, []);
+
   return (
     <ScrollView style={{flex: 1}}>
       <View style={styles.homeScrollView}>
