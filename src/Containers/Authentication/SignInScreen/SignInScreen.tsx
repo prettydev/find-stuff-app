@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, AsyncStorage} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
 import Styles from './SignInScreenStyle';
 import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 import CustomPwdInput from 'src/Components/CustomForm/CustomPwdInput/CustomPwdInput';
 import FormCommonBtn from 'src/Components/Buttons/FormCommonBtn/FormCommonBtn';
+
+import {store} from 'src/Store';
 
 import Toast from 'react-native-simple-toast';
 import {baseUrl} from 'src/constants';
@@ -13,13 +15,7 @@ export default function SignInScreen(props) {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
-  const storeToken = async token => {
-    try {
-      await AsyncStorage.setItem('auth_token', token);
-    } catch (error) {
-      console.log('Something went wrong', error);
-    }
-  };
+  const [state, dispatch] = useContext(store);
 
   const handleSubmit = async () => {
     if (phone === '' || password === '') {
@@ -34,15 +30,21 @@ export default function SignInScreen(props) {
       })
       .then(response => {
         if (response.data.success) {
-          storeToken(response.headers.auth_token);
+          dispatch({
+            type: 'setState',
+            payload: {
+              auth_token: response.headers.auth_token,
+              user: response.data.user,
+            },
+          });
           Toast.show('Success!');
           props.navigation.navigate('MainScreenWithBottomNav');
         } else {
-          Toast.show('Failed!');
+          Toast.show(response.data.msg);
         }
       })
       .catch(error => {
-        Toast.show(error);
+        console.log(error);
       });
   };
 

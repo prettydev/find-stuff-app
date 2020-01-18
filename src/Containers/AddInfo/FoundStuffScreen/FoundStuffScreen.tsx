@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {
-  AsyncStorage,
   ScrollView,
   View,
   Text,
@@ -24,15 +23,6 @@ export default function FoundStuffScreen(props) {
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState([]);
-
-  const getToken = async key => {
-    try {
-      const token = await AsyncStorage.getItem(key);
-      if (!token) props.navigation.navigate('Signin');
-    } catch (error) {
-      console.log('Something went wrong', error);
-    }
-  };
 
   const handlePhoto = () => {
     ImagePicker.showImagePicker(response => {
@@ -103,9 +93,7 @@ export default function FoundStuffScreen(props) {
     }
   }
 
-  useEffect(() => {
-    getToken('auth_token');
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>

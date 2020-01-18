@@ -1,5 +1,5 @@
 import React, {createRef, ReactElement} from 'react';
-import {AsyncStorage, Image, Linking, Text, View} from 'react-native';
+import {Image, Linking, Text, View} from 'react-native';
 import {
   createBottomTabNavigator,
   createStackNavigator,
