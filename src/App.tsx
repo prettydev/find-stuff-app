@@ -15,7 +15,7 @@ import FoundStuffScreen from 'src/Containers/AddInfo/FoundStuffScreen/FoundStuff
 import Published from 'src/Containers/Profile/Published/Published';
 import Attention from 'src/Containers/Profile/Attention/Attention';
 import Notification from 'src/Containers/Notification/NotificationList/NotificationList';
-
+import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
 import {store, StateProvider} from 'src/Store';
 
 const AppNavigator = createStackNavigator(
@@ -31,6 +31,7 @@ const AppNavigator = createStackNavigator(
     Published: Published,
     Attention: Attention,
     Notification: Notification,
+		ChatDetail: ChatDetail,
   },
   {
     initialRouteName: 'MainScreenWithBottomNav',
