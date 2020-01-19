@@ -17,6 +17,12 @@ export default function HomeCategoryTab(props) {
   });
 
   const [list, setList] = useState([]);
+  const [tmp, setTmp] = useState('');
+  const [key, setKey] = useState('');
+
+  const handleSearch = () => {
+    setKey(tmp);
+  };
 
   const ListArea = () => (
     <ScrollView style={[styles.scene, {backgroundColor: '#ffffff'}]}>

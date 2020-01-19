@@ -68,7 +68,7 @@ export default function Profile(props) {
         .then(response => {
           axios
             .put(
-              baseUrl + 'api/mobile/user/' + state.user._id,
+              baseUrl + 'api2/user/' + state.user._id,
               {
                 photo: response.data.file.path,
                 name,

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -9,17 +9,19 @@ import {
 } from 'react-native';
 import {Images, Colors} from 'src/Theme';
 import Styles from './CategoryDetailStyle';
-
+import {store} from 'src/Store';
 import moment from 'moment';
 import {baseUrl} from 'src/constants';
 
 const axios = require('axios');
 
 export default function StuffPostDetail({navigation}) {
+  const [state, dispatch] = useContext(store);
   const [item, setItem] = useState(navigation.getParam('item'));
-  useEffect(() => {
+
+  const increaseBrowseCnt = () => {
     axios
-      .post(baseUrl + 'api/stuffpost/' + item._id)
+      .post(baseUrl + 'api2/stuffpost/browse', {_id: item._id})
       .then(function(response) {
         if (response.data.item) {
           setItem(response.data.item);
@@ -31,6 +33,34 @@ export default function StuffPostDetail({navigation}) {
       .finally(function() {
         // always executed
       });
+  };
+
+  const increaseLikesCnt = () => {
+    if (state.user._id === undefined) {
+      navigation.navigate('Signin');
+      return;
+    }
+
+    axios
+      .post(baseUrl + 'api2/stuffpost/likes', {
+        post_id: item._id,
+        user_id: state.user._id,
+      })
+      .then(function(response) {
+        if (response.data.item) {
+          setItem(response.data.item);
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+      .finally(function() {
+        // always executed
+      });
+  };
+
+  useEffect(() => {
+    increaseBrowseCnt();
   }, []);
 
   return (
@@ -73,11 +103,6 @@ export default function StuffPostDetail({navigation}) {
                     <View>
                       <Text>{item.user.name}</Text>
                     </View>
-                    <View>
-                      <View style={Styles.UserNameBtn}>
-                        <Text style={{color: '#fff', fontSize: 12}}>LV2</Text>
-                      </View>
-                    </View>
                   </View>
                   <View>
                     <Text style={{color: Colors.grey}}>
@@ -88,7 +113,12 @@ export default function StuffPostDetail({navigation}) {
               </View>
               <View>
                 <View style={Styles.PickBtn}>
-                  <Text style={{color: '#fff'}}>拾</Text>
+                  {item.kind === 'found' && (
+                    <Text style={{color: '#fff'}}>拾</Text>
+                  )}
+                  {item.kind === 'lost' && (
+                    <Text style={{color: '#fff'}}>get</Text>
+                  )}
                 </View>
               </View>
             </View>
@@ -130,9 +160,11 @@ export default function StuffPostDetail({navigation}) {
       </ScrollView>
       <View style={Styles.CommentInputContainer}>
         <View style={Styles.CommentInputWrap}></View>
-        <TouchableOpacity style={Styles.LikeCommentContainer}>
+        <TouchableOpacity
+          style={Styles.LikeCommentContainer}
+          onPress={increaseLikesCnt}>
           <Image source={Images.RedLike} />
-          <Text>93</Text>
+          <Text>{item.likes.length}</Text>
         </TouchableOpacity>
       </View>
     </>

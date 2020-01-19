@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, View, Text, TouchableOpacity} from 'react-native';
 import {Images} from 'src/Theme';
-import Style from './NotificationCardStyle';
+import Style from './NewsCardStyle';
 
 import moment from 'moment';
 import {baseUrl} from 'src/constants';

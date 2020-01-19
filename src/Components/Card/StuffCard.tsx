@@ -31,12 +31,7 @@ export default function StuffCard({item, proc}) {
           </Text>
         </View>
         <View style={Style.CardBtnGroup}>
-          <View>
-            <Image
-              source={Images.FindBtnBadge}
-              style={{width: 50, height: 15}}
-            />
-          </View>
+          <View></View>
           <View>
             <View style={Style.CardCatBtnWrap}>
               {item.fee > 0 && (
