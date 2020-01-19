@@ -10,10 +10,8 @@ import {
 } from 'react-native';
 import {Images} from 'src/Theme';
 import Style from './ProfileStyle';
-import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 
 import {store} from 'src/Store';
-
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 import {baseUrl} from 'src/constants';
@@ -55,11 +53,8 @@ export default function Profile(props) {
       Toast.show('Input values correctly!');
       return;
     }
-    console.log('ggggrreaaaaaaa');
     if (photo) {
       let formData = new FormData();
-
-      console.log('gghhjjhjhjhjhjh');
 
       const file = {
         uri: photo.name,
@@ -68,18 +63,24 @@ export default function Profile(props) {
       };
       formData.append('file', file);
 
-      console.log('xvvvvvvvvvvvvvvvv');
-
       await axios
         .post(baseUrl + 'upload/file', formData)
         .then(response => {
           axios
-            .put(baseUrl + 'api/mobile/user/' + state.user._id, {
-              photo: response.data.file.path,
-              name,
-            })
+            .put(
+              baseUrl + 'api/mobile/user/' + state.user._id,
+              {
+                photo: response.data.file.path,
+                name,
+              },
+              {
+                headers: {auth_token: state.auth_token},
+              },
+            )
             .then(function(response2) {
-              if (response2.data) {
+              console.log('response2', response2.data);
+              if (response2.data.success) {
+                dispatch({type: 'setUser', payload: response2.data.user});
                 Toast.show('Success!');
               } else {
                 Toast.show('Failed!');
@@ -99,8 +100,7 @@ export default function Profile(props) {
   }
 
   useEffect(() => {
-    // getToken();
-    if (!state.token) props.navigation.navigate('Signin');
+    if (!state.auth_token) props.navigation.navigate('Signin');
 
     if (nameRef?.current) nameRef.current.value = state.user.name;
   }, []);

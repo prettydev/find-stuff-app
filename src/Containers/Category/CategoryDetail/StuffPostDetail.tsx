@@ -15,11 +15,11 @@ import {baseUrl} from 'src/constants';
 
 const axios = require('axios');
 
-export default function LostCategoryDetail({navigation}) {
+export default function StuffPostDetail({navigation}) {
   const [item, setItem] = useState(navigation.getParam('item'));
   useEffect(() => {
     axios
-      .post(baseUrl + 'api/lostpost/' + item._id)
+      .post(baseUrl + 'api/stuffpost/' + item._id)
       .then(function(response) {
         if (response.data.item) {
           setItem(response.data.item);
@@ -39,7 +39,7 @@ export default function LostCategoryDetail({navigation}) {
         <View>
           <View style={Styles.FindStuffHeaderContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('LostCategoryView')}>
+              onPress={() => navigation.navigate('StuffPostView')}>
               <Image
                 source={Images.whiteLeftChevron}
                 style={Styles.FindStuffHeaderImg}
@@ -53,11 +53,25 @@ export default function LostCategoryDetail({navigation}) {
           <View style={Styles.UserInfoContainer}>
             <View style={Styles.AvatarContainer}>
               <View style={Styles.AvatarPhotoContainer}>
-                <Image source={Images.maleProfile} style={Styles.AvatarPhoto} />
+                {item.user.photo.length === 0 && (
+                  <Image
+                    style={Styles.AvatarPhoto}
+                    source={Images.maleProfile}
+                  />
+                )}
+                {item.user.photo.length > 0 && (
+                  <Image
+                    style={Styles.AvatarPhoto}
+                    source={{
+                      uri: baseUrl + 'download/photo?path=' + item.user.photo,
+                    }}
+                  />
+                )}
+
                 <View style={Styles.UserNameContainer}>
                   <View style={Styles.UserNameWrap}>
                     <View>
-                      <Text>abc123</Text>
+                      <Text>{item.user.name}</Text>
                     </View>
                     <View>
                       <View style={Styles.UserNameBtn}>
@@ -85,11 +99,6 @@ export default function LostCategoryDetail({navigation}) {
                   style={Styles.UserLocationImg}
                 />
                 <Text style={{color: Colors.grey}}>{item.place}</Text>
-              </View>
-              <View>
-                <View style={Styles.ContactBtn}>
-                  <Text style={{color: '#fff'}}>联系TA</Text>
-                </View>
               </View>
             </View>
           </View>
@@ -120,14 +129,7 @@ export default function LostCategoryDetail({navigation}) {
         </View>
       </ScrollView>
       <View style={Styles.CommentInputContainer}>
-        <View style={Styles.CommentInputWrap}>
-          <View style={Styles.InputImgContainer}>
-            <Image source={Images.TextEdit} style={Styles.InputImg} />
-          </View>
-          <View style={Styles.InputContainer}>
-            <TextInput placeholder={'说点什么...'} />
-          </View>
-        </View>
+        <View style={Styles.CommentInputWrap}></View>
         <TouchableOpacity style={Styles.LikeCommentContainer}>
           <Image source={Images.RedLike} />
           <Text>93</Text>

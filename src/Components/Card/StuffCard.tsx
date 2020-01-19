@@ -7,15 +7,25 @@ import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
 import moment from 'moment';
 import {baseUrl} from 'src/constants';
 
-export default function FoundCard({item, proc}) {
+export default function StuffCard({item, proc}) {
   return (
     <TouchableOpacity style={Style.CardWrap} onPress={proc}>
       <View style={Style.CardInfoWrap}>
         <View style={Style.ImageSection}>
-          <Image style={Style.AvatarStyle} source={Images.maleProfile} />
+          {item.user.photo.length === 0 && (
+            <Image style={Style.AvatarStyle} source={Images.maleProfile} />
+          )}
+          {item.user.photo.length > 0 && (
+            <Image
+              style={Style.AvatarStyle}
+              source={{
+                uri: baseUrl + 'download/photo?path=' + item.user.photo,
+              }}
+            />
+          )}
         </View>
         <View style={Style.UserName}>
-          <Text>分析过</Text>
+          <Text>{item.user.name}</Text>
           <Text style={Style.Userdate}>
             {moment(item.createAt).format('M月D日 ')}
           </Text>
@@ -29,10 +39,12 @@ export default function FoundCard({item, proc}) {
           </View>
           <View>
             <View style={Style.CardCatBtnWrap}>
-              <RoundBtn
-                RoundBtnTitle={'联系 TA'}
-                RoundBtnColor={'MainYellow'}
-              />
+              {item.fee > 0 && (
+                <RoundBtn
+                  RoundBtnTitle={'赏 ¥ ' + item.fee}
+                  RoundBtnColor={'MainRed'}
+                />
+              )}
             </View>
           </View>
         </View>

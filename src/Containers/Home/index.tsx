@@ -37,7 +37,9 @@ export default function HomeView({navigation}) {
         <View style={styles.HomeMainBtnGroup}>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('LostCategoryView')}>
+              onPress={() =>
+                navigation.navigate('StuffPostView', {kind: 'lost'})
+              }>
               <Image
                 style={{width: 52, height: 52}}
                 source={Images.HomeFindBtn}
@@ -47,7 +49,9 @@ export default function HomeView({navigation}) {
           </View>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('FoundCategoryView')}>
+              onPress={() =>
+                navigation.navigate('StuffPostView', {kind: 'found'})
+              }>
               <Image
                 style={{width: 52, height: 52}}
                 source={Images.HomeGetBtn}

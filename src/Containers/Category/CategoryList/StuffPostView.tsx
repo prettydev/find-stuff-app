@@ -12,13 +12,15 @@ import {
 import {Images, Colors} from 'src/Theme';
 import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn';
 import Styles from './CategoryListStyle';
-import LostCard from 'src/Components/Card/LostCard';
+import StuffCard from 'src/Components/Card/StuffCard';
 import {tagJson} from 'src/constants';
 
 import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
 export default function CategoryList(props) {
+  const kind = props.navigation.getParam('kind');
+
   const [list, setList] = useState([]);
   const [tag, setTag] = useState('');
 
@@ -31,13 +33,16 @@ export default function CategoryList(props) {
 
   useEffect(() => {
     axios
-      .get(baseUrl + 'api/lostpost', {
+      .get(baseUrl + 'api/stuffpost', {
         params: {
+          kind,
           tag,
           key,
         },
       })
       .then(function(response) {
+        console.log(response.data);
+
         setList(response.data);
       })
       .catch(function(error) {
@@ -104,14 +109,14 @@ export default function CategoryList(props) {
       </View>
       <View style={Styles.CardsContainer}>
         {list.map((item, i) => (
-          <LostCard
+          <StuffCard
             key={i}
             item={item}
             proc={() => {
               {
-                props.navigation.navigate('LostCategoryDetail', {item});
+                props.navigation.navigate('StuffPostDetail', {item});
               }
-            }}></LostCard>
+            }}></StuffCard>
         ))}
       </View>
     </ScrollView>

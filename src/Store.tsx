@@ -11,7 +11,7 @@ const StateProvider = ({children}) => {
         return {...state, user: action.payload};
       }
       case 'setToken': {
-        return {...state, token: action.payload};
+        return {...state, auth_token: action.payload};
       }
       case 'setState': {
         return action.payload;

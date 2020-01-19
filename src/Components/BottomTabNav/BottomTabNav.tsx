@@ -13,11 +13,8 @@ import ChatView from 'src/Containers/Chat/Chat';
 import NotificationView from 'src/Containers/Notification/NotificationList/NotificationList';
 import {Colors, Images} from 'src/Theme';
 
-import LostCategoryView from 'src/Containers/Category/CategoryList/LostCategoryView';
-import LostCategoryDetail from 'src/Containers/Category/CategoryDetail/LostCategoryDetail';
-
-import FoundCategoryView from 'src/Containers/Category/CategoryList/FoundCategoryView';
-import FoundCategoryDetail from 'src/Containers/Category/CategoryDetail/FoundCategoryDetail';
+import StuffPostView from 'src/Containers/Category/CategoryList/StuffPostView';
+import StuffPostDetail from 'src/Containers/Category/CategoryDetail/StuffPostDetail';
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
@@ -55,26 +52,14 @@ const HomeStackNavigator = createStackNavigator({
       header: null,
     },
   },
-  LostCategoryView: {
-    screen: LostCategoryView,
+  StuffPostView: {
+    screen: StuffPostView,
     navigationOptions: {
       header: null,
     },
   },
-  LostCategoryDetail: {
-    screen: LostCategoryDetail,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  FoundCategoryView: {
-    screen: FoundCategoryView,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  FoundCategoryDetail: {
-    screen: FoundCategoryDetail,
+  StuffPostDetail: {
+    screen: StuffPostDetail,
     navigationOptions: {
       header: null,
     },

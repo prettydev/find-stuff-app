@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {View, ScrollView, StyleSheet, Dimensions} from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import LostCard from 'src/Components/Card/LostCard';
+import StuffCard from 'src/Components/Card/StuffCard';
 
 import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
-export default function HomeCategoryTab() {
+export default function HomeCategoryTab(props) {
   const [state, setState] = useState({
     index: 0,
     routes: [
       {key: 'createAt', title: '最新'},
       {key: 'browse', title: '热门'},
+      {key: 'ads', title: '热'},
     ],
   });
 
@@ -20,14 +21,21 @@ export default function HomeCategoryTab() {
   const ListArea = () => (
     <ScrollView style={[styles.scene, {backgroundColor: '#ffffff'}]}>
       {list.map((item, i) => (
-        <LostCard key={i} item={item}></LostCard>
+        <StuffCard
+          key={i}
+          item={item}
+          proc={() => {
+            {
+              props.navigation.navigate('StuffPostDetail', {item});
+            }
+          }}></StuffCard>
       ))}
     </ScrollView>
   );
 
   useEffect(() => {
     axios
-      .get(baseUrl + 'api/lostpost', {
+      .get(baseUrl + 'api/stuffpost', {
         params: {
           sort: state.index,
         },
@@ -49,6 +57,7 @@ export default function HomeCategoryTab() {
       renderScene={SceneMap({
         createAt: ListArea,
         browse: ListArea,
+        ads: ListArea,
       })}
       renderTabBar={props => (
         <TabBar
