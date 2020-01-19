@@ -19,7 +19,7 @@ import {Images} from 'src/Theme';
 import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
-export default function HomeView({navigation}) {
+export default function HomeView(props) {
   const [note, setNote] = useState('');
 
   const [state, setState] = useState({
@@ -89,10 +89,11 @@ export default function HomeView({navigation}) {
       {list.map((item, i) => (
         <StuffCard
           key={i}
+          navigation
           item={item}
           proc={() => {
             {
-              navigation.navigate('StuffPostDetail', {item});
+              props.navigation.navigate('StuffPostDetail', {item});
             }
           }}></StuffCard>
       ))}
@@ -125,7 +126,7 @@ export default function HomeView({navigation}) {
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('StuffPostView', {kind: 'lost'})
+                props.navigation.navigate('StuffPostView', {kind: 'lost'})
               }>
               <Image
                 style={{width: 52, height: 52}}
@@ -137,7 +138,7 @@ export default function HomeView({navigation}) {
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('StuffPostView', {kind: 'found'})
+                props.navigation.navigate('StuffPostView', {kind: 'found'})
               }>
               <Image
                 style={{width: 52, height: 52}}
@@ -148,7 +149,9 @@ export default function HomeView({navigation}) {
           </View>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('NewsView', {kind: 'found'})}>
+              onPress={() =>
+                props.navigation.navigate('NewsView', {kind: 'found'})
+              }>
               <Image
                 style={{width: 52, height: 52}}
                 source={Images.HomeNewsBtn}
@@ -159,7 +162,7 @@ export default function HomeView({navigation}) {
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('ContactView', {kind: 'found'})
+                props.navigation.navigate('ContactView', {kind: 'found'})
               }>
               <Image
                 style={{width: 52, height: 52}}

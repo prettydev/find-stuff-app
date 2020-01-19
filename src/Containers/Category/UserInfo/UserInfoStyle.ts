@@ -18,19 +18,18 @@ export default StyleSheet.create({
       fontSize: 20
    },
    ProfileHeaderAvatarContainer: {
-      flexDirection: 'row',
       padding: 10,
-      paddingTop: 30
+      paddingTop: 30,
+      alignItems: 'center',
+      justifyContent: 'center',
    },
    ProfileHeaderAvatarWrap: {
-      flexDirection: 'row',
-      flex: 1,
-
+      alignItems: 'center',
+      justifyContent: 'center',
    },
    ProfileHeaderAvatarImg: {
       width: 52,
       height: 52,
-      marginRight: 10,
    },
    ProfileHeaderAvatarText: {
       color: 'white',
@@ -56,37 +55,13 @@ export default StyleSheet.create({
       shadowRadius: 3,
       elevation: 4,
    },
-   ProfileBtnPublishedContainer: {
-      flex: 1,
-      padding: 5,
-      alignItems: 'center',
-   },
-   ProfileBtnPublishedImg: {
-      width: 30,
-      height: 30,
-      marginBottom: 10,
-   },
-   ProfileLikeContainer: {
-      flex: 1,
-      padding: 5,
-      alignItems: 'center',
-   },
-   ProfileBtnLikeImg: {
-      width: 30,
-      height: 30,
-      marginBottom: 10,
-   },
-   ProfileAttentionContainer: {
-      flex: 1,
-      padding: 5,
-      alignItems: 'center',
-   },
-   ProfileBtnAttentionImg: {
-      width: 30,
-      height: 30,
-      marginBottom: 10,
+   HeaderChevronImg: {
+      position: 'absolute',
+      left: 0,
+      padding: 1,
    },
    ProfileFunctionContainer: {
+      marginTop: 20,
    },
    ProfileUpdateContainer: {
       backgroundColor: 'white',
@@ -117,7 +92,6 @@ export default StyleSheet.create({
       backgroundColor: 'white',
       paddingTop: 10,
       paddingBottom: 10,
-      marginBottom: 40,
       alignItems: 'center',
    },
    ProfileContactUsWrap: {
@@ -130,44 +104,35 @@ export default StyleSheet.create({
       alignItems: 'center',
    },
    ProfileContactUsImg: {
-      width: 24,
+      width: 20,
       height: 20,
       marginRight: 10,
    },
-   BottomContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 10,
+   FindStuffHeaderImg: {
+      height: 35,
+      width: 35,
+      transform: [{rotate: '90deg'}],
    },
-   BottomBtnWrap: {
-      width: '80%',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: Colors.MainRed,
-      borderRadius: 25,
-      padding: 10,
-   },
-   BottomBtnText: {
-      fontSize: 20,
-      color: 'white',
-   }, 
-   ProfileIntroContainer: {
-      marginTop: 20,
+   ProfileMessageContainer: {
       backgroundColor: 'white',
       paddingTop: 10,
       paddingBottom: 10,
-      marginBottom: 40,
+      alignItems: 'center',
+      marginTop: 10,
+   },
+   ProfileMessageWrap: {
+      flexDirection: 'row',
+      width: '90%',
+      justifyContent: 'space-between',
+   },
+   ProfileMessageLeft: {
+      flexDirection: 'row',
       alignItems: 'center',
    },
-   HeaderImgBadge: {
-      position: 'absolute',
-      width: 18,
-      height: 18,
-      left: 40,
+   ProfileMessageImg: {
+      width: 20,
+      height: 20,
+      marginRight: 10,
    },
-   HeaderTextBadge: {
-      width: 18,
-      height: 18,
-   }
 
 })

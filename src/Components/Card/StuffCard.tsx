@@ -7,7 +7,7 @@ import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
 import moment from 'moment';
 import {baseUrl} from 'src/constants';
 
-export default function StuffCard({item, proc}) {
+export default function StuffCard({item, proc, navigation}) {
   return (
     <TouchableOpacity style={Style.CardWrap} onPress={proc}>
       <View style={Style.CardInfoWrap}>
@@ -16,12 +16,17 @@ export default function StuffCard({item, proc}) {
             <Image style={Style.AvatarStyle} source={Images.maleProfile} />
           )}
           {item.user.photo.length > 0 && (
-            <Image
-              style={Style.AvatarStyle}
-              source={{
-                uri: baseUrl + 'download/photo?path=' + item.user.photo,
-              }}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('UserInfo', {item: item.user});
+              }}>
+              <Image
+                style={Style.AvatarStyle}
+                source={{
+                  uri: baseUrl + 'download/photo?path=' + item.user.photo,
+                }}
+              />
+            </TouchableOpacity>
           )}
         </View>
         <View style={Style.UserName}>

@@ -29,6 +29,7 @@ export default function HomeCategoryTab(props) {
       {list.map((item, i) => (
         <StuffCard
           key={i}
+          navigation={props.navigation}
           item={item}
           proc={() => {
             {

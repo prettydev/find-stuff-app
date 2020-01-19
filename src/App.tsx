@@ -16,7 +16,11 @@ import Published from 'src/Containers/Profile/Published/Published';
 import Attention from 'src/Containers/Profile/Attention/Attention';
 import Notification from 'src/Containers/Notification/NotificationList/NotificationList';
 import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
+import UserInfo from 'src/Containers/Category/UserInfo/UserInfo';
 import {store, StateProvider} from 'src/Store';
+import News from 'src/Containers/News/News';
+import NewsDetail from 'src/Containers/News/NewsDetail/NewsDetail';
+import LocalPhone from 'src/Containers/LocalPhone/LocalPhone';
 
 const AppNavigator = createStackNavigator(
   {
@@ -31,7 +35,12 @@ const AppNavigator = createStackNavigator(
     Published: Published,
     Attention: Attention,
     Notification: Notification,
-		ChatDetail: ChatDetail,
+    ChatDetail: ChatDetail,
+
+    UserInfo: UserInfo,
+    News: News,
+    NewsDetail: NewsDetail,
+    LocalPhone: LocalPhone,
   },
   {
     initialRouteName: 'MainScreenWithBottomNav',
