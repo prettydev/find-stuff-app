@@ -14,12 +14,15 @@ import Modal, {ModalContent} from 'react-native-modals';
 import {Images} from 'src/Theme';
 import Style from './ProfileStyle';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import CustomModal from 'src/Components/CustomModal/CustomModal';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
+
+import QRCode from 'react-native-qrcode-svg';
+import call from 'react-native-phone-call';
+
 import {baseUrl, appVersion} from 'src/constants';
 const axios = require('axios');
 export default function Profile(props) {
@@ -37,7 +40,8 @@ export default function Profile(props) {
     version: appVersion,
     service: 'OurCompany....',
     share: 'https:///',
-    about: 'ssssssssssssssssssssssssssssss',
+    about: 'We are the whole...',
+    phone: '11111',
   });
 
   const handleModal = idx => {
@@ -128,19 +132,44 @@ export default function Profile(props) {
     if (!state.auth_token) props.navigation.navigate('Signin');
     if (nameRef?.current) nameRef.current.value = state.user.name;
 
-    axios
-      .post(baseUrl + 'api/profile/last')
-      .then(function(response) {
-        if (response.data.item) {
-          setProfile(response.data.item);
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-      })
-      .finally(function() {
-        // always executed
-      });
+    (async () => {
+      await axios
+        .post(baseUrl + 'api/profile/last')
+        .then(function(response) {
+          if (response.data.item) {
+            console.log(response.data);
+
+            let {version, share, about, service, phone} = response.data.item;
+
+            let versionDescription = '';
+            if (appVersion === version) {
+              versionDescription =
+                'Your app is the latest version(' + version + ').';
+            } else {
+              versionDescription =
+                'Your app is the old version(' +
+                appVersion +
+                ').Lastest version is ' +
+                version +
+                '.';
+            }
+
+            setProfile({
+              version: versionDescription,
+              share,
+              about,
+              service,
+              phone,
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        })
+        .finally(function() {
+          // always executed
+        });
+    })();
   }, []);
 
   return (
@@ -221,7 +250,12 @@ export default function Profile(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={Style.ProfileLikeContainer}
-            onPress={() => {}}>
+            onPress={() => {
+              call({
+                number: profile.phone,
+                prompt: false,
+              }).catch(console.error);
+            }}>
             <Image
               source={Images.ProfileBtnLike}
               style={Style.ProfileBtnLikeImg}
@@ -295,11 +329,7 @@ export default function Profile(props) {
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={Style.BottomContainer}
-        onPress={() => {
-          handleSignout;
-        }}>
+      <TouchableOpacity style={Style.BottomContainer} onPress={handleSignout}>
         <View style={Style.BottomBtnWrap}>
           <Text style={Style.BottomBtnText}>安全退出</Text>
         </View>
@@ -311,20 +341,26 @@ export default function Profile(props) {
           setIsServiceModalVisible(false);
         }}>
         <ModalContent>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <View style={Style.ContentContainer}>
-              <View style={Style.ContentWrap}>
-                <Text>{service}</Text>
-              </View>
-            </View>
+          <View
+            style={{
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '80%',
+              width: '90%',
+            }}>
+            <ScrollView>
+              {current === 'share' && <QRCode value={profile.share} />}
+              <Text>{service}</Text>
+            </ScrollView>
           </View>
-          <Button
-            title="Close"
-            onPress={() => {
-              setIsServiceModalVisible(false);
-            }}
-          />
         </ModalContent>
+        <Button
+          title="Close"
+          onPress={() => {
+            setIsServiceModalVisible(false);
+          }}
+        />
       </Modal>
     </ScrollView>
   );

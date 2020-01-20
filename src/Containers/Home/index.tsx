@@ -13,6 +13,14 @@ import {
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
 
+// import {
+//   MapView,
+//   MapTypes,
+//   Geolocation,
+//   Overlay,
+//   MapApp,
+// } from 'react-native-baidu-map';
+
 import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
 
@@ -181,6 +189,7 @@ export default function HomeView(props) {
               </Text>
             )}
           </View>
+
           <View>
             <TabView
               navigationState={state}

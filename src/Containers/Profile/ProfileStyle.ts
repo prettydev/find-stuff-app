@@ -171,8 +171,8 @@ export default StyleSheet.create({
     margin: 0,
   },
   ContentContainer: {
-    width: '85%',
-    height: '80%',
+    width: '90%',
+    height: '75%',
     backgroundColor: 'white',
     padding: 10,
     borderRadius: 15,
@@ -182,7 +182,6 @@ export default StyleSheet.create({
     borderBottomWidth: 0.3,
   },
   bottomBtnContainer: {
-    width: '100px',
     alignItems: 'center',
     justifyContent: 'center',
   },
