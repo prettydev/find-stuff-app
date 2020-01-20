@@ -1,18 +1,31 @@
-import React, {useState, useEffect} from 'react';
+import React, {Component} from 'react';
 import {Text, View, Image, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import {Images} from 'src/Theme';
 import Styles from './CustomModalStyle';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-export default function CustomModal({isPropsModalVisible}) {
-  const [isModalVisible, setIsModalVisible] = useState(isPropsModalVisible)
+export default class CustomModal extends Component {
+  public props: any;
+  public setState: any;
+  public navigation: any;
+  state = {
+    isModalVisible: false,
   };
+  componentWillReceiveProps() {
+    this.setState({isModalVisible: this.props.isPropsModalVisible});
+  }
+
+  toggleModal = () => {
+    this.setState({isModalVisible: false});
+  };
+
+  render() {
     return (
       <View style={{flex: 1}}>
         <Modal
           style={Styles.AddInfoModalContainer}
-          isVisible={isModalVisible}
+          isVisible={this.state.isModalVisible}
           backdropColor={'#c4c4c4'}
           backdropOpacity={0.9}>
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -27,7 +40,7 @@ export default function CustomModal({isPropsModalVisible}) {
               <TouchableOpacity
                 style={Styles.bottomBtnContainer}
                 onPress={() => {
-					setIsModalVisible(false)
+                  this.toggleModal();
                 }}>
                 <Text style={{color: 'blue', fontSize: 21}}>同意</Text>
               </TouchableOpacity>
@@ -35,5 +48,6 @@ export default function CustomModal({isPropsModalVisible}) {
           </View>
         </Modal>
       </View>
-    );  
+    );
+  }
 }

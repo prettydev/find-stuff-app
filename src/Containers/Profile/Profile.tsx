@@ -1,19 +1,147 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState, useContext, useRef} from 'react';
 import {
   View,
   Text,
   ImageBackground,
   Image,
   ScrollView,
-  Alert,
+  TextInput,
+  Button,
 } from 'react-native';
+
+import Modal, {ModalContent} from 'react-native-modals';
+
 import {Images} from 'src/Theme';
 import Style from './ProfileStyle';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import CustomModal from 'src/Components/CustomModal/CustomModal';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+
+import {store} from 'src/Store';
+import Toast from 'react-native-simple-toast';
+import ImagePicker from 'react-native-image-picker';
+import {baseUrl, appVersion} from 'src/constants';
+const axios = require('axios');
 export default function Profile(props) {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [state, dispatch] = useContext(store);
+
+  const [photo, setPhoto] = useState({name: '', source: '', data: ''});
+  const [name, setName] = useState(state.user.name ? state.user.name : '');
+  const nameRef = useRef(null);
+
+  const [isServiceModalVisible, setIsServiceModalVisible] = useState(false);
+  const [service, setService] = useState('aaaaaaaa');
+  const [current, setCurrent] = useState('');
+
+  const [profile, setProfile] = useState({
+    version: appVersion,
+    service: 'OurCompany....',
+    share: 'https:///',
+    about: 'ssssssssssssssssssssssssssssss',
+  });
+
+  const handleModal = idx => {
+    setCurrent(idx);
+    if (idx === 'service') setService(profile.service);
+    else if (idx === 'about') setService(profile.about);
+    else if (idx === 'share') setService(profile.share);
+    else if (idx === 'upgrade') setService(profile.version);
+
+    setIsServiceModalVisible(true);
+  };
+
+  const [isEdit, setIsEdit] = useState(false);
+  const handleSignout = async () => {
+    props.navigation.navigate('Signin');
+  };
+
+  const handlePhoto = () => {
+    ImagePicker.showImagePicker(response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const name = response.uri;
+        const source = {uri: response.uri};
+        const data = 'data:image/jpeg;base64,' + response.data;
+
+        setPhoto({source, data, name});
+      }
+    });
+  };
+
+  async function handleSubmit() {
+    if (name === '') {
+      Toast.show('Input values correctly!');
+      return;
+    }
+    if (photo) {
+      let formData = new FormData();
+
+      const file = {
+        uri: photo.name,
+        name: Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
+        type: photo.mime || 'image/jpeg',
+      };
+      formData.append('file', file);
+
+      await axios
+        .post(baseUrl + 'upload/file', formData)
+        .then(response => {
+          axios
+            .put(
+              baseUrl + 'api2/user/' + state.user._id,
+              {
+                photo: response.data.file.path,
+                name,
+              },
+              {
+                headers: {auth_token: state.auth_token},
+              },
+            )
+            .then(function(response2) {
+              console.log('response2', response2.data);
+              if (response2.data.success) {
+                dispatch({type: 'setUser', payload: response2.data.user});
+                Toast.show('Success!');
+              } else {
+                Toast.show('Failed!');
+              }
+            })
+            .catch(function(error) {
+              console.log('eeeeeerrrrrrrrr', error);
+              // Toast.show(error);
+            });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      Toast.show('No photo selected');
+    }
+  }
+
+  useEffect(() => {
+    if (!state.auth_token) props.navigation.navigate('Signin');
+    if (nameRef?.current) nameRef.current.value = state.user.name;
+
+    axios
+      .post(baseUrl + 'api/profile/last')
+      .then(function(response) {
+        if (response.data.item) {
+          setProfile(response.data.item);
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+      .finally(function() {
+        // always executed
+      });
+  }, []);
 
   return (
     <ScrollView style={Style.ProfileContainer}>
@@ -25,19 +153,57 @@ export default function Profile(props) {
         </View>
         <View style={Style.ProfileHeaderAvatarContainer}>
           <View style={Style.ProfileHeaderAvatarWrap}>
-            <TouchableOpacity style={Style.HeaderImgContainer}>
-              <Image
-                source={Images.femaleProfile}
-                style={Style.ProfileHeaderAvatarImg}
-              />
+            <TouchableOpacity
+              style={Style.HeaderImgContainer}
+              onPress={handlePhoto}>
+              {state.user && state.user.photo && (
+                <Image
+                  source={{
+                    uri: baseUrl + 'download/photo?path=' + state.user.photo,
+                  }}
+                  style={Style.ProfileHeaderAvatarImg}
+                />
+              )}
+              {state.user && (!state.user.photo || state.user.photo === '') && (
+                <Image
+                  source={photo.source ? photo.source : Images.femaleProfile}
+                  style={Style.ProfileHeaderAvatarImg}
+                />
+              )}
+
               <Image source={Images.Camera} style={Style.HeaderImgBadge} />
             </TouchableOpacity>
-            <TouchableOpacity style={Style.HeaderTextContainer}>
+            <View>
               <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
-              <Text style={{color: Colors.grey, fontSize: 12}}>1566896555</Text>
+              <Text style={{color: Colors.white, fontSize: 12}}>
+                {state.user.name}
+              </Text>
+              <Text style={{color: Colors.white, fontSize: 12}}>
+                {state.user.phone}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                if (nameRef?.current) nameRef.current.focus();
+                setIsEdit(!isEdit);
+              }}>
+              <Image source={Images.TextEdit} style={Style.HeaderTextBadge} />
             </TouchableOpacity>
-            <Image source={Images.TextEdit} style={Style.HeaderTextBadge} />
           </View>
+        </View>
+        <View>
+          {isEdit && (
+            <View style={{flexDirection: 'row', width: '100%'}}>
+              <TextInput
+                style={{backgroundColor: 'white', width: '60%'}}
+                onChangeText={value => setName(value)}
+                ref={nameRef}
+              />
+              <TouchableOpacity onPress={handleSubmit} style={{width: '40%'}}>
+                <Text>Save</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </ImageBackground>
       <View style={Style.ProfileBtnGroupContainer}>
@@ -45,7 +211,7 @@ export default function Profile(props) {
           <TouchableOpacity
             style={Style.ProfileBtnPublishedContainer}
             onPress={() => {
-              this.toggleModal();
+              handleModal('service');
             }}>
             <Image
               source={Images.ProfileBtnPublished}
@@ -55,9 +221,7 @@ export default function Profile(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={Style.ProfileLikeContainer}
-            onPress={() => {
-              this.toggleModal();
-            }}>
+            onPress={() => {}}>
             <Image
               source={Images.ProfileBtnLike}
               style={Style.ProfileBtnLikeImg}
@@ -70,7 +234,7 @@ export default function Profile(props) {
         <TouchableOpacity
           style={Style.ProfileUpdateContainer}
           onPress={() => {
-            this.toggleModal();
+            handleModal('upgrade');
           }}>
           <View style={Style.ProfileUpdateWrap}>
             <View style={Style.ProfileUpdateLeft}>
@@ -91,7 +255,7 @@ export default function Profile(props) {
         <TouchableOpacity
           style={Style.ProfileContactUsContainer}
           onPress={() => {
-            this.toggleModal();
+            handleModal('about');
           }}>
           <View style={Style.ProfileContactUsWrap}>
             <View style={Style.ProfileContactUsLeft}>
@@ -112,7 +276,7 @@ export default function Profile(props) {
         <TouchableOpacity
           style={Style.ProfileIntroContainer}
           onPress={() => {
-            this.toggleModal();
+            handleModal('share');
           }}>
           <View style={Style.ProfileContactUsWrap}>
             <View style={Style.ProfileContactUsLeft}>
@@ -134,13 +298,34 @@ export default function Profile(props) {
       <TouchableOpacity
         style={Style.BottomContainer}
         onPress={() => {
-          setIsModalVisible(!isModalVisible);
+          handleSignout;
         }}>
         <View style={Style.BottomBtnWrap}>
           <Text style={Style.BottomBtnText}>安全退出</Text>
         </View>
       </TouchableOpacity>
-      <CustomModal isPropsModalVisible />
+
+      <Modal
+        visible={isServiceModalVisible}
+        onTouchOutside={() => {
+          setIsServiceModalVisible(false);
+        }}>
+        <ModalContent>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View style={Style.ContentContainer}>
+              <View style={Style.ContentWrap}>
+                <Text>{service}</Text>
+              </View>
+            </View>
+          </View>
+          <Button
+            title="Close"
+            onPress={() => {
+              setIsServiceModalVisible(false);
+            }}
+          />
+        </ModalContent>
+      </Modal>
     </ScrollView>
   );
 }
