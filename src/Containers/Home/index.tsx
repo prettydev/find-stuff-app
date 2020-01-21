@@ -9,10 +9,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Picker,
 } from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
-
+import {BaiduMapManager, Geolocation} from 'react-native-baidu-map';
 import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel';
 
 import styles from './HomeViewStyle';
@@ -21,7 +22,10 @@ import {Images} from 'src/Theme';
 import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
+BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
+
 export default function HomeView(props) {
+  const [location, setLocation] = useState({});
   const [note, setNote] = useState('');
 
   const [state, setState] = useState({
@@ -81,7 +85,14 @@ export default function HomeView(props) {
       });
   };
 
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition().then(data => {
+      setLocation(data);
+    });
+  };
+
   useEffect(() => {
+    getCurrentLocation();
     getNote();
     getList();
   }, []);
@@ -106,9 +117,11 @@ export default function HomeView(props) {
     <ScrollView style={{flex: 1}}>
       <View style={styles.homeScrollView}>
         <View style={styles.HomeBannerContainer}>
-          {
-            // <Image source={Images.HomeBannerImg} style={styles.HomeBannerImg} />
-          }
+          {location.city && (
+            <Text style={{position: 'absolute', top: 0, zIndex: 100}}>
+              {location.city}
+            </Text>
+          )}
           <HomeCarousel />
         </View>
         <View style={styles.HomeSearchContainer}>
