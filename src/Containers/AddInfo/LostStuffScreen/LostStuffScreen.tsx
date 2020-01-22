@@ -10,7 +10,7 @@ import {
 import Styles from './LostStuffScreenStyle';
 import CustomFormSelect from 'src/Components/CustomForm/CustomFormSelect/CustomFormSelect';
 import {Colors, Images} from 'src/Theme';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
@@ -104,6 +104,14 @@ export default function FindStuffScreen(props) {
 
   useEffect(() => {
     if (!state.auth_token) props.navigation.navigate('Signin');
+    function unsubscribe() {
+      props.navigation.addListener('didFocus', async () => {
+        AsyncStorage.getItem('token').then(value => {
+          if (!value) props.navigation.navigate('Signin');
+        });
+      });
+    }
+    return unsubscribe();
   }, []);
 
   return (
@@ -117,7 +125,7 @@ export default function FindStuffScreen(props) {
             style={Styles.FindStuffHeaderImg}
           />
         </TouchableOpacity>
-        <Text style={{fontSize: 20, color: '#fff', flex: 1}}>详细情况</Text>
+        <Text style={{fontSize: 20, color: '#fff'}}>详细情况</Text>
         <Text style={{flex: 1}} />
       </View>
       <View style={Styles.StuffInfoContainer}>

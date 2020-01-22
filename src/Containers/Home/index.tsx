@@ -19,10 +19,31 @@ import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel';
 import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
 
+import io from 'socket.io-client';
+
 import {baseUrl} from 'src/constants';
-const axios = require('axios');
+import axios from 'axios';
+import {Map} from 'immutable';
 
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
+
+const socket = io(baseUrl);
+
+export interface User {
+  id: string;
+  name: string;
+}
+
+const defaultUser: User = {
+  id: 'anon',
+  name: 'Anonymous',
+};
+export interface Message {
+  user: User;
+  id: string;
+  time: Date;
+  value: string;
+}
 
 export default function HomeView(props) {
   const [location, setLocation] = useState({});
@@ -91,10 +112,32 @@ export default function HomeView(props) {
     });
   };
 
+  const [messages, setMessages] = useState(Map());
+
   useEffect(() => {
     getCurrentLocation();
     getNote();
     getList();
+
+    const messageListener = (message: Message) => {
+      console.log('arrived new message', message);
+      setMessages(prevMessages => prevMessages.set(message.id, message));
+    };
+
+    const deleteMessageListener = (messageID: string) => {
+      console.log('deleted current message', messageID);
+      setMessages(prevMessages => prevMessages.delete(messageID));
+    };
+
+    socket.on('message', messageListener);
+    socket.on('deleteMessage', deleteMessageListener);
+    socket.emit('getMessages');
+    socket.emit('message', 'HHHHHHHHHHHHHH');
+
+    return () => {
+      // socket.off('message', messageListener);
+      // socket.off('deleteMessage', deleteMessageListener);
+    };
   }, []);
 
   const ListArea = () => (

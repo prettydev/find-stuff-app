@@ -5,7 +5,8 @@ import React, {
   useContext,
   useReducer,
 } from 'react';
-import {createAppContainer, createStackNavigator} from 'react-navigation';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 import MainScreenWithBottomNav from 'src/Components/BottomTabNav/BottomTabNav';
 import SigninScreen from 'src/Containers/Authentication/SignInScreen/SignInScreen';
 import SignUpScreen from 'src/Containers/Authentication/SignUpScreen/SignUpScreen';

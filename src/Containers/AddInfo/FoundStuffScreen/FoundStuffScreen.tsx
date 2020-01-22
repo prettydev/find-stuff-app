@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Styles from './FoundStuffScreenStyle';
 import CustomFormSelect from 'src/Components/CustomForm/CustomFormSelect/CustomFormSelect';
 import {Images, Colors} from 'src/Theme';
@@ -100,6 +101,14 @@ export default function FoundStuffScreen(props) {
 
   useEffect(() => {
     if (!state.auth_token) props.navigation.navigate('Signin');
+    function unsubscribe() {
+      props.navigation.addListener('didFocus', async () => {
+        AsyncStorage.getItem('token').then(value => {
+          if (!value) props.navigation.navigate('Signin');
+        });
+      });
+    }
+    return unsubscribe();
   }, []);
 
   return (
@@ -113,7 +122,13 @@ export default function FoundStuffScreen(props) {
             style={Styles.FindStuffHeaderImg}
           />
         </TouchableOpacity>
-        <Text style={{fontSize: 20, color: '#fff', flex: 1}}>详细情况</Text>
+        <Text
+          style={{
+            fontSize: 20,
+            color: '#fff',
+          }}>
+          详细情况
+        </Text>
         <Text style={{flex: 1}} />
       </View>
       <View style={Styles.StuffInfoContainer}>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   ScrollView,
   View,
@@ -9,24 +9,34 @@ import {
   FlatList,
   ToastAndroid,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Styles from './ChatStyle';
 import {Images, Colors} from 'src/Theme';
+import {store} from 'src/Store';
 import {baseUrl} from 'src/constants';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment';
-const axios = require('axios');
+import axios from 'axios';
 
 export default function Chat(props) {
+  const [state, dispatch] = useContext(store);
   const [list, setList] = useState([]);
 
   useEffect(() => {
+    if (!state.auth_token) props.navigation.navigate('Signin');
+    function unsubscribe() {
+      props.navigation.addListener('didFocus', async () => {
+        AsyncStorage.getItem('token').then(value => {
+          if (!value) props.navigation.navigate('Signin');
+        });
+      });
+    }
+
     axios
       .get(baseUrl + 'api/message', {
         params: {},
       })
       .then(function(response) {
-        console.log(response.data);
-
         setList(response.data);
       })
       .catch(function(error) {
@@ -35,6 +45,7 @@ export default function Chat(props) {
       .finally(function() {
         // always executed
       });
+    return unsubscribe();
   }, []);
 
   return (

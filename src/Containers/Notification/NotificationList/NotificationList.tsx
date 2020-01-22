@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext, useCallback} from 'react';
 import {
   View,
   Text,
@@ -7,21 +7,29 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {Images, Colors} from 'src/Theme';
 import Styles from './NotificationListStyle';
 import NotificationCard from 'src/Components/Card/NotificationCard/NotificationCard';
-
+import {store} from 'src/Store';
 import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
 export default function NotificationList(props) {
+  const [state, dispatch] = useContext(store);
   const [list, setList] = useState([]);
   useEffect(() => {
+    if (!state.auth_token) props.navigation.navigate('Signin');
+    function unsubscribe() {
+      props.navigation.addListener('didFocus', async () => {
+        AsyncStorage.getItem('token').then(value => {
+          if (!value) props.navigation.navigate('Signin');
+        });
+      });
+    }
     axios
       .get(baseUrl + 'api/notification', {})
       .then(function(response) {
-        console.log(response.data);
-
         setList(response.data);
       })
       .catch(function(error) {
@@ -30,6 +38,7 @@ export default function NotificationList(props) {
       .finally(function() {
         // always executed
       });
+    return unsubscribe();
   }, []);
   return (
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>

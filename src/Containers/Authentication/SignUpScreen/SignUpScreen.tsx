@@ -53,7 +53,7 @@ export default function SignUpScreen(props) {
               style={Styles.SignUpHeaderImg}
             />
           </TouchableOpacity>
-          <Text style={{fontSize: 20, color: '#fff', flex: 1}}>用户注册</Text>
+          <Text style={{fontSize: 20, color: '#fff'}}>用户注册</Text>
           <Text style={{flex: 1}}></Text>
         </View>
         <View style={Styles.SignFormContainer}>

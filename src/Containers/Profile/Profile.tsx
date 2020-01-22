@@ -9,6 +9,8 @@ import {
   Button,
 } from 'react-native';
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 import Modal, {ModalContent} from 'react-native-modals';
 
 import {Images} from 'src/Theme';
@@ -56,6 +58,8 @@ export default function Profile(props) {
 
   const [isEdit, setIsEdit] = useState(false);
   const handleSignout = async () => {
+    dispatch({type: 'setState', payload: {user: {}, token: ''}});
+    AsyncStorage.clear();
     props.navigation.navigate('Signin');
   };
 
@@ -130,6 +134,14 @@ export default function Profile(props) {
 
   useEffect(() => {
     if (!state.auth_token) props.navigation.navigate('Signin');
+    function unsubscribe() {
+      props.navigation.addListener('didFocus', async () => {
+        AsyncStorage.getItem('token').then(value => {
+          if (!value) props.navigation.navigate('Signin');
+        });
+      });
+    }
+
     if (nameRef?.current) nameRef.current.value = state.user.name;
 
     (async () => {
@@ -170,6 +182,7 @@ export default function Profile(props) {
           // always executed
         });
     })();
+    return unsubscribe();
   }, []);
 
   return (
