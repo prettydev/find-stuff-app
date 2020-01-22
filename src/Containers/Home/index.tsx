@@ -1,5 +1,5 @@
 // React
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   Text,
   TextInput,
@@ -15,37 +15,20 @@ import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
 import {BaiduMapManager, Geolocation} from 'react-native-baidu-map';
 import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel';
-
+import Toast from 'react-native-simple-toast';
 import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
 
-import io from 'socket.io-client';
-
 import {baseUrl} from 'src/constants';
+
 import axios from 'axios';
 import {Map} from 'immutable';
+import {store} from 'src/Store';
+import NotificationPopup from 'react-native-push-notification-popup';
 
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
 
-const socket = io(baseUrl);
-
-export interface User {
-  id: string;
-  name: string;
-}
-
-const defaultUser: User = {
-  id: 'anon',
-  name: 'Anonymous',
-};
-export interface Message {
-  user: User;
-  id: string;
-  time: Date;
-  value: string;
-}
-
-export default function HomeView(props) {
+function HomeView(props) {
   const [location, setLocation] = useState({});
   const [note, setNote] = useState('');
 
@@ -57,6 +40,7 @@ export default function HomeView(props) {
       {key: 'ads', title: '精华'},
     ],
   });
+  // const [state, dispatch] = useContext(store);
 
   const [list, setList] = useState([]);
   const [key, setKey] = useState('');
@@ -112,32 +96,12 @@ export default function HomeView(props) {
     });
   };
 
-  const [messages, setMessages] = useState(Map());
-
   useEffect(() => {
     getCurrentLocation();
     getNote();
     getList();
 
-    const messageListener = (message: Message) => {
-      console.log('arrived new message', message);
-      setMessages(prevMessages => prevMessages.set(message.id, message));
-    };
-
-    const deleteMessageListener = (messageID: string) => {
-      console.log('deleted current message', messageID);
-      setMessages(prevMessages => prevMessages.delete(messageID));
-    };
-
-    socket.on('message', messageListener);
-    socket.on('deleteMessage', deleteMessageListener);
-    socket.emit('getMessages');
-    socket.emit('message', 'HHHHHHHHHHHHHH');
-
-    return () => {
-      // socket.off('message', messageListener);
-      // socket.off('deleteMessage', deleteMessageListener);
-    };
+    return () => {};
   }, []);
 
   const ListArea = () => (
@@ -267,3 +231,5 @@ export default function HomeView(props) {
     </ScrollView>
   );
 }
+
+export default HomeView;

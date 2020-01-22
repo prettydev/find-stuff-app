@@ -22,6 +22,10 @@ import {store, StateProvider} from 'src/Store';
 import News from 'src/Containers/News/News';
 import NewsDetail from 'src/Containers/News/NewsDetail/NewsDetail';
 import LocalPhone from 'src/Containers/LocalPhone/LocalPhone';
+import {InAppNotificationProvider} from 'react-native-in-app-notification';
+import FlashMessage from 'react-native-flash-message';
+
+require('src/socket');
 
 const AppNavigator = createStackNavigator(
   {
@@ -55,6 +59,7 @@ const App: FC = (): ReactElement => {
   return (
     <StateProvider>
       <AppContainer />
+      <FlashMessage position="top" animated={true} />
     </StateProvider>
   );
 };
