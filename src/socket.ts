@@ -19,6 +19,19 @@ socket.on('notify', value => {
   });
 });
 
+socket.on('news', value => {
+  showMessage({
+    message: value,
+    icon: {icon: 'auto', position: 'left'},
+    type: 'default',
+    backgroundColor: 'purple',
+    hideStatusBar: true,
+    duration: 3000,
+    animation: true,
+    animationDuration: 1000,
+  });
+});
+
 socket.on('message', value => {
   showMessage({
     message: value,
