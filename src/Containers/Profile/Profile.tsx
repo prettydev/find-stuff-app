@@ -26,8 +26,10 @@ import ImagePicker from 'react-native-image-picker';
 import QRCode from 'react-native-qrcode-svg';
 
 import {baseUrl, appVersion} from 'src/constants';
-const axios = require('axios');
-export default function Profile(props) {
+import axios from 'axios';
+import withAuth from 'src/withAuth';
+
+const Profile = props => {
   const [state, dispatch] = useContext(store);
 
   const [photo, setPhoto] = useState({name: '', source: '', data: ''});
@@ -61,7 +63,7 @@ export default function Profile(props) {
   const handleSignout = async () => {
     dispatch({type: 'setState', payload: {user: {}, token: ''}});
     AsyncStorage.clear();
-    props.navigation.navigate('Signin');
+    props.navigation.navigate('Home');
   };
 
   const handlePhoto = () => {
@@ -134,14 +136,6 @@ export default function Profile(props) {
   }
 
   useEffect(() => {
-    if (!state.auth_token) props.navigation.navigate('Signin');
-    const unsubscribe = props.navigation.addListener('didFocus', async () => {
-      console.log('gggggggg');
-      AsyncStorage.getItem('token').then(value => {
-        if (!value) props.navigation.navigate('Signin');
-      });
-    });
-
     if (nameRef?.current) nameRef.current.value = state.user.name;
 
     (async () => {
@@ -182,7 +176,6 @@ export default function Profile(props) {
           // always executed
         });
     })();
-    return unsubscribe.remove();
   }, []);
 
   return (
@@ -426,4 +419,6 @@ export default function Profile(props) {
       </Modal>
     </ScrollView>
   );
-}
+};
+
+export default withAuth(Profile);

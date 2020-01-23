@@ -25,6 +25,7 @@ import axios from 'axios';
 import {Map} from 'immutable';
 import {store} from 'src/Store';
 import NotificationPopup from 'react-native-push-notification-popup';
+import AsyncStorage from '@react-native-community/async-storage';
 
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
 
@@ -97,6 +98,8 @@ function HomeView(props) {
   };
 
   useEffect(() => {
+    AsyncStorage.clear();
+
     getCurrentLocation();
     getNote();
     getList();

@@ -17,19 +17,13 @@ import {baseUrl} from 'src/constants';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment';
 import axios from 'axios';
+import withAuth from 'src/withAuth';
 
-export default function Chat(props) {
+const Chat = props => {
   const [state, dispatch] = useContext(store);
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    if (!state.auth_token) props.navigation.navigate('Signin');
-    const unsubscribe = props.navigation.addListener('didFocus', async () => {
-      AsyncStorage.getItem('token').then(value => {
-        if (!value) props.navigation.navigate('Home');
-      });
-    });
-
     axios
       .get(baseUrl + 'api/message', {
         params: {},
@@ -43,7 +37,6 @@ export default function Chat(props) {
       .finally(function() {
         // always executed
       });
-    return unsubscribe.remove();
   }, []);
 
   return (
@@ -104,4 +97,6 @@ export default function Chat(props) {
       </View>
     </ScrollView>
   );
-}
+};
+
+export default withAuth(Chat);

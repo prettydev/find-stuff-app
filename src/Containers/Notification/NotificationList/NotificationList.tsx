@@ -13,21 +13,13 @@ import Styles from './NotificationListStyle';
 import NotificationCard from 'src/Components/Card/NotificationCard/NotificationCard';
 import {store} from 'src/Store';
 import {baseUrl} from 'src/constants';
-const axios = require('axios');
+import axios from 'axios';
+import withAuth from 'src/withAuth';
 
-export default function NotificationList(props) {
+const NotificationList = props => {
   const [state, dispatch] = useContext(store);
   const [list, setList] = useState([]);
   useEffect(() => {
-    AsyncStorage.getItem('token').then(value => {
-      if (!value) props.navigation.navigate('Signin');
-    });
-
-    const unsubscribe = props.navigation.addListener('didFocus', async () => {
-      const tokenVal = await AsyncStorage.getItem('token');
-      if (!tokenVal) props.navigation.navigate('Signin');
-    });
-
     axios
       .get(baseUrl + 'api/notification', {})
       .then(function(response) {
@@ -39,7 +31,6 @@ export default function NotificationList(props) {
       .finally(function() {
         // always executed
       });
-    return unsubscribe.remove();
   }, []);
   return (
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>
@@ -71,4 +62,6 @@ export default function NotificationList(props) {
       </View>
     </ScrollView>
   );
-}
+};
+
+export default withAuth(NotificationList);

@@ -17,9 +17,10 @@ import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 import {baseUrl} from 'src/constants';
-const axios = require('axios');
+import axios from 'axios';
+import withAuth from 'src/withAuth';
 
-export default function FoundStuffScreen(props) {
+const FoundStuffScreen = props => {
   const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
   const [place, setPlace] = useState('');
@@ -99,17 +100,7 @@ export default function FoundStuffScreen(props) {
     }
   }
 
-  useEffect(() => {
-    if (!state.auth_token) props.navigation.navigate('Signin');
-    function unsubscribe() {
-      props.navigation.addListener('didFocus', async () => {
-        AsyncStorage.getItem('token').then(value => {
-          if (!value) props.navigation.navigate('Signin');
-        });
-      });
-    }
-    return unsubscribe();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
@@ -212,4 +203,6 @@ export default function FoundStuffScreen(props) {
       </View>
     </ScrollView>
   );
-}
+};
+
+export default withAuth(FoundStuffScreen);

@@ -62,7 +62,7 @@ export default function SignInScreen(props) {
           saveToken('token', response.headers.auth_token);
 
           Toast.show('成功!');
-          props.navigation.navigate('MainScreenWithBottomNav');
+          props.navigation.navigate('Home');
         } else {
           Toast.show(response.data.msg);
         }
