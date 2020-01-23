@@ -171,6 +171,7 @@ export default StyleSheet.create({
   HeaderTextBadge: {
     width: 18,
     height: 18,
+    marginTop: 5,
   },
   AddInfoModalContainer: {
     margin: 0,

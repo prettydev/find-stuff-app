@@ -21,6 +21,7 @@ import NewsDetail from 'src/Containers/Category/CategoryDetail/NewsDetail';
 
 import ContactView from 'src/Containers/Category/CategoryList/ContactView';
 import SignInScreen from 'src/Containers/Authentication/SignInScreen/SignInScreen';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
@@ -134,6 +135,7 @@ const BottomTabNavigator = createBottomTabNavigator(
     defaultNavigationOptions: ({navigation}: any): ReactElement => ({
       tabBarIcon: ({focused}) => {
         const {routeName} = navigation.state;
+
         if (routeName === 'Home') {
           return (
             <>

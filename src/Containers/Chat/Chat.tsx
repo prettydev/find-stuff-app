@@ -24,13 +24,11 @@ export default function Chat(props) {
 
   useEffect(() => {
     if (!state.auth_token) props.navigation.navigate('Signin');
-    function unsubscribe() {
-      props.navigation.addListener('didFocus', async () => {
-        AsyncStorage.getItem('token').then(value => {
-          if (!value) props.navigation.navigate('Signin');
-        });
+    const unsubscribe = props.navigation.addListener('didFocus', async () => {
+      AsyncStorage.getItem('token').then(value => {
+        if (!value) props.navigation.navigate('Home');
       });
-    }
+    });
 
     axios
       .get(baseUrl + 'api/message', {
@@ -45,7 +43,7 @@ export default function Chat(props) {
       .finally(function() {
         // always executed
       });
-    return unsubscribe();
+    return unsubscribe.remove();
   }, []);
 
   return (

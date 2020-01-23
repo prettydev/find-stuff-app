@@ -19,14 +19,15 @@ export default function NotificationList(props) {
   const [state, dispatch] = useContext(store);
   const [list, setList] = useState([]);
   useEffect(() => {
-    if (!state.auth_token) props.navigation.navigate('Signin');
-    function unsubscribe() {
-      props.navigation.addListener('didFocus', async () => {
-        AsyncStorage.getItem('token').then(value => {
-          if (!value) props.navigation.navigate('Signin');
-        });
-      });
-    }
+    AsyncStorage.getItem('token').then(value => {
+      if (!value) props.navigation.navigate('Signin');
+    });
+
+    const unsubscribe = props.navigation.addListener('didFocus', async () => {
+      const tokenVal = await AsyncStorage.getItem('token');
+      if (!tokenVal) props.navigation.navigate('Signin');
+    });
+
     axios
       .get(baseUrl + 'api/notification', {})
       .then(function(response) {
@@ -38,7 +39,7 @@ export default function NotificationList(props) {
       .finally(function() {
         // always executed
       });
-    return unsubscribe();
+    return unsubscribe.remove();
   }, []);
   return (
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>

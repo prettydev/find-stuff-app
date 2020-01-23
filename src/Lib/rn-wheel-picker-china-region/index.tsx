@@ -19,11 +19,11 @@ const windowHeight = Dimensions.get('window').height;
 const isIos = Platform.OS === 'ios';
 
 export default class ChinaRegionWheelPicker extends BaseComponent {
-	public state: any;
-	public props: any;
-	public _regionAllData: any;
-	public setState: any;
-	public navBtnColor: any;
+  public state: any;
+  public props: any;
+  public _regionAllData: any;
+  public setState: any;
+  public navBtnColor: any;
 
   constructor(props) {
     super(props);

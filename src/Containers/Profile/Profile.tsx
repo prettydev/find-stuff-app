@@ -7,6 +7,7 @@ import {
   ScrollView,
   TextInput,
   Button,
+  Dimensions,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -134,13 +135,12 @@ export default function Profile(props) {
 
   useEffect(() => {
     if (!state.auth_token) props.navigation.navigate('Signin');
-    function unsubscribe() {
-      props.navigation.addListener('didFocus', async () => {
-        AsyncStorage.getItem('token').then(value => {
-          if (!value) props.navigation.navigate('Signin');
-        });
+    const unsubscribe = props.navigation.addListener('didFocus', async () => {
+      console.log('gggggggg');
+      AsyncStorage.getItem('token').then(value => {
+        if (!value) props.navigation.navigate('Signin');
       });
-    }
+    });
 
     if (nameRef?.current) nameRef.current.value = state.user.name;
 
@@ -182,7 +182,7 @@ export default function Profile(props) {
           // always executed
         });
     })();
-    return unsubscribe();
+    return unsubscribe.remove();
   }, []);
 
   return (
@@ -216,42 +216,50 @@ export default function Profile(props) {
               <Image source={Images.Camera} style={Style.HeaderImgBadge} />
             </TouchableOpacity>
             <View>
-              <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (nameRef?.current) nameRef.current.focus();
+                    setIsEdit(!isEdit);
+                  }}>
+                  <Image
+                    source={Images.TextEdit}
+                    style={Style.HeaderTextBadge}
+                  />
+                </TouchableOpacity>
+              </View>
               <Text style={{color: Colors.white, fontSize: 12}}>
                 {state.user.name}
               </Text>
               <Text style={{color: Colors.white, fontSize: 12}}>
                 {state.user.phone}
               </Text>
+
+              {isEdit && (
+                <View style={{flexDirection: 'row'}}>
+                  <TextInput
+                    style={{
+                      backgroundColor: 'white',
+                      width: '50%',
+                      padding: 0,
+                    }}
+                    onChangeText={value => setName(value)}
+                    ref={nameRef}
+                  />
+                  <TouchableOpacity onPress={handleSubmit}>
+                    <Text
+                      style={{
+                        color: 'white',
+                        marginTop: 3,
+                      }}>
+                      保存
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                if (nameRef?.current) nameRef.current.focus();
-                setIsEdit(!isEdit);
-              }}>
-              <Image source={Images.TextEdit} style={Style.HeaderTextBadge} />
-            </TouchableOpacity>
           </View>
-        </View>
-        <View>
-          {isEdit && (
-            <View style={{flexDirection: 'row', width: '100%'}}>
-              <TextInput
-                style={{
-                  backgroundColor: 'white',
-                  width: '50%',
-                  padding: 0,
-                  marginLeft: 50,
-                  marginTop: -8,
-                }}
-                onChangeText={value => setName(value)}
-                ref={nameRef}
-              />
-              <TouchableOpacity onPress={handleSubmit}>
-                <Text style={{color: 'white'}}>Save</Text>
-              </TouchableOpacity>
-            </View>
-          )}
         </View>
       </ImageBackground>
       <View style={Style.ProfileBtnGroupContainer}>
@@ -355,25 +363,66 @@ export default function Profile(props) {
         visible={isServiceModalVisible}
         onTouchOutside={() => {
           setIsServiceModalVisible(false);
+        }}
+        style={{
+          width: Dimensions.get('window').width,
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-        <ModalContent>
+        <ModalContent
+          style={{
+            width: Dimensions.get('window').width * 0.8,
+            height: '80%',
+          }}>
           <View
             style={{
-              paddingTop: 20,
-              paddingBottom: 0,
-              width: '85%',
-              height: '70%',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            {current === 'share' && <QRCode value={profile.share} />}
-            <Text>{service}</Text>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                width: '100%',
+                height: '100%',
+              }}>
+              {current === 'share' && (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}>
+                  <QRCode value={profile.share} />
+                </View>
+              )}
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '80%',
+                }}>
+                <Text>{service}</Text>
+              </View>
+            </View>
           </View>
         </ModalContent>
-        <Button
-          title="关闭"
-          onPress={() => {
-            setIsServiceModalVisible(false);
-          }}
-        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}>
+          <View style={{flex: 1}}></View>
+          <Button
+            title="      关闭      "
+            onPress={() => {
+              setIsServiceModalVisible(false);
+            }}
+          />
+          <View style={{flex: 1}}></View>
+        </View>
       </Modal>
     </ScrollView>
   );
