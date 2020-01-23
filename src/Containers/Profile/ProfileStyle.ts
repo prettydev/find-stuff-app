@@ -21,15 +21,13 @@ export default StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     paddingTop: 30,
-  },
-  ProfileHeaderAvatarWrap: {
-    flexDirection: 'row',
     flex: 1,
   },
   ProfileHeaderAvatarImg: {
     width: 52,
     height: 52,
     marginRight: 10,
+    borderRadius: 20,
   },
   ProfileHeaderAvatarText: {
     color: 'white',

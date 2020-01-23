@@ -22,6 +22,8 @@ export default function SignUpScreen(props) {
       return;
     }
 
+    console.log(phone, password);
+
     axios
       .post(baseUrl + 'auth/signup', {
         phone,
@@ -37,7 +39,8 @@ export default function SignUpScreen(props) {
         }
       })
       .catch(function(error) {
-        Toast.show(error);
+        console.log(error);
+        // Toast.show(error);
       });
   }
 

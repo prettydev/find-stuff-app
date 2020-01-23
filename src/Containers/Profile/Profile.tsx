@@ -34,7 +34,6 @@ const Profile = props => {
 
   const [photo, setPhoto] = useState({name: '', source: '', data: ''});
   const [name, setName] = useState(state.user.name ? state.user.name : '');
-  const nameRef = useRef(null);
 
   const [isServiceModalVisible, setIsServiceModalVisible] = useState(false);
   const [service, setService] = useState('aaaaaaaa');
@@ -136,8 +135,6 @@ const Profile = props => {
   }
 
   useEffect(() => {
-    if (nameRef?.current) nameRef.current.value = state.user.name;
-
     (async () => {
       await axios
         .post(baseUrl + 'api/profile/last')
@@ -187,11 +184,9 @@ const Profile = props => {
           <Text style={Style.ProfileHeaderTitleText}>我的</Text>
         </View>
         <View style={Style.ProfileHeaderAvatarContainer}>
-          <View style={Style.ProfileHeaderAvatarWrap}>
-            <TouchableOpacity
-              style={Style.HeaderImgContainer}
-              onPress={handlePhoto}>
-              {state.user && state.user.photo && (
+          <TouchableOpacity onPress={handlePhoto}>
+            <Text>
+              {state.user.photo && state.user.photo.length > 0 && (
                 <Image
                   source={{
                     uri: baseUrl + 'download/photo?path=' + state.user.photo,
@@ -199,59 +194,53 @@ const Profile = props => {
                   style={Style.ProfileHeaderAvatarImg}
                 />
               )}
-              {state.user && (!state.user.photo || state.user.photo === '') && (
+              {state.user.photo.length === 0 && (
                 <Image
                   source={photo.source ? photo.source : Images.femaleProfile}
                   style={Style.ProfileHeaderAvatarImg}
                 />
               )}
+            </Text>
+            <Image source={Images.Camera} style={Style.HeaderImgBadge} />
+          </TouchableOpacity>
+          <View>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsEdit(!isEdit);
+                }}>
+                <Image source={Images.TextEdit} style={Style.HeaderTextBadge} />
+              </TouchableOpacity>
+            </View>
+            <Text style={{color: Colors.white, fontSize: 12}}>
+              {state.user.name}
+            </Text>
+            <Text style={{color: Colors.white, fontSize: 12}}>
+              {state.user.phone}
+            </Text>
 
-              <Image source={Images.Camera} style={Style.HeaderImgBadge} />
-            </TouchableOpacity>
-            <View>
+            {isEdit && (
               <View style={{flexDirection: 'row'}}>
-                <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    if (nameRef?.current) nameRef.current.focus();
-                    setIsEdit(!isEdit);
-                  }}>
-                  <Image
-                    source={Images.TextEdit}
-                    style={Style.HeaderTextBadge}
-                  />
+                <TextInput
+                  style={{
+                    backgroundColor: 'white',
+                    width: '50%',
+                    padding: 0,
+                  }}
+                  onChangeText={value => setName(value)}
+                />
+                <TouchableOpacity onPress={handleSubmit}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      marginTop: 3,
+                    }}>
+                    保存
+                  </Text>
                 </TouchableOpacity>
               </View>
-              <Text style={{color: Colors.white, fontSize: 12}}>
-                {state.user.name}
-              </Text>
-              <Text style={{color: Colors.white, fontSize: 12}}>
-                {state.user.phone}
-              </Text>
-
-              {isEdit && (
-                <View style={{flexDirection: 'row'}}>
-                  <TextInput
-                    style={{
-                      backgroundColor: 'white',
-                      width: '50%',
-                      padding: 0,
-                    }}
-                    onChangeText={value => setName(value)}
-                    ref={nameRef}
-                  />
-                  <TouchableOpacity onPress={handleSubmit}>
-                    <Text
-                      style={{
-                        color: 'white',
-                        marginTop: 3,
-                      }}>
-                      保存
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-            </View>
+            )}
           </View>
         </View>
       </ImageBackground>
