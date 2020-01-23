@@ -32,28 +32,36 @@ const LostStuffScreen = props => {
   console.log('loststuff state', state);
 
   const handlePhoto = () => {
-    ImagePicker.showImagePicker(response => {
-      console.log('Response = ', response);
+    ImagePicker.showImagePicker(
+      {
+        title: '选择一张照片',
+        cancelButtonTitle: '取消',
+        takePhotoButtonTitle: '拍照',
+        chooseFromLibraryButtonTitle: '从照片中选择',
+      },
+      response => {
+        console.log('Response = ', response);
 
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const name = response.uri;
-        const source = {uri: response.uri};
-        const data = 'data:image/jpeg;base64,' + response.data;
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          const name = response.uri;
+          const source = {uri: response.uri};
+          const data = 'data:image/jpeg;base64,' + response.data;
 
-        setPhoto([...photo, {source, data, name}]);
-      }
-    });
+          setPhoto([...photo, {source, data, name}]);
+        }
+      },
+    );
   };
 
   async function handleSubmit() {
     if (tag === '' || place === '' || address === '' || description === '') {
-      Toast.show('Input values correctly!');
+      Toast.show('正确输入值!');
       return;
     }
 
@@ -99,7 +107,7 @@ const LostStuffScreen = props => {
           console.log(JSON.stringify(error));
         });
     } else {
-      Toast.show('No photo selected');
+      Toast.show('未选择照片');
     }
   }
 
@@ -168,6 +176,7 @@ const LostStuffScreen = props => {
         <TextInput
           style={Styles.FindStuffPriceInput}
           onChangeText={value => setFee(value)}
+          keyboardType={'numeric'}
         />
         <Text style={Styles.FindStuffPriceText}>元</Text>
       </View>

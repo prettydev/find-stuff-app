@@ -66,26 +66,34 @@ const Profile = props => {
   };
 
   const handlePhoto = () => {
-    ImagePicker.showImagePicker(response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const name = response.uri;
-        const source = {uri: response.uri};
-        const data = 'data:image/jpeg;base64,' + response.data;
+    ImagePicker.showImagePicker(
+      {
+        title: '选择一张照片',
+        cancelButtonTitle: '取消',
+        takePhotoButtonTitle: '拍照',
+        chooseFromLibraryButtonTitle: '从照片中选择',
+      },
+      response => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          const name = response.uri;
+          const source = {uri: response.uri};
+          const data = 'data:image/jpeg;base64,' + response.data;
 
-        setPhoto({source, data, name});
-      }
-    });
+          setPhoto({source, data, name});
+        }
+      },
+    );
   };
 
   async function handleSubmit() {
     if (name === '') {
-      Toast.show('Input values correctly!');
+      Toast.show('正确输入值！');
       return;
     }
     if (photo) {
@@ -130,7 +138,7 @@ const Profile = props => {
           console.log(error);
         });
     } else {
-      Toast.show('No photo selected');
+      Toast.show('未选择照片!');
     }
   }
 
@@ -146,13 +154,12 @@ const Profile = props => {
 
             let versionDescription = '';
             if (appVersion === version) {
-              versionDescription =
-                'Your app is the latest version(' + version + ').';
+              versionDescription = '您的应用是最新版本(' + version + ').';
             } else {
               versionDescription =
-                'Your app is the old version(' +
+                '您的应用是旧版本(' +
                 appVersion +
-                ').Lastest version is ' +
+                ').最新版本是' +
                 version +
                 '.';
             }
@@ -184,23 +191,25 @@ const Profile = props => {
           <Text style={Style.ProfileHeaderTitleText}>我的</Text>
         </View>
         <View style={Style.ProfileHeaderAvatarContainer}>
-          <TouchableOpacity onPress={handlePhoto}>
-            <Text>
-              {state.user.photo && state.user.photo.length > 0 && (
-                <Image
-                  source={{
-                    uri: baseUrl + 'download/photo?path=' + state.user.photo,
-                  }}
-                  style={Style.ProfileHeaderAvatarImg}
-                />
-              )}
-              {state.user.photo.length === 0 && (
-                <Image
-                  source={photo.source ? photo.source : Images.femaleProfile}
-                  style={Style.ProfileHeaderAvatarImg}
-                />
-              )}
-            </Text>
+          <TouchableOpacity onPress={handlePhoto} style={{marginRight: 15}}>
+            {state.user.photo !== '' && (
+              <Image
+                source={{
+                  uri: baseUrl + 'download/photo?path=' + state.user.photo,
+                }}
+                style={Style.ProfileHeaderAvatarImg}
+                resizeMode="cover"
+                borderRadius={30}
+              />
+            )}
+            {state.user.photo === '' && (
+              <Image
+                source={photo.source ? photo.source : Images.femaleProfile}
+                style={Style.ProfileHeaderAvatarImg}
+                resizeMode="cover"
+                borderRadius={30}
+              />
+            )}
             <Image source={Images.Camera} style={Style.HeaderImgBadge} />
           </TouchableOpacity>
           <View>
@@ -377,7 +386,7 @@ const Profile = props => {
                     alignItems: 'center',
                     width: '100%',
                   }}>
-                  <QRCode value={profile.share} />
+                  <QRCode value={profile.share} size={200} />
                 </View>
               )}
               <View

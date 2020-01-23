@@ -13,7 +13,12 @@ export default function StuffCard({item, proc, navigation}) {
       <View style={Style.CardInfoWrap}>
         <View style={Style.ImageSection}>
           {item.user && item.user.photo && item.user.photo.length === 0 && (
-            <Image style={Style.AvatarStyle} source={Images.maleProfile} />
+            <Image
+              style={Style.AvatarStyle}
+              source={Images.maleProfile}
+              resizeMode="cover"
+              borderRadius={30}
+            />
           )}
           {item.user && item.user.photo && item.user.photo.length > 0 && (
             <TouchableOpacity
@@ -25,6 +30,8 @@ export default function StuffCard({item, proc, navigation}) {
                 source={{
                   uri: baseUrl + 'download/photo?path=' + item.user.photo,
                 }}
+                resizeMode="cover"
+                borderRadius={30}
               />
             </TouchableOpacity>
           )}

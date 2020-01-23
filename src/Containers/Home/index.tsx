@@ -27,6 +27,8 @@ import {store} from 'src/Store';
 import NotificationPopup from 'react-native-push-notification-popup';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import regionJson from 'src/Lib/rn-wheel-picker-china-region/regionJson';
+
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
 
 function HomeView(props) {
@@ -42,6 +44,15 @@ function HomeView(props) {
     ],
   });
   // const [state, dispatch] = useContext(store);
+
+  const _filterCitys = province => {
+    const provinceData = regionJson.find(item => item.name === province);
+
+    return provinceData.city.map(item => item.name);
+  };
+
+  const [citys, setCitys] = useState(_filterCitys('新疆'));
+  const [region, setRegion] = useState('新疆');
 
   const [list, setList] = useState([]);
   const [key, setKey] = useState('');
@@ -62,6 +73,7 @@ function HomeView(props) {
         params: {
           sort: state.index,
           key,
+          region,
         },
       })
       .then(function(response) {
@@ -127,11 +139,29 @@ function HomeView(props) {
     <ScrollView style={{flex: 1}}>
       <View style={styles.homeScrollView}>
         <View style={styles.HomeBannerContainer}>
-          {location.city && (
-            <Text style={{position: 'absolute', top: 0, zIndex: 100}}>
-              {location.city}
-            </Text>
-          )}
+          {
+            //   location.city && (
+            //   <Text style={{position: 'absolute', top: 0, zIndex: 100}}>
+            //     {location.city}
+            //   </Text>
+            // )
+          }
+          <Picker
+            selectedValue={region}
+            mode="dropdown"
+            style={{
+              height: 35,
+              width: 120,
+              position: 'absolute',
+              top: 0,
+              zIndex: 100,
+            }}
+            onValueChange={(itemValue, itemIndex) => setRegion(itemValue)}>
+            <Picker.Item label={'新疆'} value={'新疆'} />
+            {citys.map(item => (
+              <Picker.Item label={item} value={item} />
+            ))}
+          </Picker>
           <HomeCarousel />
         </View>
         <View style={styles.HomeSearchContainer}>

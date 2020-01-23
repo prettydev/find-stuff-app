@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {Colors, Images} from 'src/Theme';
 export default StyleSheet.create({
   ProfileContainer: {
@@ -24,10 +24,8 @@ export default StyleSheet.create({
     flex: 1,
   },
   ProfileHeaderAvatarImg: {
-    width: 52,
-    height: 52,
-    marginRight: 10,
-    borderRadius: 20,
+    width: 60,
+    height: 60,
   },
   ProfileHeaderAvatarText: {
     color: 'white',
@@ -164,7 +162,8 @@ export default StyleSheet.create({
     position: 'absolute',
     width: 18,
     height: 18,
-    left: 40,
+    left: 23,
+    top: 20,
   },
   HeaderTextBadge: {
     width: 18,
