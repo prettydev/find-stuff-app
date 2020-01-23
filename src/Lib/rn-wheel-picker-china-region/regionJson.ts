@@ -1,4 +1,4 @@
-[
+export default [
   {
     name: '新疆',
     city: [
