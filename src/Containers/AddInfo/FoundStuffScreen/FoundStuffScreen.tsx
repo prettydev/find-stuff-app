@@ -18,8 +18,7 @@ import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 import {baseUrl} from 'src/constants';
 import axios from 'axios';
-import withAuth from 'src/withAuth';
-
+import {NavigationEvents} from 'react-navigation';
 const FoundStuffScreen = props => {
   const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
@@ -91,7 +90,7 @@ const FoundStuffScreen = props => {
             .then(function(response2) {
               if (response2.data) {
                 Toast.show('成功!');
-                props.navigation.navigate('Home');
+                props.navigation.navigate('AppHome');
               } else {
                 Toast.show('失败了!');
               }
@@ -112,9 +111,14 @@ const FoundStuffScreen = props => {
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
+      <NavigationEvents
+        onDidFocus={() => {
+          if (!state.user._id) props.navigation.navigate('Signin');
+        }}
+      />
       <View style={Styles.FindStuffHeaderContainer}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('Home')}
+          onPress={() => props.navigation.navigate('AppHome')}
           style={{flex: 1}}>
           <Image
             source={Images.whiteLeftChevron}
@@ -213,4 +217,4 @@ const FoundStuffScreen = props => {
   );
 };
 
-export default withAuth(FoundStuffScreen);
+export default FoundStuffScreen;

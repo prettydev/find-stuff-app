@@ -57,12 +57,7 @@ function HomeView(props) {
   const [list, setList] = useState([]);
   const [key, setKey] = useState('');
 
-  const handleSearch = () => {
-    getList();
-  };
-
   const handleTab = index => {
-    console.log(index);
     setState({...state, index});
     getList();
   };
@@ -77,6 +72,28 @@ function HomeView(props) {
         },
       })
       .then(function(response) {
+        console.log('aa', response.data);
+        setList(response.data);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+      .finally(function() {
+        // always executed
+      });
+  };
+
+  const getList2 = newRegion => {
+    axios
+      .get(baseUrl + 'api/stuffpost', {
+        params: {
+          sort: 0, //state.index,
+          key,
+          region: newRegion,
+        },
+      })
+      .then(function(response) {
+        console.log('aaaaaaaaaaaaaaaaa', response.data);
         setList(response.data);
       })
       .catch(function(error) {
@@ -156,7 +173,11 @@ function HomeView(props) {
               top: 0,
               zIndex: 100,
             }}
-            onValueChange={(itemValue, itemIndex) => setRegion(itemValue)}>
+            onValueChange={(itemValue, itemIndex) => {
+              setRegion(itemValue);
+              // getList2(itemValue);
+              handleTab(0);
+            }}>
             <Picker.Item label={'新疆'} value={'新疆'} />
             {citys.map(item => (
               <Picker.Item label={item} value={item} />
@@ -166,7 +187,7 @@ function HomeView(props) {
         </View>
         <View style={styles.HomeSearchContainer}>
           <View style={styles.HomeSearchArea}>
-            <TouchableOpacity onPress={handleSearch}>
+            <TouchableOpacity onPress={getList}>
               <Image source={Images.Search} style={styles.HomeSearchImg} />
             </TouchableOpacity>
             <View style={styles.HomeSearchInputContainer}>

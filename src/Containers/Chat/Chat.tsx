@@ -17,7 +17,8 @@ import {baseUrl} from 'src/constants';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment';
 import axios from 'axios';
-import withAuth from 'src/withAuth';
+
+import {NavigationEvents} from 'react-navigation';
 
 const Chat = props => {
   const [state, dispatch] = useContext(store);
@@ -41,6 +42,11 @@ const Chat = props => {
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
+      <NavigationEvents
+        onDidFocus={() => {
+          if (!state.user._id) props.navigation.navigate('Signin');
+        }}
+      />
       <View style={Styles.FindStuffHeaderContainer}>
         <Text style={{fontSize: 20, color: '#fff'}}>私信</Text>
       </View>
@@ -67,6 +73,8 @@ const Chat = props => {
                     <Image
                       source={Images.maleProfile}
                       style={Styles.MessageListAvatar}
+                      resizeMode="cover"
+                      borderRadius={30}
                     />
                   )}
                   {item.sender && (
@@ -76,6 +84,8 @@ const Chat = props => {
                           baseUrl + 'download/photo?path=' + item.sender.photo,
                       }}
                       style={Styles.MessageListAvatar}
+                      resizeMode="cover"
+                      borderRadius={30}
                     />
                   )}
                   <View style={Styles.AvatarBadgeContainer}>
@@ -99,4 +109,4 @@ const Chat = props => {
   );
 };
 
-export default withAuth(Chat);
+export default Chat;

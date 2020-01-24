@@ -57,6 +57,8 @@ export default function ChatDetail(props) {
           <Image
             source={Images.whiteLeftChevron}
             style={Styles.FindStuffHeaderImg}
+            resizeMode="cover"
+            borderRadius={30}
           />
         </TouchableOpacity>
         <Text style={{fontSize: 20, color: '#fff'}}>{item.name}</Text>
@@ -70,6 +72,8 @@ export default function ChatDetail(props) {
               source={{
                 uri: baseUrl + 'download/photo?path=' + item.photo,
               }}
+              resizeMode="cover"
+              borderRadius={30}
             />
             <View>
               <View style={Styles.nickNameContainer}>

@@ -23,7 +23,8 @@ export default function StuffCard({item, proc, navigation}) {
           {item.user && item.user.photo && item.user.photo.length > 0 && (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('UserInfo', {item: item.user});
+                if (navigation)
+                  navigation.navigate('UserInfo', {item: item.user});
               }}>
               <Image
                 style={Style.AvatarStyle}

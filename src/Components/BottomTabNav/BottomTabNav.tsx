@@ -110,7 +110,7 @@ const ChatStackNavigator = createStackNavigator(
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
-    Home: {
+    AppHome: {
       screen: HomeStackNavigator,
     },
     Chat: {
@@ -130,13 +130,13 @@ const BottomTabNavigator = createBottomTabNavigator(
     tabBarComponent: (props: any): ReactElement => (
       <TabBarComponent {...props} style={Style.BottomNavTabContainer} />
     ),
-    initialRouteName: 'Home',
+    initialRouteName: 'AppHome',
     backBehavior: null,
     defaultNavigationOptions: ({navigation}: any): ReactElement => ({
       tabBarIcon: ({focused}) => {
         const {routeName} = navigation.state;
 
-        if (routeName === 'Home') {
+        if (routeName === 'AppHome') {
           return (
             <>
               <Image

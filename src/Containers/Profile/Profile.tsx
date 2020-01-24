@@ -27,7 +27,8 @@ import QRCode from 'react-native-qrcode-svg';
 
 import {baseUrl, appVersion} from 'src/constants';
 import axios from 'axios';
-import withAuth from 'src/withAuth';
+
+import {NavigationEvents} from 'react-navigation';
 
 const Profile = props => {
   const [state, dispatch] = useContext(store);
@@ -60,9 +61,9 @@ const Profile = props => {
 
   const [isEdit, setIsEdit] = useState(false);
   const handleSignout = async () => {
-    dispatch({type: 'setState', payload: {user: {}, token: ''}});
+    dispatch({type: 'setTokenUser', payload: {user: {}, token: ''}});
     AsyncStorage.clear();
-    props.navigation.navigate('Home');
+    props.navigation.navigate('AppHome');
   };
 
   const handlePhoto = () => {
@@ -184,6 +185,11 @@ const Profile = props => {
 
   return (
     <ScrollView style={Style.ProfileContainer}>
+      <NavigationEvents
+        onDidFocus={() => {
+          if (!state.user._id) props.navigation.navigate('Signin');
+        }}
+      />
       <ImageBackground
         source={Images.ProfileBannerImg}
         style={Style.ProfileHeaderContainer}>
@@ -419,4 +425,4 @@ const Profile = props => {
   );
 };
 
-export default withAuth(Profile);
+export default Profile;
