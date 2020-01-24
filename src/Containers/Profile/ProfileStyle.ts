@@ -26,6 +26,7 @@ export default StyleSheet.create({
   ProfileHeaderAvatarImg: {
     width: 60,
     height: 60,
+    zIndex: 100,
   },
   ProfileHeaderAvatarText: {
     color: 'white',

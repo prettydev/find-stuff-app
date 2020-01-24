@@ -197,8 +197,10 @@ const Profile = props => {
           <Text style={Style.ProfileHeaderTitleText}>我的</Text>
         </View>
         <View style={Style.ProfileHeaderAvatarContainer}>
-          <TouchableOpacity onPress={handlePhoto} style={{marginRight: 15}}>
-            {state.user.photo !== '' && (
+          <TouchableOpacity
+            onPress={handlePhoto}
+            style={{marginRight: 15, resizeMode: 'cover', borderRadius: 30}}>
+            {state.user.photo !== undefined && state.user.photo !== '' && (
               <Image
                 source={{
                   uri: baseUrl + 'download/photo?path=' + state.user.photo,
@@ -208,7 +210,7 @@ const Profile = props => {
                 borderRadius={30}
               />
             )}
-            {state.user.photo === '' && (
+            {(state.user.photo === '' || state.user.photo === undefined) && (
               <Image
                 source={photo.source ? photo.source : Images.femaleProfile}
                 style={Style.ProfileHeaderAvatarImg}

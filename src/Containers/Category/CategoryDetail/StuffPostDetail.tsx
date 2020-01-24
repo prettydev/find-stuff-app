@@ -69,6 +69,7 @@ export default function StuffPostDetail({navigation}) {
         <View>
           <View style={Styles.FindStuffHeaderContainer}>
             <TouchableOpacity
+              style={{flex: 1}}
               onPress={() => navigation.navigate('StuffPostView')}>
               <Image
                 source={Images.whiteLeftChevron}
@@ -78,7 +79,7 @@ export default function StuffPostDetail({navigation}) {
             <View style={{alignItems: 'center'}}>
               <Text style={{fontSize: 20, color: '#fff'}}>详情</Text>
             </View>
-            <View></View>
+            <View style={{flex: 1}}></View>
           </View>
           <View style={Styles.UserInfoContainer}>
             <View style={Styles.AvatarContainer}>
