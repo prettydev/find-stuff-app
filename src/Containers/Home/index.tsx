@@ -51,8 +51,20 @@ function HomeView(props) {
     return provinceData.city.map(item => item.name);
   };
 
-  const [citys, setCitys] = useState(_filterCitys('新疆'));
+  const _filterAreas = (province, city) => {
+    const provinceData = regionJson.find(item => item.name === province);
+    const cityData = provinceData.city.find(item => item.name === city);
+    return cityData.area;
+  };
+
   const [region, setRegion] = useState('新疆');
+  const [citys, setCitys] = useState(_filterCitys('新疆'));
+  const [areas, setAreas] = useState(_filterAreas('新疆', '乌鲁木齐'));
+
+  const [selectedCity, setSelectedCity] = useState('乌鲁木齐');
+  const [selectedArea, setSelectedArea] = useState('天山区');
+
+  const [showArea, setShowArea] = useState(false);
 
   const [list, setList] = useState([]);
   const [key, setKey] = useState('');
@@ -163,26 +175,52 @@ function HomeView(props) {
             //   </Text>
             // )
           }
+
           <Picker
-            selectedValue={region}
+            selectedValue={selectedCity}
             mode="dropdown"
             style={{
-              height: 35,
+              height: 25,
               width: 120,
               position: 'absolute',
               top: 0,
               zIndex: 100,
             }}
             onValueChange={(itemValue, itemIndex) => {
-              setRegion(itemValue);
-              // getList2(itemValue);
-              handleTab(0);
+              setSelectedCity(itemValue);
+              setAreas(_filterAreas('新疆', itemValue));
+              setSelectedArea(areas[0]);
+              setShowArea(true);
             }}>
-            <Picker.Item label={'新疆'} value={'新疆'} />
             {citys.map(item => (
               <Picker.Item label={item} value={item} />
             ))}
           </Picker>
+
+          {showArea && (
+            <Picker
+              selectedValue={selectedArea}
+              mode="dropdown"
+              style={{
+                height: 25,
+                width: 120,
+                position: 'absolute',
+                top: 0,
+                left: 100,
+                zIndex: 100,
+              }}
+              onValueChange={(itemValue, itemIndex) => {
+                setSelectedCity(itemValue);
+                setRegion('新疆,' + selectedCity + ',' + itemValue);
+
+                console.log('selected value...', region);
+                getList();
+              }}>
+              {areas.map(item => (
+                <Picker.Item label={item} value={item} />
+              ))}
+            </Picker>
+          )}
           <HomeCarousel />
         </View>
         <View style={styles.HomeSearchContainer}>
