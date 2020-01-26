@@ -20,7 +20,8 @@ import {NavigationEvents} from 'react-navigation';
 const NotificationList = props => {
   const [state, dispatch] = useContext(store);
   const [list, setList] = useState([]);
-  useEffect(() => {
+
+  const getList = () => {
     axios
       .get(baseUrl + 'api/notification', {})
       .then(function(response) {
@@ -32,12 +33,18 @@ const NotificationList = props => {
       .finally(function() {
         // always executed
       });
+  };
+  useEffect(() => {
+    getList();
   }, []);
   return (
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
+          else {
+            getList();
+          }
         }}
       />
       <View style={Styles.CategoryListContainer}>

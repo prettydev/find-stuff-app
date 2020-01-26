@@ -36,7 +36,7 @@ const NotificationStackNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
 );
@@ -49,7 +49,7 @@ const AddInfoStackNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
 );
@@ -62,7 +62,7 @@ const ProfileStackNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
 );
@@ -90,7 +90,7 @@ const HomeStackNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
 );
@@ -103,7 +103,7 @@ const ChatStackNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      header: null,
+      headerShown: false,
     },
   },
 );
@@ -123,7 +123,7 @@ const BottomTabNavigator = createBottomTabNavigator(
       screen: NotificationStackNavigator,
     },
     Profile: {
-      screen: ProfileStackNavigator,
+      screen: ProfileView,
     },
   },
   {

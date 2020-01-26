@@ -9,11 +9,21 @@ import {
   Button,
   Dimensions,
 } from 'react-native';
+
 import AsyncStorage from '@react-native-community/async-storage';
+
+import Modal, {
+  ModalContent,
+  ModalButton,
+  ModalFooter,
+  SlideAnimation,
+} from 'react-native-modals';
+
 import {Images} from 'src/Theme';
 import Style from './ProfileStyle';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
@@ -25,14 +35,13 @@ import axios from 'axios';
 
 import {NavigationEvents} from 'react-navigation';
 
-import Modal from 'react-native-modal';
-
 const Profile = props => {
   const [state, dispatch] = useContext(store);
 
   const [photo, setPhoto] = useState({name: '', source: '', data: ''});
   const [name, setName] = useState(state.user.name ? state.user.name : '');
-  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [isServiceModalVisible, setIsServiceModalVisible] = useState(false);
   const [service, setService] = useState('aaaaaaaa');
   const [current, setCurrent] = useState('');
 
@@ -43,6 +52,7 @@ const Profile = props => {
     about: 'We are the whole...',
     phone: '11111',
   });
+
   const handleModal = idx => {
     setCurrent(idx);
     if (idx === 'service') setService(profile.service);
@@ -50,7 +60,8 @@ const Profile = props => {
     else if (idx === 'share') setService(profile.share);
     else if (idx === 'upgrade') setService(profile.version);
     else if (idx === 'phone') setService(profile.phone);
-    setIsModalVisible(!isModalVisible);
+
+    setIsServiceModalVisible(true);
   };
 
   const [isEdit, setIsEdit] = useState(false);
@@ -85,9 +96,10 @@ const Profile = props => {
       },
     );
   };
+
   async function handleSubmit() {
     if (name === '') {
-      Toast.show('正确输入值!');
+      Toast.show('正确输入值！');
       return;
     }
     if (photo) {
@@ -135,6 +147,7 @@ const Profile = props => {
       Toast.show('未选择照片!');
     }
   }
+
   useEffect(() => {
     (async () => {
       await axios
@@ -175,7 +188,8 @@ const Profile = props => {
 
       console.log('refreshing...........................');
     })();
-  }, [isModalVisible]);
+  }, [isServiceModalVisible]);
+
   return (
     <ScrollView style={Style.ProfileContainer}>
       <NavigationEvents
@@ -350,70 +364,77 @@ const Profile = props => {
           <Text style={Style.BottomBtnText}>安全退出</Text>
         </View>
       </TouchableOpacity>
+
       <Modal
-        isVisible={isModalVisible}
-        coverScreen={false}
+        visible={isServiceModalVisible}
+        onTouchOutside={() => {
+          setIsServiceModalVisible(false);
+        }}
+        modalAnimation={
+          new SlideAnimation({
+            slideFrom: 'bottom',
+          })
+        }
         style={{
-          backgroundColor: '#fff',
-          marginTop: 100,
-          marginBottom: 100,
-          marginLeft: 30,
-          marginRight: 30,
-          borderRadius: 10,
-        }}>
-        <View
+          width: Dimensions.get('window').width,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        footer={
+          <ModalFooter>
+            <ModalButton
+              text="关闭"
+              style={{cursor: 'pointer'}}
+              onPress={() => {
+                setIsServiceModalVisible(false);
+                console.log('ok clicked');
+              }}
+            />
+          </ModalFooter>
+        }>
+        <ModalContent
           style={{
-            flexDirection: 'column',
-            justifyContent: 'center',
-            width: '100%',
-            height: '100%',
+            width: Dimensions.get('window').width * 0.8,
+            height: '70%',
           }}>
           <View
             style={{
-              flex: 5,
               flexDirection: 'column',
-              justifyContent: 'space-around',
+              justifyContent: 'center',
               alignItems: 'center',
             }}>
-            {current === 'share' && (
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                width: '100%',
+                height: '100%',
+              }}>
+              {current === 'share' && (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}>
+                  <QRCode value={profile.share} size={200} />
+                </View>
+              )}
               <View
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginTop: 30,
+                  width: '80%',
                 }}>
-                <QRCode value={profile.share} size={200} />
+                <Text>{service}</Text>
               </View>
-            )}
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 25,
-              }}>
-              <Text>{service}</Text>
             </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-            <View style={{flex: 1}}></View>
-            <View style={{width: '50%'}}>
-              <Button
-                title="关闭"
-                onPress={() => {
-                  setIsModalVisible(!isModalVisible);
-                }}
-              />
-            </View>
-            <View style={{flex: 1}}></View>
-          </View>
-        </View>
+        </ModalContent>
       </Modal>
     </ScrollView>
   );
 };
+
 export default Profile;

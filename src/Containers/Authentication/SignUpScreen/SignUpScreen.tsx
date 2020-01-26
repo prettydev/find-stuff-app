@@ -15,10 +15,16 @@ export default function SignUpScreen(props) {
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   async function handleSubmit() {
     if (otp === '' || phone === '' || password === '') {
       Toast.show('正确输入值！');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Toast.show('密码和确认密码不同');
       return;
     }
 
@@ -63,17 +69,8 @@ export default function SignUpScreen(props) {
           <View style={Styles.SignPhoneInput}>
             <CustomTextInput
               CustomLabel={'手机'}
-              CustomPlaceholder={'请输入手机号码'}
+              CustomPlaceholder={'请输入账号或手机号码'}
               proc={value => setPhone(value)}
-            />
-          </View>
-          <View style={Styles.SignVerifyInput}>
-            <CustomVerifyInput
-              CustomVerifyLabel={'验证码'}
-              CustomPlaceholder={'请输入验证码'}
-              proc={value => {
-                setOtp(value);
-              }}
             />
           </View>
           <View style={Styles.SignPwdInput}>
@@ -82,6 +79,24 @@ export default function SignUpScreen(props) {
               CustomPwdPlaceholder={'请输入密码'}
               proc={value => {
                 setPassword(value);
+              }}
+            />
+          </View>
+          <View style={Styles.SignPwdInput}>
+            <CustomPwdInput
+              CustomPwdLabel={'确认密码'}
+              CustomPwdPlaceholder={'请输入确认密码'}
+              proc={value => {
+                setConfirmPassword(value);
+              }}
+            />
+          </View>
+          <View style={Styles.SignVerifyInput}>
+            <CustomVerifyInput
+              CustomVerifyLabel={'验证码'}
+              CustomPlaceholder={'请输入验证码'}
+              proc={value => {
+                setOtp(value);
               }}
             />
           </View>

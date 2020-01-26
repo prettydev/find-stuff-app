@@ -7,10 +7,11 @@ export default StyleSheet.create({
     borderRadius: 5,
     padding: 15,
     borderColor: '#ddd',
-    marginTop: 20,
+    marginTop: 15,
+
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.1,
-    shadowRadius: 3,
+    shadowRadius: 2,
     elevation: 2,
   },
   CardInfoWrap: {
@@ -23,7 +24,6 @@ export default StyleSheet.create({
     width: 45,
     height: 45,
   },
-  UserName: {},
   Userdate: {
     color: Colors.grey,
   },

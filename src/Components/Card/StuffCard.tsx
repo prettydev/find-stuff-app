@@ -3,6 +3,7 @@ import {Image, View, Text, TouchableOpacity} from 'react-native';
 import {Images} from 'src/Theme';
 import Style from './CardStyle';
 import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
+import RectBtn from 'src/Components/Buttons/RectBtn/RectBtn';
 
 import moment from 'moment';
 import {baseUrl} from 'src/constants';
@@ -28,19 +29,37 @@ export default function StuffCard({item, proc, navigation}) {
               }}>
               <Image
                 style={Style.AvatarStyle}
-                source={{
-                  uri: baseUrl + 'download/photo?path=' + item.user.photo,
-                }}
+                // source={{
+                //   uri: baseUrl + 'download/photo?path=' + item.user.photo,
+                // }}
+                source={Images.maleProfile}
                 resizeMode="cover"
                 borderRadius={30}
               />
             </TouchableOpacity>
           )}
         </View>
-        <View style={Style.UserName}>
-          {item.user?.name && <Text>{item.user.name}</Text>}
+        <View style={{flexDirection: 'column'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {item.user?.name && <Text>{item.user.name}</Text>}
+            {item.kind === 'lost' && (
+              <RectBtn
+                RectBtnTitle={'失物启示'}
+                RectBtnColor={'blueTransparent90'}
+              />
+            )}
+            {item.kind === 'found' && (
+              <RectBtn RectBtnTitle={'寻物启示'} RectBtnColor={'MainYellow'} />
+            )}
+          </View>
+
           <Text style={Style.Userdate}>
-            {moment(item.createAt).format('M月D日 ')}
+            {moment(item.createAt).format('M月D日 hh时mm分')}
           </Text>
         </View>
         <View style={Style.CardBtnGroup}>
@@ -53,6 +72,7 @@ export default function StuffCard({item, proc, navigation}) {
                   RoundBtnColor={'MainRed'}
                 />
               )}
+              <RoundBtn RoundBtnTitle={'联系TA'} RoundBtnColor={'MainYellow'} />
             </View>
           </View>
         </View>

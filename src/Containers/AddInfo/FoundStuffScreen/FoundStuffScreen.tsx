@@ -103,7 +103,7 @@ const FoundStuffScreen = props => {
           console.log(JSON.stringify(error));
         });
     } else {
-      Toast.show('No photo selected');
+      Toast.show('未选择照片!');
     }
   }
 
@@ -145,29 +145,28 @@ const FoundStuffScreen = props => {
           <View>
             <Text>选择地点</Text>
           </View>
-
-          <ChinaRegionWheelPicker
-            onSubmit={params =>
-              setPlace(`${params.province},${params.city},${params.area}`)
-            }
-            onCancel={() => console.log('cancel')}>
-            <Text
-              style={{
-                backgroundColor: '#FFF',
-                width: 200,
-                paddingVertical: 20,
-                textAlign: 'center',
-                color: 'black',
-              }}>
-              {place || '点击去选择地区'}
-            </Text>
-          </ChinaRegionWheelPicker>
+          <View style={{flex: 1}}>
+            <ChinaRegionWheelPicker
+              onSubmit={params =>
+                setPlace(`${params.province},${params.city},${params.area}`)
+              }
+              onCancel={() => console.log('cancel')}>
+              <Text
+                style={{
+                  paddingVertical: 10,
+                  textAlign: 'center',
+                  color: 'black',
+                }}>
+                {place || '点击去选择地区'}
+              </Text>
+            </ChinaRegionWheelPicker>
+          </View>
         </View>
         <View style={Styles.FindStuffDetailAreaContainer}>
           <View>
             <Text>详细地址</Text>
           </View>
-          <View>
+          <View style={{flex: 1}}>
             <TextInput
               style={Styles.FindStuffDetailAreaInput}
               onChangeText={value => setAddress(value)}

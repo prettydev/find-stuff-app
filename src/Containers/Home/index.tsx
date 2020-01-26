@@ -11,6 +11,9 @@ import {
   Dimensions,
   Picker,
 } from 'react-native';
+
+// import {Container, Header, Content, Icon, Picker, Form} from 'native-base';
+
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
 import {BaiduMapManager, Geolocation} from 'react-native-baidu-map';
@@ -28,7 +31,7 @@ import NotificationPopup from 'react-native-push-notification-popup';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import regionJson from 'src/Lib/rn-wheel-picker-china-region/regionJson';
-
+import {NavigationEvents} from 'react-navigation';
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
 
 function HomeView(props) {
@@ -99,17 +102,17 @@ function HomeView(props) {
     axios
       .get(baseUrl + 'api/stuffpost', {
         params: {
-          sort: 0, //state.index,
+          sort: state.index,
           key,
           region: newRegion,
         },
       })
       .then(function(response) {
-        console.log('aaaaaaaaaaaaaaaaa', response.data);
+        console.log('bsssssssssssssssssss', response.data);
         setList(response.data);
       })
       .catch(function(error) {
-        console.log(error);
+        console.log('bbbbbwwwwwwwwwwwwwwwwww', error);
       })
       .finally(function() {
         // always executed
@@ -149,16 +152,14 @@ function HomeView(props) {
   }, []);
 
   const ListArea = () => (
-    <ScrollView style={[styles.scene, {backgroundColor: '#ffffff'}]}>
+    <ScrollView style={{backgroundColor: '#ffffff', flex: 1}}>
       {list.map((item, i) => (
         <StuffCard
           key={i}
           navigation
           item={item}
           proc={() => {
-            {
-              props.navigation.navigate('StuffPostDetail', {item});
-            }
+            props.navigation.navigate('StuffPostDetail', {item});
           }}></StuffCard>
       ))}
     </ScrollView>
@@ -166,26 +167,30 @@ function HomeView(props) {
 
   return (
     <ScrollView style={{flex: 1}}>
-      <View style={styles.homeScrollView}>
-        <View style={styles.HomeBannerContainer}>
-          {
-            //   location.city && (
-            //   <Text style={{position: 'absolute', top: 0, zIndex: 100}}>
-            //     {location.city}
-            //   </Text>
-            // )
-          }
+      <NavigationEvents
+        onDidFocus={() => {
+          getList();
+        }}
+      />
 
+      <View style={styles.homeScrollView}>
+        <View
+          style={{
+            width: Dimensions.get('window').width,
+            height: 25,
+            backgroundColor: '#0084da',
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
           <Picker
             selectedValue={selectedCity}
             mode="dropdown"
             style={{
               height: 25,
-              width: 120,
-              position: 'absolute',
-              top: 0,
-              zIndex: 100,
+              width: 128,
+              color: 'white',
             }}
+            itemStyle={{fontSize: 15}}
             onValueChange={(itemValue, itemIndex) => {
               setSelectedCity(itemValue);
               setAreas(_filterAreas('新疆', itemValue));
@@ -203,24 +208,35 @@ function HomeView(props) {
               mode="dropdown"
               style={{
                 height: 25,
-                width: 120,
-                position: 'absolute',
-                top: 0,
-                left: 100,
-                zIndex: 100,
+                width: 128,
+                color: 'white',
+              }}
+              itemStyle={{
+                fontSize: 15,
               }}
               onValueChange={(itemValue, itemIndex) => {
-                setSelectedCity(itemValue);
-                setRegion('新疆,' + selectedCity + ',' + itemValue);
+                setSelectedArea(itemValue);
 
-                console.log('selected value...', region);
-                getList();
+                const regionKey = selectedCity + ',' + itemValue;
+
+                setRegion('新疆,' + itemValue);
+                console.log('regionKey is ', itemValue);
+                getList2(itemValue);
               }}>
               {areas.map(item => (
                 <Picker.Item label={item} value={item} />
               ))}
             </Picker>
           )}
+          {
+            //   location.city && (
+            //   <Text style={{position: 'absolute', top: 0, zIndex: 100}}>
+            //     {location.city}
+            //   </Text>
+            // )
+          }
+        </View>
+        <View style={styles.HomeBannerContainer}>
           <HomeCarousel />
         </View>
         <View style={styles.HomeSearchContainer}>
@@ -242,6 +258,11 @@ function HomeView(props) {
         <View style={styles.HomeMainBtnGroup}>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
               onPress={() =>
                 props.navigation.navigate('StuffPostView', {kind: 'lost'})
               }>
@@ -249,11 +270,16 @@ function HomeView(props) {
                 style={{width: 52, height: 52}}
                 source={Images.HomeFindBtn}
               />
-              <Text>寻物启事</Text>
+              <Text style={{fontSize: 12}}>寻物启事</Text>
             </TouchableOpacity>
           </View>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
               onPress={() =>
                 props.navigation.navigate('StuffPostView', {kind: 'found'})
               }>
@@ -261,10 +287,15 @@ function HomeView(props) {
                 style={{width: 52, height: 52}}
                 source={Images.HomeGetBtn}
               />
-              <Text>失物招领</Text>
+              <Text style={{fontSize: 12}}>失物招领</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity
+            style={{
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             onPress={() =>
               props.navigation.navigate('NewsView', {kind: 'found'})
             }>
@@ -273,11 +304,16 @@ function HomeView(props) {
                 style={{width: 52, height: 52}}
                 source={Images.HomeNewsBtn}
               />
-              <Text>新闻</Text>
+              <Text style={{fontSize: 12}}>新闻</Text>
             </View>
           </TouchableOpacity>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
               onPress={() =>
                 props.navigation.navigate('ContactView', {kind: 'found'})
               }>
@@ -285,7 +321,7 @@ function HomeView(props) {
                 style={{width: 52, height: 52}}
                 source={Images.HomeMapBtn}
               />
-              <Text>小区电话</Text>
+              <Text style={{fontSize: 12}}>小区电话</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -14,7 +14,7 @@ import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn';
 import Styles from './CategoryListStyle';
 import StuffCard from 'src/Components/Card/StuffCard';
 import {tagJson} from 'src/constants';
-
+import {NavigationEvents} from 'react-navigation';
 import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
@@ -31,7 +31,7 @@ export default function CategoryList(props) {
     setKey(tmp);
   };
 
-  useEffect(() => {
+  const getList = () => {
     axios
       .get(baseUrl + 'api/stuffpost', {
         params: {
@@ -51,10 +51,19 @@ export default function CategoryList(props) {
       .finally(function() {
         // always executed
       });
+  };
+
+  useEffect(() => {
+    getList();
   }, [tag, key]);
 
   return (
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>
+      <NavigationEvents
+        onDidFocus={() => {
+          getList();
+        }}
+      />
       <View style={Styles.CategoryListContainer}>
         <View style={Styles.FindStuffHeaderContainer}>
           <TouchableOpacity

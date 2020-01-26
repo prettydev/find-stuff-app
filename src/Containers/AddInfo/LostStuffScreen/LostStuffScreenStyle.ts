@@ -24,8 +24,8 @@ export default StyleSheet.create({
   },
   FindStuffAreaContainer: {
     padding: 5,
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingTop: 6,
+    paddingBottom: 6,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -49,9 +49,11 @@ export default StyleSheet.create({
   },
   FindStuffDetailAreaInput: {
     height: 40,
+    textAlign: 'center',
   },
   FindStuffDetailAreaBtn: {
     color: '#0084da',
+    marginRight: 5,
   },
   FindStuffPriceBtnContainer: {
     marginTop: 10,
@@ -65,8 +67,9 @@ export default StyleSheet.create({
   },
   FindStuffPriceInput: {
     height: 40,
+    flex: 1,
+    textAlign: 'center',
   },
-  FindStuffPriceText: {},
   FindStuffFooter: {
     padding: 5,
     paddingLeft: 10,
@@ -79,6 +82,7 @@ export default StyleSheet.create({
     borderColor: Colors.grey,
     marginTop: 5,
     borderWidth: 0.3,
+    textAlignVertical: 'top',
   },
   FindStuffImgUploadContainer: {
     marginTop: 10,

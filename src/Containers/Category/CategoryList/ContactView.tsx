@@ -16,9 +16,9 @@ import {Table, Row} from 'react-native-table-component';
 import {reduceDataForScreenSize} from 'src/Components/Table/responsive/reduceDataForScreenSize';
 import {useBreakpoint} from 'src/Components/Table/hooks/useBreakpoint';
 
-const smallScreenIndices = [0, 1, 2, 3];
-const mediumScreenIndices = [0, 1, 2, 3];
-const head = ['No', '城市', '小区名', '电话号'];
+const smallScreenIndices = [0, 1, 2];
+const mediumScreenIndices = [0, 1, 2];
+const head = ['城市', '小区名', '电话号'];
 
 export default function CategoryList(props) {
   const breakpoint = useBreakpoint();
@@ -47,8 +47,6 @@ export default function CategoryList(props) {
           result.push([]);
           for (let key in items[i]) {
             if (key === 'city' || key == 'district' || key === 'number') {
-              if (result[result.length - 1].indexOf(i + 1) === -1)
-                result[result.length - 1].push(i + 1);
               result[result.length - 1].push(items[i][key]);
             }
           }
@@ -107,7 +105,7 @@ export default function CategoryList(props) {
         {data && (
           <Table borderStyle={Styles.border} style={Styles.table}>
             <Row
-              flexArr={[1, 3, 3, 2]}
+              flexArr={[1, 1, 1]}
               data={reduceDataForScreenSize(
                 head,
                 breakpoint,
@@ -120,7 +118,7 @@ export default function CategoryList(props) {
             {data.map((entry, index) => (
               <Row
                 key={index}
-                flexArr={[1, 3, 3, 2]}
+                flexArr={[1, 1, 1]}
                 data={reduceDataForScreenSize(
                   entry,
                   breakpoint,

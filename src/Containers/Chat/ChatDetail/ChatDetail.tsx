@@ -69,9 +69,10 @@ export default function ChatDetail(props) {
           <View style={Styles.AvatarContainer}>
             <Image
               style={Styles.AvartarImg}
-              source={{
-                uri: baseUrl + 'download/photo?path=' + item.photo,
-              }}
+              // source={{
+              //   uri: baseUrl + 'download/photo?path=' + item.photo,
+              // }}
+              source={Images.maleProfile}
               resizeMode="cover"
               borderRadius={30}
             />
@@ -80,8 +81,8 @@ export default function ChatDetail(props) {
                 <Text style={Styles.CommonText}>{item.name}</Text>
               </View>
               <View style={Styles.nickNameContainer}>
-                <Text style={Styles.CommonText}>
-                  {moment(item.createAt).format('M月D日 ')}
+                <Text style={{fontSize: 12, color: Colors.grey}}>
+                  {moment(item.createAt).format('M月D日 hh时mm分')}
                 </Text>
               </View>
             </View>
