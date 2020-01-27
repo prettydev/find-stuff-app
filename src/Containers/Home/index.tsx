@@ -7,12 +7,9 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  StyleSheet,
   Dimensions,
   Picker,
 } from 'react-native';
-
-// import {Container, Header, Content, Icon, Picker, Form} from 'native-base';
 
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
@@ -29,12 +26,19 @@ import {Map} from 'immutable';
 import {store} from 'src/Store';
 import NotificationPopup from 'react-native-push-notification-popup';
 import AsyncStorage from '@react-native-community/async-storage';
-
 import regionJson from 'src/Lib/rn-wheel-picker-china-region/regionJson';
 import {NavigationEvents} from 'react-navigation';
+
+import Modal from 'react-native-modal';
+
+import Accordion from 'react-native-collapsible-accordion';
+
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
 
 function HomeView(props) {
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
+
   const [location, setLocation] = useState({});
   const [note, setNote] = useState('');
 
@@ -112,7 +116,7 @@ function HomeView(props) {
         setList(response.data);
       })
       .catch(function(error) {
-        console.log('bbbbbwwwwwwwwwwwwwwwwww', error);
+        console.log('bbbbbwwwwwwwwwwwwwww', error);
       })
       .finally(function() {
         // always executed
@@ -166,148 +170,141 @@ function HomeView(props) {
   );
 
   return (
-    <ScrollView style={{flex: 1}}>
-      <NavigationEvents
-        onDidFocus={() => {
-          getList();
-        }}
-      />
-
-      <View style={styles.homeScrollView}>
-        <View
-          style={{
-            width: Dimensions.get('window').width,
-            height: 25,
-            backgroundColor: '#0084da',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
-          <Picker
-            selectedValue={selectedCity}
-            mode="dropdown"
+    <>
+      <ScrollView style={{flex: 1}}>
+        <NavigationEvents
+          onDidFocus={() => {
+            getList();
+          }}
+        />
+        <View style={styles.homeScrollView}>
+          <View
             style={{
+              width: Dimensions.get('window').width,
               height: 25,
-              width: 128,
-              color: 'white',
-            }}
-            itemStyle={{fontSize: 15}}
-            onValueChange={(itemValue, itemIndex) => {
-              setSelectedCity(itemValue);
-              setAreas(_filterAreas('新疆', itemValue));
-              setSelectedArea(areas[0]);
-              setShowArea(true);
-            }}>
-            {citys.map(item => (
-              <Picker.Item label={item} value={item} />
-            ))}
-          </Picker>
-
-          {showArea && (
-            <Picker
-              selectedValue={selectedArea}
-              mode="dropdown"
-              style={{
-                height: 25,
-                width: 128,
-                color: 'white',
-              }}
-              itemStyle={{
-                fontSize: 15,
-              }}
-              onValueChange={(itemValue, itemIndex) => {
-                setSelectedArea(itemValue);
-
-                const regionKey = selectedCity + ',' + itemValue;
-
-                setRegion('新疆,' + itemValue);
-                console.log('regionKey is ', itemValue);
-                getList2(itemValue);
-              }}>
-              {areas.map(item => (
-                <Picker.Item label={item} value={item} />
-              ))}
-            </Picker>
-          )}
-          {
-            //   location.city && (
-            //   <Text style={{position: 'absolute', top: 0, zIndex: 100}}>
-            //     {location.city}
-            //   </Text>
-            // )
-          }
-        </View>
-        <View style={styles.HomeBannerContainer}>
-          <HomeCarousel />
-        </View>
-        <View style={styles.HomeSearchContainer}>
-          <View style={styles.HomeSearchArea}>
-            <TouchableOpacity onPress={getList}>
-              <Image source={Images.Search} style={styles.HomeSearchImg} />
-            </TouchableOpacity>
-            <View style={styles.HomeSearchInputContainer}>
-              <TextInput
-                placeholder={'请输入关键词进行搜索'}
-                style={styles.HomeSearchInput}
-                onChangeText={value => {
-                  setKey(value);
-                }}
-              />
-            </View>
-          </View>
-        </View>
-        <View style={styles.HomeMainBtnGroup}>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() =>
-                props.navigation.navigate('StuffPostView', {kind: 'lost'})
-              }>
-              <Image
-                style={{width: 52, height: 52}}
-                source={Images.HomeFindBtn}
-              />
-              <Text style={{fontSize: 12}}>寻物启事</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() =>
-                props.navigation.navigate('StuffPostView', {kind: 'found'})
-              }>
-              <Image
-                style={{width: 52, height: 52}}
-                source={Images.HomeGetBtn}
-              />
-              <Text style={{fontSize: 12}}>失物招领</Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            style={{
-              flexDirection: 'column',
-              justifyContent: 'center',
+              backgroundColor: '#0084da',
               alignItems: 'center',
-            }}
-            onPress={() =>
-              props.navigation.navigate('NewsView', {kind: 'found'})
-            }>
-            <View style={{flexDirection: 'column', alignItems: 'center'}}>
-              <Image
-                style={{width: 52, height: 52}}
-                source={Images.HomeNewsBtn}
-              />
-              <Text style={{fontSize: 12}}>新闻</Text>
+              flexDirection: 'row',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                setIsFilterVisible(true);
+              }}>
+              <Text style={{color: 'white', marginLeft: 10}}>
+                {selectedArea}
+              </Text>
+            </TouchableOpacity>
+            {false && (
+              <Picker
+                selectedValue={selectedCity}
+                mode="dropdown"
+                style={{
+                  height: 25,
+                  width: 128,
+                  color: 'white',
+                }}
+                itemStyle={{fontSize: 15}}
+                onValueChange={(itemValue, itemIndex) => {
+                  setSelectedCity(itemValue);
+                  setAreas(_filterAreas('新疆', itemValue));
+                  setSelectedArea(areas[0]);
+                  setShowArea(true);
+                }}>
+                {citys.map((item, i) => (
+                  <Picker.Item label={item} value={item} />
+                ))}
+              </Picker>
+            )}
+
+            {false && (
+              <Picker
+                selectedValue={selectedArea}
+                mode="dropdown"
+                style={{
+                  height: 25,
+                  width: 128,
+                  color: 'white',
+                }}
+                itemStyle={{
+                  fontSize: 15,
+                }}
+                onValueChange={(itemValue, itemIndex) => {
+                  setSelectedArea(itemValue);
+
+                  const regionKey = selectedCity + ',' + itemValue;
+
+                  setRegion('新疆,' + itemValue);
+                  console.log('regionKey is ', itemValue);
+                  getList2(itemValue);
+                }}>
+                {areas.map(item => (
+                  <Picker.Item label={item} value={item} />
+                ))}
+              </Picker>
+            )}
+            {
+              //   location.city && (
+              //   <Text style={{position: 'absolute', top: 0, zIndex: 100}}>
+              //     {location.city}
+              //   </Text>
+              // )
+            }
+          </View>
+
+          <View style={styles.HomeBannerContainer}>
+            <HomeCarousel />
+          </View>
+          <View style={styles.HomeSearchContainer}>
+            <View style={styles.HomeSearchArea}>
+              <TouchableOpacity onPress={getList}>
+                <Image source={Images.Search} style={styles.HomeSearchImg} />
+              </TouchableOpacity>
+              <View style={styles.HomeSearchInputContainer}>
+                <TextInput
+                  placeholder={'请输入关键词进行搜索'}
+                  style={styles.HomeSearchInput}
+                  onChangeText={value => {
+                    setKey(value);
+                  }}
+                />
+              </View>
             </View>
-          </TouchableOpacity>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+          </View>
+          <View style={styles.HomeMainBtnGroup}>
+            <View style={{flexDirection: 'column', alignItems: 'center'}}>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() =>
+                  props.navigation.navigate('StuffPostView', {kind: 'lost'})
+                }>
+                <Image
+                  style={{width: 52, height: 52}}
+                  source={Images.HomeFindBtn}
+                />
+                <Text style={{fontSize: 12}}>寻物启事</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{flexDirection: 'column', alignItems: 'center'}}>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() =>
+                  props.navigation.navigate('StuffPostView', {kind: 'found'})
+                }>
+                <Image
+                  style={{width: 52, height: 52}}
+                  source={Images.HomeGetBtn}
+                />
+                <Text style={{fontSize: 12}}>失物招领</Text>
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity
               style={{
                 flexDirection: 'column',
@@ -315,48 +312,116 @@ function HomeView(props) {
                 alignItems: 'center',
               }}
               onPress={() =>
-                props.navigation.navigate('ContactView', {kind: 'found'})
+                props.navigation.navigate('NewsView', {kind: 'found'})
               }>
-              <Image
-                style={{width: 52, height: 52}}
-                source={Images.HomeMapBtn}
-              />
-              <Text style={{fontSize: 12}}>小区电话</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.HomeCategoryContainer}>
-          {note.length > 0 && (
-            <View style={styles.HomeNotificationArea}>
-              <Image source={Images.RedSound} style={{width: 40, height: 40}} />
-              <Text style={styles.HomeNotificationText} numberOfLines={2}>
-                {note}
-              </Text>
-            </View>
-          )}
-          <View>
-            <TabView
-              navigationState={state}
-              renderScene={SceneMap({
-                createAt: ListArea,
-                browse: ListArea,
-                ads: ListArea,
-              })}
-              renderTabBar={props => (
-                <TabBar
-                  {...props}
-                  indicatorStyle={{backgroundColor: '#1071c8'}}
-                  style={{backgroundColor: 'white', elevation: 0}}
-                  labelStyle={{color: 'black'}}
+              <View style={{flexDirection: 'column', alignItems: 'center'}}>
+                <Image
+                  style={{width: 52, height: 52}}
+                  source={Images.HomeNewsBtn}
                 />
-              )}
-              onIndexChange={index => handleTab(index)}
-              initialLayout={{width: Dimensions.get('window').width}}
-            />
+                <Text style={{fontSize: 12}}>新闻</Text>
+              </View>
+            </TouchableOpacity>
+            <View style={{flexDirection: 'column', alignItems: 'center'}}>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() =>
+                  props.navigation.navigate('ContactView', {kind: 'found'})
+                }>
+                <Image
+                  style={{width: 52, height: 52}}
+                  source={Images.HomeMapBtn}
+                />
+                <Text style={{fontSize: 12}}>小区电话</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.HomeCategoryContainer}>
+            {note.length > 0 && (
+              <View style={styles.HomeNotificationArea}>
+                <Image
+                  source={Images.RedSound}
+                  style={{width: 40, height: 40}}
+                />
+                <Text style={styles.HomeNotificationText} numberOfLines={2}>
+                  {note}
+                </Text>
+              </View>
+            )}
+            <View>
+              <TabView
+                navigationState={state}
+                renderScene={SceneMap({
+                  createAt: ListArea,
+                  browse: ListArea,
+                  ads: ListArea,
+                })}
+                renderTabBar={props => (
+                  <TabBar
+                    {...props}
+                    indicatorStyle={{backgroundColor: '#1071c8'}}
+                    style={{backgroundColor: 'white', elevation: 0}}
+                    labelStyle={{color: 'black'}}
+                  />
+                )}
+                onIndexChange={index => handleTab(index)}
+                initialLayout={{width: Dimensions.get('window').width}}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <Modal
+        isVisible={isFilterVisible}
+        coverScreen={false}
+        style={{
+          backgroundColor: '#fff',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          width: '55%',
+          height: '100%',
+          marginLeft: 0,
+          marginTop: 0,
+        }}>
+        <View>
+          <ScrollView>
+            {citys.map((item, i) => (
+              <Accordion
+                onChangeVisibility={value => {
+                  setShowMoreInfo(value);
+                }}
+                renderHeader={() => (
+                  <View style={styles.wrapDropDownHeader}>
+                    <Text>{item}</Text>
+                  </View>
+                )}
+                renderContent={() => (
+                  <View style={{paddingLeft: 30, marginTop: 5}}>
+                    {_filterAreas('新疆', item).map((itemValue, idx) => (
+                      <TouchableOpacity
+                        style={{marginTop: 3}}
+                        onPress={() => {
+                          setSelectedArea(itemValue);
+                          setIsFilterVisible(false);
+                          setRegion('新疆,' + itemValue);
+                          console.log('regionKey is ', itemValue);
+                          getList2(itemValue);
+                        }}>
+                        <Text>{itemValue}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      </Modal>
+    </>
   );
 }
 
