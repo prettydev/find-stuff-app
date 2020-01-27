@@ -8,6 +8,7 @@ import {
   TextInput,
   Button,
   Dimensions,
+  // TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Images} from 'src/Theme';
@@ -90,7 +91,7 @@ const Profile = props => {
       Toast.show('正确输入值!');
       return;
     }
-    if (photo) {
+    if (photo && photo.uri) {
       let formData = new FormData();
 
       const file = {
@@ -99,6 +100,9 @@ const Profile = props => {
         type: photo.mime || 'image/jpeg',
       };
       formData.append('file', file);
+
+      console.log('selected file...', file);
+      console.log('selected photo...', photo);
 
       await axios
         .post(baseUrl + 'upload/file', formData)
@@ -119,6 +123,7 @@ const Profile = props => {
               if (response2.data.success) {
                 dispatch({type: 'setUser', payload: response2.data.user});
                 Toast.show('成功!');
+                setIsEdit(false);
               } else {
                 Toast.show('失败了!');
               }
@@ -130,9 +135,33 @@ const Profile = props => {
         })
         .catch(error => {
           console.log(error);
+          Toast.show('失败了!');
         });
     } else {
-      Toast.show('未选择照片!');
+      axios
+        .put(
+          baseUrl + 'api2/user/' + state.user._id,
+          {
+            name,
+          },
+          {
+            headers: {auth_token: state.auth_token},
+          },
+        )
+        .then(function(response2) {
+          console.log('response2', response2.data);
+          if (response2.data.success) {
+            dispatch({type: 'setUser', payload: response2.data.user});
+            Toast.show('成功!');
+            setIsEdit(false);
+          } else {
+            Toast.show('失败了!');
+          }
+        })
+        .catch(function(error) {
+          console.log('eeeeeerrrrrrrrr', error);
+          // Toast.show(error);
+        });
     }
   }
   useEffect(() => {
@@ -175,7 +204,7 @@ const Profile = props => {
 
       console.log('refreshing...........................');
     })();
-  }, [isModalVisible]);
+  }, [isModalVisible, photo]);
   return (
     <ScrollView style={Style.ProfileContainer}>
       <NavigationEvents
@@ -193,16 +222,28 @@ const Profile = props => {
           <TouchableOpacity
             onPress={handlePhoto}
             style={{marginRight: 15, resizeMode: 'cover', borderRadius: 30}}>
-            {state.user.photo !== undefined && state.user.photo !== '' && (
-              <Image
-                source={{
-                  uri: baseUrl + 'download/photo?path=' + state.user.photo,
-                }}
-                style={Style.ProfileHeaderAvatarImg}
-                resizeMode="cover"
-                borderRadius={30}
-              />
-            )}
+            {state.user.photo !== undefined &&
+              state.user.photo !== '' &&
+              photo.source === '' && (
+                <Image
+                  source={{
+                    uri: baseUrl + 'download/photo?path=' + state.user.photo,
+                  }}
+                  style={Style.ProfileHeaderAvatarImg}
+                  resizeMode="cover"
+                  borderRadius={30}
+                />
+              )}
+            {state.user.photo !== undefined &&
+              state.user.photo !== '' &&
+              photo.source !== '' && (
+                <Image
+                  source={photo.source}
+                  style={Style.ProfileHeaderAvatarImg}
+                  resizeMode="cover"
+                  borderRadius={30}
+                />
+              )}
             {(state.user.photo === '' || state.user.photo === undefined) && (
               <Image
                 source={photo.source ? photo.source : Images.femaleProfile}

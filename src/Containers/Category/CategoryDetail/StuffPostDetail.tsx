@@ -146,7 +146,7 @@ export default function StuffPostDetail({navigation}) {
                     <View style={Styles.FeeBtn}>
                       <View style={Styles.FeeBtn2}>
                         <View style={Styles.FeeBtn3}>
-                          <Text style={{color: '#fff'}}>拾</Text>
+                          <Text style={{color: '#fff'}}>赏</Text>
                         </View>
                       </View>
                     </View>
@@ -158,7 +158,7 @@ export default function StuffPostDetail({navigation}) {
                   )}
                   {item.kind === 'lost' && (
                     <View style={Styles.LostBtn}>
-                      <Text style={{color: '#fff'}}>嘚</Text>
+                      <Text style={{color: '#fff'}}>丢</Text>
                     </View>
                   )}
                 </View>

@@ -116,8 +116,8 @@ const Chat = props => {
                     </Text>
                   </View>
                   <Text style={{color: Colors.grey}}>
-                    {item.content.length > 60
-                      ? item.content.substring(0, 60) + '...'
+                    {item.content.length > 84
+                      ? item.content.substring(0, 84) + '...'
                       : item.content}
                   </Text>
                 </View>

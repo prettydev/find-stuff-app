@@ -19,29 +19,32 @@ import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
 export default function CategoryList(props) {
-  const kind = props.navigation.getParam('kind');
-
   const [list, setList] = useState([]);
   const [tag, setTag] = useState('');
 
   const [tmp, setTmp] = useState('');
   const [key, setKey] = useState('');
+  const [kind, setKind] = useState('');
 
   const handleSearch = () => {
     setKey(tmp);
   };
 
   const getList = () => {
+    setKind(props.navigation.getParam('kind'));
+    console.log('ccccccccccccccccccccc', kind);
+
     axios
       .get(baseUrl + 'api/stuffpost', {
         params: {
-          kind,
+          kind: props.navigation.getParam('kind'),
           tag,
           key,
         },
       })
       .then(function(response) {
         console.log(response.data);
+        console.log(response.data.length, '=======================');
 
         setList(response.data);
       })
@@ -55,12 +58,13 @@ export default function CategoryList(props) {
 
   useEffect(() => {
     getList();
-  }, [tag, key]);
+  }, [tag, key, kind]);
 
   return (
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>
       <NavigationEvents
         onDidFocus={() => {
+          console.log('wweweweewe', props.navigation.getParam('kind'));
           getList();
         }}
       />

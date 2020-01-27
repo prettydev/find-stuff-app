@@ -50,6 +50,8 @@ export default StyleSheet.create({
   FindStuffDetailAreaInput: {
     height: 40,
     textAlign: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.paleGrey3,
   },
   FindStuffDetailAreaBtn: {
     color: '#0084da',

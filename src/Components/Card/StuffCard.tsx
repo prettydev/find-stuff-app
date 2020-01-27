@@ -49,12 +49,12 @@ export default function StuffCard({item, proc, navigation}) {
             {item.user?.name && <Text>{item.user.name}</Text>}
             {item.kind === 'lost' && (
               <RectBtn
-                RectBtnTitle={'失物启示'}
+                RectBtnTitle={'寻物招领'}
                 RectBtnColor={'blueTransparent90'}
               />
             )}
             {item.kind === 'found' && (
-              <RectBtn RectBtnTitle={'寻物启示'} RectBtnColor={'MainYellow'} />
+              <RectBtn RectBtnTitle={'失物招领'} RectBtnColor={'MainYellow'} />
             )}
           </View>
 
