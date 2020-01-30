@@ -9,23 +9,18 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Dimensions,
-  Picker,
 } from 'react-native';
 
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
 import {BaiduMapManager, Geolocation} from 'react-native-baidu-map';
 import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel';
-import Toast from 'react-native-simple-toast';
 import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
 
 import {baseUrl} from 'src/constants';
 
 import axios from 'axios';
-import {Map} from 'immutable';
-import {store} from 'src/Store';
-import NotificationPopup from 'react-native-push-notification-popup';
 import AsyncStorage from '@react-native-community/async-storage';
 import regionJson from 'src/Lib/rn-wheel-picker-china-region/regionJson';
 import {NavigationEvents} from 'react-navigation';
@@ -33,8 +28,6 @@ import {NavigationEvents} from 'react-navigation';
 import Modal from 'react-native-modal';
 
 import Accordion from 'react-native-collapsible-accordion';
-
-import {Icon} from 'react-native-elements';
 
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
 
