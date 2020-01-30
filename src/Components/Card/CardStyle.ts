@@ -3,16 +3,9 @@ import {Colors} from 'src/Theme';
 
 export default StyleSheet.create({
   CardWrap: {
-    flex: 1,
-    borderRadius: 5,
-    padding: 15,
-    borderColor: '#ddd',
-    marginTop: 15,
-
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    paddingTop: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   CardInfoWrap: {
     flexDirection: 'row',

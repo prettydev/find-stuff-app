@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   Dimensions,
   Picker,
 } from 'react-native';
@@ -32,6 +33,8 @@ import {NavigationEvents} from 'react-navigation';
 import Modal from 'react-native-modal';
 
 import Accordion from 'react-native-collapsible-accordion';
+
+import {Icon} from 'react-native-elements';
 
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
 
@@ -187,70 +190,23 @@ function HomeView(props) {
               flexDirection: 'row',
             }}>
             <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
               onPress={() => {
                 setIsFilterVisible(true);
               }}>
               <Text style={{color: 'white', marginLeft: 10}}>
                 {selectedArea}
               </Text>
+              <Image
+                source={Images.DownArrow}
+                style={{width: 10, height: 10, margin: 3}}
+              />
             </TouchableOpacity>
-            {false && (
-              <Picker
-                selectedValue={selectedCity}
-                mode="dropdown"
-                style={{
-                  height: 25,
-                  width: 128,
-                  color: 'white',
-                }}
-                itemStyle={{fontSize: 15}}
-                onValueChange={(itemValue, itemIndex) => {
-                  setSelectedCity(itemValue);
-                  setAreas(_filterAreas('新疆', itemValue));
-                  setSelectedArea(areas[0]);
-                  setShowArea(true);
-                }}>
-                {citys.map((item, i) => (
-                  <Picker.Item label={item} value={item} />
-                ))}
-              </Picker>
-            )}
-
-            {false && (
-              <Picker
-                selectedValue={selectedArea}
-                mode="dropdown"
-                style={{
-                  height: 25,
-                  width: 128,
-                  color: 'white',
-                }}
-                itemStyle={{
-                  fontSize: 15,
-                }}
-                onValueChange={(itemValue, itemIndex) => {
-                  setSelectedArea(itemValue);
-
-                  const regionKey = selectedCity + ',' + itemValue;
-
-                  setRegion('新疆,' + itemValue);
-                  console.log('regionKey is ', itemValue);
-                  getList2(itemValue);
-                }}>
-                {areas.map(item => (
-                  <Picker.Item label={item} value={item} />
-                ))}
-              </Picker>
-            )}
-            {
-              //   location.city && (
-              //   <Text style={{position: 'absolute', top: 0, zIndex: 100}}>
-              //     {location.city}
-              //   </Text>
-              // )
-            }
           </View>
-
           <View style={styles.HomeBannerContainer}>
             <HomeCarousel />
           </View>
@@ -377,9 +333,11 @@ function HomeView(props) {
       </ScrollView>
       <Modal
         isVisible={isFilterVisible}
+        onBackdropPress={() => setIsFilterVisible(false)}
         coverScreen={false}
         style={{
-          backgroundColor: '#fff',
+          opacity: 0.8,
+          backgroundColor: '#eee',
           flexDirection: 'column',
           justifyContent: 'center',
           width: '55%',
@@ -396,13 +354,13 @@ function HomeView(props) {
                 }}
                 renderHeader={() => (
                   <View style={styles.wrapDropDownHeader}>
-                    <Text>{item}</Text>
+                    <Text style={{color: '#0057e7'}}>{item}</Text>
                   </View>
                 )}
                 renderContent={() => (
                   <View style={{paddingLeft: 30, marginTop: 5}}>
                     {_filterAreas('新疆', item).map((itemValue, idx) => (
-                      <TouchableOpacity
+                      <TouchableHighlight
                         style={{marginTop: 3}}
                         onPress={() => {
                           setSelectedArea(itemValue);
@@ -411,8 +369,8 @@ function HomeView(props) {
                           console.log('regionKey is ', itemValue);
                           getList2(itemValue);
                         }}>
-                        <Text>{itemValue}</Text>
-                      </TouchableOpacity>
+                        <Text style={{color: '#ff3377'}}>{itemValue}</Text>
+                      </TouchableHighlight>
                     ))}
                   </View>
                 )}

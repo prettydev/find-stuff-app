@@ -20,8 +20,6 @@ import NewsView from 'src/Containers/Category/CategoryList/NewsView';
 import NewsDetail from 'src/Containers/Category/CategoryDetail/NewsDetail';
 
 import ContactView from 'src/Containers/Category/CategoryList/ContactView';
-import SignInScreen from 'src/Containers/Authentication/SignInScreen/SignInScreen';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
@@ -45,19 +43,6 @@ const AddInfoStackNavigator = createStackNavigator(
   {
     AddInfoView: {
       screen: AddInfoView,
-    },
-  },
-  {
-    defaultNavigationOptions: {
-      headerShown: false,
-    },
-  },
-);
-
-const ProfileStackNavigator = createStackNavigator(
-  {
-    ProfileView: {
-      screen: ProfileView,
     },
   },
   {

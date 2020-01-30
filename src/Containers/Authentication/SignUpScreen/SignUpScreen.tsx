@@ -3,6 +3,7 @@ import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import Styles from './SignUpScreenStyle';
 import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 import CustomPwdInput from 'src/Components/CustomForm/CustomPwdInput/CustomPwdInput';
+import CustomPhoneInput from 'src/Components/CustomForm/CustomPhoneInput/CustomPhoneInput';
 import FormCommonBtn from 'src/Components/Buttons/FormCommonBtn/FormCommonBtn';
 import CustomVerifyInput from 'src/Components/CustomForm/CustomVerifyInput/CustomVerifyInput';
 import {Images} from 'src/Theme';
@@ -16,6 +17,29 @@ export default function SignUpScreen(props) {
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const sendOTP = async () => {
+    if (phone === '') {
+      Toast.show('正确输入值！');
+      return;
+    }
+    console.log(phone, 'will send this number to the server....');
+
+    await axios
+      .post(baseUrl + 'auth/otp', {
+        phone,
+      })
+      .then(response => {
+        if (response.data.success) {
+          Toast.show('成功!'); //check your inbox
+        } else {
+          Toast.show(response.data.msg);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   async function handleSubmit() {
     if (otp === '' || phone === '' || password === '') {
@@ -50,6 +74,8 @@ export default function SignUpScreen(props) {
       });
   }
 
+  useEffect(() => {}, [phone]);
+
   return (
     <ScrollView>
       <View style={{flex: 1}}>
@@ -67,10 +93,13 @@ export default function SignUpScreen(props) {
         </View>
         <View style={Styles.SignFormContainer}>
           <View style={Styles.SignPhoneInput}>
-            <CustomTextInput
+            <CustomPhoneInput
               CustomLabel={'手机'}
               CustomPlaceholder={'请输入账号或手机号码'}
               proc={value => setPhone(value)}
+              proc2={() => {
+                sendOTP();
+              }}
             />
           </View>
           <View style={Styles.SignPwdInput}>
