@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import Styles from './CustomPhoneInputStyle';
 
 export default function CustomPhoneInput(props) {
   return (
     <View>
-      <View style={Styles.textBoxContainer}>
-        <Text>{props.CustomLabel}</Text>
+      <Text>{props.CustomLabel}</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          borderColor: '#ddd',
+          borderBottomWidth: 1,
+        }}>
         <TextInput
           style={Styles.CustomTextInput}
           placeholder={props.CustomPlaceholder}
@@ -16,7 +21,7 @@ export default function CustomPhoneInput(props) {
           activeOpacity={0.8}
           style={Styles.touachableButton}
           onPress={props.proc2}>
-          <Text style={Styles.buttonImage}>| 发送验证码</Text>
+          <Text>| 发送验证码</Text>
         </TouchableOpacity>
       </View>
     </View>

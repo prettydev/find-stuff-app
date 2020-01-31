@@ -1,23 +1,15 @@
 import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   CustomTextInput: {
-    height: 40,
-    borderColor: '#ddd',
-    borderBottomWidth: 1,
-  },
-  textBoxContainer: {
-    position: 'relative',
+    // backgroundColor: 'blue',
+    flex: 7,
     alignSelf: 'stretch',
     justifyContent: 'center',
   },
-  textBox: {
-    height: 40,
-    borderColor: '#ddd',
-    borderBottomWidth: 1,
-  },
   touachableButton: {
-    position: 'absolute',
-    right: 3,
+    // backgroundColor: 'red',
+    flex: 3,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
   },
-  buttonImage: {},
 });

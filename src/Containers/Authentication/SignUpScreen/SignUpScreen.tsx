@@ -15,15 +15,17 @@ const axios = require('axios');
 export default function SignUpScreen(props) {
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
+  const [sentOtp, setSentOtp] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const sendOTP = async () => {
+    console.log('gggggggggggggggg', phone);
+
     if (phone === '') {
       Toast.show('正确输入值！');
       return;
     }
-    console.log(phone, 'will send this number to the server....');
 
     await axios
       .post(baseUrl + 'auth/otp', {
@@ -31,9 +33,12 @@ export default function SignUpScreen(props) {
       })
       .then(response => {
         if (response.data.success) {
-          Toast.show('成功!'); //check your inbox
+          setSentOtp(true);
+          Toast.show(response.data.msg); //check your inbox
+          console.log('success', response.data.msg);
         } else {
           Toast.show(response.data.msg);
+          console.log('failed', response.data.msg);
         }
       })
       .catch(error => {
@@ -44,6 +49,11 @@ export default function SignUpScreen(props) {
   async function handleSubmit() {
     if (otp === '' || phone === '' || password === '') {
       Toast.show('正确输入值！');
+      return;
+    }
+
+    if (!sentOtp) {
+      Toast.show('发送验证码！');
       return;
     }
 
@@ -58,14 +68,15 @@ export default function SignUpScreen(props) {
       .post(baseUrl + 'auth/signup', {
         phone,
         password,
+        otp,
       })
 
       .then(function(response2) {
-        if (response2.data) {
-          Toast.show('成功!');
+        if (response2.data.success) {
+          Toast.show(response2.data.msg);
           props.navigation.navigate('Signin');
         } else {
-          Toast.show('失败了!');
+          Toast.show(response2.data.msg);
         }
       })
       .catch(function(error) {
@@ -92,7 +103,7 @@ export default function SignUpScreen(props) {
           <Text style={{flex: 1}}></Text>
         </View>
         <View style={Styles.SignFormContainer}>
-          <View style={Styles.SignPhoneInput}>
+          <View style={Styles.FormInput}>
             <CustomPhoneInput
               CustomLabel={'手机'}
               CustomPlaceholder={'请输入账号或手机号码'}
@@ -102,7 +113,7 @@ export default function SignUpScreen(props) {
               }}
             />
           </View>
-          <View style={Styles.SignPwdInput}>
+          <View style={Styles.FormInput}>
             <CustomPwdInput
               CustomPwdLabel={'密码'}
               CustomPwdPlaceholder={'请输入密码'}
@@ -111,7 +122,7 @@ export default function SignUpScreen(props) {
               }}
             />
           </View>
-          <View style={Styles.SignPwdInput}>
+          <View style={Styles.FormInput}>
             <CustomPwdInput
               CustomPwdLabel={'确认密码'}
               CustomPwdPlaceholder={'请输入确认密码'}
@@ -120,7 +131,7 @@ export default function SignUpScreen(props) {
               }}
             />
           </View>
-          <View style={Styles.SignVerifyInput}>
+          <View style={Styles.FormInput}>
             <CustomVerifyInput
               CustomVerifyLabel={'验证码'}
               CustomPlaceholder={'请输入验证码'}
