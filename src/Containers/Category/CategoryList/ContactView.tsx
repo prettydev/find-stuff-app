@@ -53,10 +53,6 @@ export default function CategoryList(props) {
           i++;
         }
 
-        console.log(result);
-
-        console.log(23113);
-
         setData(result);
       })
       .catch(function(error) {

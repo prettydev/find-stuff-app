@@ -20,13 +20,7 @@ export default function SignUpScreen(props) {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const sendOTP = async () => {
-    console.log('gggggggggggggggg', phone);
-
-    if (phone === '') {
-      Toast.show('正确输入值！');
-      return;
-    }
-
+    console.log('aaaaaaaaa');
     await axios
       .post(baseUrl + 'auth/otp', {
         phone,
@@ -132,9 +126,9 @@ export default function SignUpScreen(props) {
             />
           </View>
           <View style={Styles.FormInput}>
-            <CustomVerifyInput
-              CustomVerifyLabel={'验证码'}
-              CustomPlaceholder={'请输入验证码'}
+            <CustomTextInput
+              CustomLabel={'验证码'}
+              CustomPlaceholder={'验证码'}
               proc={value => {
                 setOtp(value);
               }}

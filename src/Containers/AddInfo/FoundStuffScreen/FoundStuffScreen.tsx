@@ -36,8 +36,6 @@ const FoundStuffScreen = props => {
         chooseFromLibraryButtonTitle: '从照片中选择',
       },
       response => {
-        console.log('Response = ', response);
-
         if (response.didCancel) {
           console.log('User cancelled image picker');
         } else if (response.error) {

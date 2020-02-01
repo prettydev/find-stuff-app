@@ -32,7 +32,6 @@ export default function CategoryList(props) {
 
   const getList = () => {
     setKind(props.navigation.getParam('kind'));
-    console.log('ccccccccccccccccccccc', kind);
 
     axios
       .get(baseUrl + 'api/stuffpost', {
@@ -43,9 +42,6 @@ export default function CategoryList(props) {
         },
       })
       .then(function(response) {
-        console.log(response.data);
-        console.log(response.data.length, '=======================');
-
         setList(response.data);
       })
       .catch(function(error) {

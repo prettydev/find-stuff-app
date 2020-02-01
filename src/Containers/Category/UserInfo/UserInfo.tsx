@@ -71,7 +71,6 @@ export default function Profile(props) {
         <TouchableOpacity
           style={Style.ProfileMessageContainer}
           onPress={() => {
-            console.log(item, 'bbbbbbbbbbbbbbbbbbbb');
             props.navigation.navigate('ChatDetail', {item, msg: {}});
           }}>
           <View style={Style.ProfileMessageWrap}>

@@ -71,11 +71,8 @@ const Profile = props => {
       },
       response => {
         if (response.didCancel) {
-          console.log('User cancelled image picker');
         } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
         } else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
         } else {
           const name = response.uri;
           const source = {uri: response.uri};
@@ -101,9 +98,6 @@ const Profile = props => {
       };
       formData.append('file', file);
 
-      console.log('selected file...', file);
-      console.log('selected photo...', photo);
-
       await axios
         .post(baseUrl + 'upload/file', formData)
         .then(response => {
@@ -119,7 +113,6 @@ const Profile = props => {
               },
             )
             .then(function(response2) {
-              console.log('response2', response2.data);
               if (response2.data.success) {
                 dispatch({type: 'setUser', payload: response2.data.user});
                 Toast.show('成功!');
@@ -149,7 +142,6 @@ const Profile = props => {
           },
         )
         .then(function(response2) {
-          console.log('response2', response2.data);
           if (response2.data.success) {
             dispatch({type: 'setUser', payload: response2.data.user});
             Toast.show('成功!');
@@ -170,8 +162,6 @@ const Profile = props => {
         .post(baseUrl + 'api/profile/last')
         .then(function(response) {
           if (response.data.item) {
-            console.log(response.data);
-
             let {version, share, about, service, phone} = response.data.item;
 
             let versionDescription = '';
