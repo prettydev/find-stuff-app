@@ -35,8 +35,8 @@ const alertMessage = () => {
   if (current_message !== next_message) {
     PushNotification.localNotification({
       bigText: next_message,
-      subText: 'New message arrived',
-      message: 'Hello, this is the my test message.',
+      subText: '新消息到了',
+      message: '',
     });
     current_message = next_message;
   }
