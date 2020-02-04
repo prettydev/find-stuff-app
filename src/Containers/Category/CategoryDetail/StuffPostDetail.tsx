@@ -92,23 +92,27 @@ export default function StuffPostDetail({navigation}) {
                     borderRadius={30}
                   />
                 )}
-                {item.user && item.user.photo && item.user.photo.length > 0 && (
-                  <Image
-                    style={Styles.AvatarPhoto}
-                    // source={{
-                    //   uri: baseUrl + 'download/photo?path=' + item.user.photo,
-                    // }}
-                    source={Images.maleProfile}
-                    resizeMode="cover"
-                    borderRadius={30}
-                  />
-                )}
+                {item.user !== null &&
+                  item.user.photo !== null &&
+                  item.user.photo.length > 0 && (
+                    <Image
+                      style={Styles.AvatarPhoto}
+                      // source={{
+                      //   uri: baseUrl + 'download/photo?path=' + item.user.photo,
+                      // }}
+                      source={Images.maleProfile}
+                      resizeMode="cover"
+                      borderRadius={30}
+                    />
+                  )}
                 <View style={{flex: 3}}></View>
               </View>
               <View style={Styles.UserNameContainer}>
                 <View style={Styles.UserNameWrap}>
                   <View>
-                    {item.user?.name && <Text>{item.user.name}</Text>}
+                    {item.user != null && item.user.name !== null && (
+                      <Text>{item.user.name}</Text>
+                    )}
                   </View>
                 </View>
                 <View style={{paddingTop: 5}}>

@@ -14,31 +14,35 @@ export default function StuffCard({item, proc, navigation}) {
       <Card style={{padding: 12}}>
         <View style={Style.CardInfoWrap}>
           <View style={Style.ImageSection}>
-            {item.user && item.user.photo && item.user.photo.length === 0 && (
-              <Image
-                style={Style.AvatarStyle}
-                source={Images.maleProfile}
-                resizeMode="cover"
-                borderRadius={30}
-              />
-            )}
-            {item.user && item.user.photo && item.user.photo.length > 0 && (
-              <TouchableOpacity
-                onPress={() => {
-                  if (navigation)
-                    navigation.navigate('UserInfo', {item: item.user});
-                }}>
+            {item.user !== null &&
+              item.user.photo !== null &&
+              item.user.photo.length === 0 && (
                 <Image
                   style={Style.AvatarStyle}
-                  // source={{
-                  //   uri: baseUrl + 'download/photo?path=' + item.user.photo,
-                  // }}
                   source={Images.maleProfile}
                   resizeMode="cover"
                   borderRadius={30}
                 />
-              </TouchableOpacity>
-            )}
+              )}
+            {item.user != null &&
+              item.user.photo != null &&
+              item.user.photo.length > 0 && (
+                <TouchableOpacity
+                  onPress={() => {
+                    if (navigation)
+                      navigation.navigate('UserInfo', {item: item.user});
+                  }}>
+                  <Image
+                    style={Style.AvatarStyle}
+                    // source={{
+                    //   uri: baseUrl + 'download/photo?path=' + item.user.photo,
+                    // }}
+                    source={Images.maleProfile}
+                    resizeMode="cover"
+                    borderRadius={30}
+                  />
+                </TouchableOpacity>
+              )}
           </View>
           <View style={{flexDirection: 'column'}}>
             <View
@@ -47,7 +51,9 @@ export default function StuffCard({item, proc, navigation}) {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              {item.user?.name && <Text>{item.user.name}</Text>}
+              {item.user !== null && item.user.name !== null && (
+                <Text>{item.user.name}</Text>
+              )}
               {item.kind === 'lost' && (
                 <RectBtn
                   RectBtnTitle={'寻物招领'}

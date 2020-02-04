@@ -103,8 +103,6 @@ function HomeView(props) {
   useEffect(() => {
     // AsyncStorage.clear();
 
-    console.log('useEffect...........................');
-
     getNote();
 
     Geolocation.getCurrentPosition().then(data => {
