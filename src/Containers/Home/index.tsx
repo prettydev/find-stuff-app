@@ -79,6 +79,8 @@ function HomeView(props) {
   };
 
   const getList = () => {
+    console.log('current tab is... ... ...', tabState.index);
+
     axios
       .get(baseUrl + 'api/stuffpost', {
         params: {
@@ -111,7 +113,7 @@ function HomeView(props) {
         setList(response.data);
       })
       .catch(function(error) {
-        console.log('bbbbbwwwwwwwwwwwwwww', error);
+        console.log(error);
       })
       .finally(function() {
         // always executed
@@ -158,7 +160,7 @@ function HomeView(props) {
   }, []);
 
   const ListArea = () => (
-    <ScrollView style={{backgroundColor: '#ffffff', flex: 1}}>
+    <ScrollView style={{backgroundColor: '#fff', flex: 1}}>
       {list.map((item, i) => (
         <StuffCard
           key={i}
@@ -367,10 +369,11 @@ function HomeView(props) {
                       <TouchableHighlight
                         style={{marginTop: 3}}
                         onPress={() => {
+                          dispatch({type: 'setRegion', payload: itemValue}); //set region key, to use in the contact view
                           setSelectedArea(itemValue);
                           setIsFilterVisible(false);
                           setRegion(itemValue);
-                          getList2(itemValue);
+                          getList2(itemValue); //call directly because setRegion effects from the next time,
                         }}>
                         <Text style={{color: '#fff'}}>{itemValue}</Text>
                       </TouchableHighlight>

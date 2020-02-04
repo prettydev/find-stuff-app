@@ -38,6 +38,8 @@ export default function CategoryList(props) {
   };
 
   useEffect(() => {
+    console.log('region Key... .. ..', key);
+
     axios
       .get(baseUrl + 'api/contact', {
         params: {
@@ -49,11 +51,12 @@ export default function CategoryList(props) {
         let i = 0,
           result = [];
 
+        //convert data to the table data format
         while (i < items.length) {
           result.push([]);
-          for (let key in items[i]) {
-            if (key === 'city' || key == 'district' || key === 'number') {
-              result[result.length - 1].push(items[i][key]);
+          for (let it in items[i]) {
+            if (it === 'city' || it == 'district' || it === 'number') {
+              result[result.length - 1].push(items[i][it]);
             }
           }
           i++;
