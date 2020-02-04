@@ -32,11 +32,15 @@ import {store} from 'src/Store';
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
 
 function HomeView(props) {
-  const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [state, dispatch] = useContext(store);
+
+  const [isGpsDlgVisible, setIsGpsDlgVisible] = useState(false);
   const [showMoreInfo, setShowMoreInfo] = useState(false);
 
-  const [location, setLocation] = useState({});
   const [note, setNote] = useState('');
+  const [list, setList] = useState([]);
+  const [key, setKey] = useState('');
+  const [keyTmp, setKeyTmp] = useState('');
 
   const [tabState, setTabState] = useState({
     index: 0,
@@ -47,11 +51,8 @@ function HomeView(props) {
     ],
   });
 
-  const [state, dispatch] = useContext(store);
-
   const _filterCitys = province => {
     const provinceData = regionJson.find(item => item.name === province);
-
     return provinceData.city.map(item => item.name);
   };
 
@@ -61,64 +62,7 @@ function HomeView(props) {
     return cityData.area;
   };
 
-  const [region, setRegion] = useState('天山区');
   const [citys, setCitys] = useState(_filterCitys('新疆'));
-  const [areas, setAreas] = useState(_filterAreas('新疆', '乌鲁木齐'));
-
-  const [selectedCity, setSelectedCity] = useState('乌鲁木齐');
-  const [selectedArea, setSelectedArea] = useState('天山区');
-
-  const [showArea, setShowArea] = useState(false);
-
-  const [list, setList] = useState([]);
-  const [key, setKey] = useState('');
-
-  const handleTab = index => {
-    setTabState({...tabState, index});
-    getList();
-  };
-
-  const getList = () => {
-    console.log('current tab is... ... ...', tabState.index);
-
-    axios
-      .get(baseUrl + 'api/stuffpost', {
-        params: {
-          sort: tabState.index,
-          key,
-          region,
-        },
-      })
-      .then(function(response) {
-        setList(response.data);
-      })
-      .catch(function(error) {
-        console.log(error);
-      })
-      .finally(function() {
-        // always executed
-      });
-  };
-
-  const getList2 = newRegion => {
-    axios
-      .get(baseUrl + 'api/stuffpost', {
-        params: {
-          sort: tabState.index,
-          key,
-          region: newRegion,
-        },
-      })
-      .then(function(response) {
-        setList(response.data);
-      })
-      .catch(function(error) {
-        console.log(error);
-      })
-      .finally(function() {
-        // always executed
-      });
-  };
 
   const getNote = () => {
     axios
@@ -136,28 +80,46 @@ function HomeView(props) {
       });
   };
 
+  const getList = () => {
+    axios
+      .get(baseUrl + 'api/stuffpost', {
+        params: {
+          sort: tabState.index,
+          key,
+          region: state.region,
+        },
+      })
+      .then(function(response) {
+        setList(response.data);
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+      .finally(function() {
+        // always executed
+      });
+  };
+
   useEffect(() => {
-    AsyncStorage.clear();
+    // AsyncStorage.clear();
+
+    console.log('useEffect...........................');
 
     getNote();
 
     Geolocation.getCurrentPosition().then(data => {
-      setLocation(data);
       if (data.city) {
-        setSelectedArea(data.city);
-        setRegion(data.city);
-        getList2(data.city);
         dispatch({type: 'setRegion', payload: data.city});
-        console.log(data.city, 'data.city.. ..');
-      } else {
-        getList();
-        dispatch({type: 'setRegion', payload: region});
-        console.log(region, 'region .. ..');
       }
     });
 
     return () => {};
   }, []);
+
+  useEffect(() => {
+    console.log('changed region... ... .. ', state.region, tabState.index, key);
+    getList();
+  }, [state.region, tabState.index, key]);
 
   const ListArea = () => (
     <ScrollView style={{backgroundColor: '#fff', flex: 1}}>
@@ -197,10 +159,10 @@ function HomeView(props) {
                 alignItems: 'center',
               }}
               onPress={() => {
-                setIsFilterVisible(true);
+                setIsGpsDlgVisible(true);
               }}>
               <Text style={{color: 'white', marginLeft: 10}}>
-                {selectedArea}
+                {state.region}
               </Text>
               <Image
                 source={Images.DownArrow}
@@ -213,7 +175,10 @@ function HomeView(props) {
           </View>
           <View style={styles.HomeSearchContainer}>
             <View style={styles.HomeSearchArea}>
-              <TouchableOpacity onPress={getList}>
+              <TouchableOpacity
+                onPress={() => {
+                  setKey(keyTmp);
+                }}>
                 <Image source={Images.Search} style={styles.HomeSearchImg} />
               </TouchableOpacity>
               <View style={styles.HomeSearchInputContainer}>
@@ -221,7 +186,7 @@ function HomeView(props) {
                   placeholder={'请输入关键词进行搜索'}
                   style={styles.HomeSearchInput}
                   onChangeText={value => {
-                    setKey(value);
+                    setKeyTmp(value);
                   }}
                 />
               </View>
@@ -325,7 +290,9 @@ function HomeView(props) {
                     labelStyle={{color: 'black'}}
                   />
                 )}
-                onIndexChange={index => handleTab(index)}
+                onIndexChange={index => {
+                  setTabState({...tabState, index});
+                }}
                 initialLayout={{width: Dimensions.get('window').width}}
               />
             </View>
@@ -333,8 +300,8 @@ function HomeView(props) {
         </View>
       </ScrollView>
       <Modal
-        isVisible={isFilterVisible}
-        onBackdropPress={() => setIsFilterVisible(false)}
+        isVisible={isGpsDlgVisible}
+        onBackdropPress={() => setIsGpsDlgVisible(false)}
         coverScreen={false}
         style={{
           opacity: 0.8,
@@ -369,11 +336,8 @@ function HomeView(props) {
                       <TouchableHighlight
                         style={{marginTop: 3}}
                         onPress={() => {
-                          dispatch({type: 'setRegion', payload: itemValue}); //set region key, to use in the contact view
-                          setSelectedArea(itemValue);
-                          setIsFilterVisible(false);
-                          setRegion(itemValue);
-                          getList2(itemValue); //call directly because setRegion effects from the next time,
+                          dispatch({type: 'setRegion', payload: itemValue});
+                          setIsGpsDlgVisible(false);
                         }}>
                         <Text style={{color: '#fff'}}>{itemValue}</Text>
                       </TouchableHighlight>
