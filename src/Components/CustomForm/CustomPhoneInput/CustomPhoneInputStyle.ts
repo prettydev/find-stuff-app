@@ -9,13 +9,15 @@ export default StyleSheet.create({
     flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 30,
+    margin: 10,
+    marginRight: 0,
   },
   timer: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#bbb',
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 30,
+    margin: 10,
+    marginRight: 0,
   },
 });

@@ -47,7 +47,7 @@ export default function CustomPhoneInput(props) {
         />
         {isSent && (
           <View style={Styles.timer}>
-            <Text>{duration}</Text>
+            <Text style={{color: '#fff'}}>{duration}</Text>
           </View>
         )}
         {!isSent && (
@@ -63,7 +63,7 @@ export default function CustomPhoneInput(props) {
               setDuration(duration - 1);
               props.proc2();
             }}>
-            <Text>发送验证码</Text>
+            <Text style={{color: '#fff'}}>发送验证码</Text>
           </TouchableOpacity>
         )}
       </View>

@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Dimensions,
-  Platform,
 } from 'react-native';
 
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
@@ -29,24 +28,17 @@ import {NavigationEvents} from 'react-navigation';
 import Modal from 'react-native-modal';
 
 import Accordion from 'react-native-collapsible-accordion';
-
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight =
-  Platform.OS === 'ios'
-    ? Dimensions.get('window').height
-    : require('react-native-extra-dimensions-android').get(
-        'REAL_WINDOW_HEIGHT',
-      );
-
+import {store} from 'src/Store';
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
 
 function HomeView(props) {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [showMoreInfo, setShowMoreInfo] = useState(false);
 
+  const [location, setLocation] = useState({});
   const [note, setNote] = useState('');
 
-  const [state, setState] = useState({
+  const [tabState, setTabState] = useState({
     index: 0,
     routes: [
       {key: 'createAt', title: '最新'},
@@ -54,7 +46,8 @@ function HomeView(props) {
       {key: 'ads', title: '精华'},
     ],
   });
-  // const [state, dispatch] = useContext(store);
+
+  const [state, dispatch] = useContext(store);
 
   const _filterCitys = province => {
     const provinceData = regionJson.find(item => item.name === province);
@@ -68,17 +61,20 @@ function HomeView(props) {
     return cityData.area;
   };
 
-  const [region, setRegion] = useState('新疆');
-  // const [citys, setCitys] = useState(_filterCitys('新疆'));
-  const [areas, setAreas] = useState([]); //_filterAreas('新疆', '乌鲁木齐'));
+  const [region, setRegion] = useState('天山区');
+  const [citys, setCitys] = useState(_filterCitys('新疆'));
+  const [areas, setAreas] = useState(_filterAreas('新疆', '乌鲁木齐'));
 
-  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCity, setSelectedCity] = useState('乌鲁木齐');
+  const [selectedArea, setSelectedArea] = useState('天山区');
+
+  const [showArea, setShowArea] = useState(false);
 
   const [list, setList] = useState([]);
   const [key, setKey] = useState('');
 
   const handleTab = index => {
-    setState({...state, index});
+    setTabState({...tabState, index});
     getList();
   };
 
@@ -86,7 +82,7 @@ function HomeView(props) {
     axios
       .get(baseUrl + 'api/stuffpost', {
         params: {
-          sort: state.index,
+          sort: tabState.index,
           key,
           region,
         },
@@ -106,7 +102,7 @@ function HomeView(props) {
     axios
       .get(baseUrl + 'api/stuffpost', {
         params: {
-          sort: state.index,
+          sort: tabState.index,
           key,
           region: newRegion,
         },
@@ -115,7 +111,7 @@ function HomeView(props) {
         setList(response.data);
       })
       .catch(function(error) {
-        console.log(error);
+        console.log('bbbbbwwwwwwwwwwwwwww', error);
       })
       .finally(function() {
         // always executed
@@ -138,23 +134,28 @@ function HomeView(props) {
       });
   };
 
-  const getCurrentLocation = () => {
-    Geolocation.getCurrentPosition().then(data => {
-      if (data.city) {
-        setSelectedCity(data.city);
-      }
-    });
-  };
-
   useEffect(() => {
     AsyncStorage.clear();
 
-    getCurrentLocation();
     getNote();
-    getList();
+
+    Geolocation.getCurrentPosition().then(data => {
+      setLocation(data);
+      if (data.city) {
+        setSelectedArea(data.city);
+        setRegion(data.city);
+        getList2(data.city);
+        dispatch({type: 'setRegion', payload: data.city});
+        console.log(data.city, 'data.city.. ..');
+      } else {
+        getList();
+        dispatch({type: 'setRegion', payload: region});
+        console.log(region, 'region .. ..');
+      }
+    });
 
     return () => {};
-  }, [selectedCity]);
+  }, []);
 
   const ListArea = () => (
     <ScrollView style={{backgroundColor: '#ffffff', flex: 1}}>
@@ -197,14 +198,12 @@ function HomeView(props) {
                 setIsFilterVisible(true);
               }}>
               <Text style={{color: 'white', marginLeft: 10}}>
-                {selectedCity}
+                {selectedArea}
               </Text>
-              {selectedCity !== '' && (
-                <Image
-                  source={Images.DownArrow}
-                  style={{width: 10, height: 10, margin: 3}}
-                />
-              )}
+              <Image
+                source={Images.DownArrow}
+                style={{width: 10, height: 10, margin: 3}}
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.HomeBannerContainer}>
@@ -310,7 +309,7 @@ function HomeView(props) {
             )}
             <View>
               <TabView
-                navigationState={state}
+                navigationState={tabState}
                 renderScene={SceneMap({
                   createAt: ListArea,
                   browse: ListArea,
@@ -333,41 +332,55 @@ function HomeView(props) {
       </ScrollView>
       <Modal
         isVisible={isFilterVisible}
-        animationIn="slideInDown"
-        animationOut="fadeOut"
-        deviceWidth={deviceWidth}
-        deviceHeight={deviceHeight}
         onBackdropPress={() => setIsFilterVisible(false)}
         coverScreen={false}
         style={{
           opacity: 0.8,
+          backgroundColor: '#0af',
           flexDirection: 'column',
           justifyContent: 'center',
-          width: '40%',
-          height: '40%',
-          marginBottom: 150,
+          width: '55%',
+          height: '100%',
           marginLeft: 0,
           marginTop: 0,
-          paddingTop: 20,
-          paddingLeft: 10,
-          backgroundColor: '#82CFFD',
         }}>
-        <ScrollView>
-          {selectedCity !== '' &&
-            _filterAreas('新疆', selectedCity).map((itemValue, idx) => (
-              <TouchableOpacity
-                style={{marginTop: 3}}
-                onPress={() => {
-                  setIsFilterVisible(false);
-                  setRegion(itemValue);
-                  getList2(itemValue);
-                }}>
-                <Text style={{paddingLeft: 20, paddingTop: 5, color: '#fff'}}>
-                  {itemValue}
-                </Text>
-              </TouchableOpacity>
+        <View>
+          <ScrollView>
+            {citys.map((item, i) => (
+              <Accordion
+                onChangeVisibility={value => {
+                  setShowMoreInfo(value);
+                }}
+                renderHeader={() => (
+                  <View style={styles.wrapDropDownHeader}>
+                    <Text style={{color: '#fff'}}>{item}</Text>
+                  </View>
+                )}
+                renderContent={() => (
+                  <View
+                    style={{
+                      paddingLeft: 30,
+                      marginTop: 5,
+                      backgroundColor: '#0cf',
+                    }}>
+                    {_filterAreas('新疆', item).map((itemValue, idx) => (
+                      <TouchableHighlight
+                        style={{marginTop: 3}}
+                        onPress={() => {
+                          setSelectedArea(itemValue);
+                          setIsFilterVisible(false);
+                          setRegion(itemValue);
+                          getList2(itemValue);
+                        }}>
+                        <Text style={{color: '#fff'}}>{itemValue}</Text>
+                      </TouchableHighlight>
+                    ))}
+                  </View>
+                )}
+              />
             ))}
-        </ScrollView>
+          </ScrollView>
+        </View>
       </Modal>
     </>
   );

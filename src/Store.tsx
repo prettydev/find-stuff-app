@@ -2,6 +2,7 @@ import React, {createContext, useReducer} from 'react';
 
 const initialState = {
   token: '',
+  region: '天山区',
   user: {},
   news: [],
   notifications: [],
@@ -15,6 +16,9 @@ const StateProvider = ({children}) => {
     switch (action.type) {
       case 'setUser': {
         return {...state, user: action.payload};
+      }
+      case 'setRegion': {
+        return {...state, region: action.payload};
       }
       case 'setToken': {
         return {...state, auth_token: action.payload};

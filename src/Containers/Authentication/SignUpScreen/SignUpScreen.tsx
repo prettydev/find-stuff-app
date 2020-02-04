@@ -20,7 +20,6 @@ export default function SignUpScreen(props) {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const sendOTP = async () => {
-    console.log('aaaaaaaaa');
     await axios
       .post(baseUrl + 'auth/otp', {
         phone,
@@ -31,7 +30,7 @@ export default function SignUpScreen(props) {
           Toast.show(response.data.msg); //check your inbox
           console.log('success', response.data.msg);
         } else {
-          Toast.show(response.data.msg);
+          Toast.show('正在发送验证码....');
           console.log('failed', response.data.msg);
         }
       })

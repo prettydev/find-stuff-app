@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import {
   View,
   Text,
@@ -16,16 +16,22 @@ import {Table, Row} from 'react-native-table-component';
 import {reduceDataForScreenSize} from 'src/Components/Table/responsive/reduceDataForScreenSize';
 import {useBreakpoint} from 'src/Components/Table/hooks/useBreakpoint';
 
+import {store} from 'src/Store';
+
 const smallScreenIndices = [0, 1, 2];
 const mediumScreenIndices = [0, 1, 2];
 const head = ['城市', '小区名', '电话号'];
 
 export default function CategoryList(props) {
+  const [state, dispatch] = useContext(store);
+
+  console.log(state.region, 'state.region...');
+
   const breakpoint = useBreakpoint();
   const [data, setData] = useState<string[][]>();
 
   const [tmp, setTmp] = useState('');
-  const [key, setKey] = useState('');
+  const [key, setKey] = useState(state.region);
 
   const handleSearch = () => {
     setKey(tmp);
