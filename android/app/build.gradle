@@ -81,6 +81,8 @@ project.ext.react = [
 
     // bundleInDebug: true,    
     // devDisabledInDebug: true
+
+    bundleInRelease: true
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -162,16 +164,15 @@ android {
         }
     }
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
+        // debug {
+        //     signingConfig signingConfigs.debug
+        // }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"            
         }
     }
     // applicationVariants are e.g. debug, release
@@ -200,7 +201,7 @@ android {
 }
 
 dependencies {
-	implementation project(':react-native-background-job')
+	// implementation project(':react-native-background-job')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
