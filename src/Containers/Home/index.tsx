@@ -10,23 +10,23 @@ import {
   TouchableHighlight,
   Dimensions,
 } from 'react-native';
-
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
 import {BaiduMapManager, Geolocation} from 'react-native-baidu-map';
 import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel';
 import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
-
 import {baseUrl} from 'src/constants';
-
 import axios from 'axios';
+// import RNFetchBlob from 'react-native-fetch-blob';
+// import {fetch, removeCookieByName} from 'react-native-ssl-pinning';
+
+import {socket} from 'src/socket';
+
 import AsyncStorage from '@react-native-community/async-storage';
 import regionJson from 'src/Lib/rn-wheel-picker-china-region/regionJson';
 import {NavigationEvents} from 'react-navigation';
-
 import Modal from 'react-native-modal';
-
 import Accordion from 'react-native-collapsible-accordion';
 import {store} from 'src/Store';
 BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
@@ -65,19 +65,22 @@ function HomeView(props) {
   const [citys, setCitys] = useState(_filterCitys('新疆'));
 
   const getNote = () => {
-    axios
-      .post(baseUrl + 'api/notification/last')
-      .then(function(response) {
-        if (response.data.item) {
-          setNote(response.data.item.content);
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-      })
-      .finally(function() {
-        // always executed
-      });
+    // socket.on('data_last_news', value => {
+    //   dispatch({type: 'setLastNews', payload: value});
+    // });
+    // axios
+    //   .post(baseUrl + 'api/notification/last')
+    //   .then(function(response) {
+    //     if (response.data.item) {
+    //       setNote(response.data.item.content);
+    //     }
+    //   })
+    //   .catch(function(error) {
+    //     console.log(error);
+    //   })
+    //   .finally(function() {
+    //     // always executed
+    //   });
   };
 
   const getList = () => {
@@ -97,6 +100,7 @@ function HomeView(props) {
       })
       .finally(function() {
         // always executed
+        console.log('get list request finished...');
       });
   };
 
@@ -117,7 +121,7 @@ function HomeView(props) {
   useEffect(() => {
     console.log('changed region... ... .. ', state.region, tabState.index, key);
     getList();
-  }, [state.region, tabState.index, key]);
+  }, [state.region, tabState.index, key, state.last_news]);
 
   const ListArea = () => (
     <ScrollView style={{backgroundColor: '#fff', flex: 1}}>
@@ -261,14 +265,14 @@ function HomeView(props) {
             </View>
           </View>
           <View style={styles.HomeCategoryContainer}>
-            {note.length > 0 && (
+            {state.last_news.length > 0 && (
               <View style={styles.HomeNotificationArea}>
                 <Image
                   source={Images.RedSound}
                   style={{width: 40, height: 40}}
                 />
                 <Text style={styles.HomeNotificationText} numberOfLines={2}>
-                  {note}
+                  {state.last_news}
                 </Text>
               </View>
             )}

@@ -4,6 +4,7 @@ import React, {
   FC,
   useContext,
   useReducer,
+  useEffect,
 } from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -18,11 +19,9 @@ import Attention from 'src/Containers/Profile/Attention/Attention';
 import Notification from 'src/Containers/Notification/NotificationList/NotificationList';
 import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
 import UserInfo from 'src/Containers/Category/UserInfo/UserInfo';
-import {store, StateProvider} from 'src/Store';
 import LocalPhone from 'src/Containers/LocalPhone/LocalPhone';
-import FlashMessage from 'react-native-flash-message';
 
-require('src/socket');
+import {store, StateProvider} from 'src/Store';
 
 const AppNavigator = createStackNavigator(
   {
@@ -50,11 +49,21 @@ const AppNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-const App: FC = (): ReactElement => {
+const AppWrapper = () => {
+  // const [state, dispatch] = useContext(store);
+
+  // useEffect(() => {
+  //   next_message = state.pop_msg;
+  //   console.log(next_message, 'gvvvvvvvvvvvvvv');
+  // }, [state.pop_msg]);
+
+  return <AppContainer />;
+};
+
+const App = () => {
   return (
     <StateProvider>
-      <AppContainer />
-      <FlashMessage position="top" animated={true} />
+      <AppWrapper />
     </StateProvider>
   );
 };

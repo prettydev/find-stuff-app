@@ -1,6 +1,7 @@
 # find-stuff-app
 
 # design
+
 https://org.modao.cc/app/cbcc45733afb052cfb083f105bcce28c#screen=s59869B75281555836197914
 
 # build release version guide
@@ -11,7 +12,7 @@ https://org.modao.cc/app/cbcc45733afb052cfb083f105bcce28c#screen=s59869B75281555
 2. command
    1. react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
 3. android/app/src/main/res/
-   1. delete drawable*, raw directories
+   1. delete drawable\*, raw directories
 4. command
    1. cd android
    2. ./gradlew assembleRelease
@@ -26,3 +27,12 @@ https://org.modao.cc/app/cbcc45733afb052cfb083f105bcce28c#screen=s59869B75281555
    5. don't modify some app functions, it makes the problem more difficult.
       1. this project, i modified BottomNavTab, and didn't test it's behavior, so eventually modified again like the start point.
 7. Happy coding!
+
+# ssl setting guide
+
+1. yarn add react-native-ssl-pinning@latest
+2. openssl s_client -showcerts -connect 106.53.75.202:8000
+3. Copy the certificate (Usally the first one in the chain), and paste it using nano or other editor like so , nano mycert.pem
+4. convert it to .cer with this command openssl x509 -in mycert.pem -outform der -out mycert.cer
+5. iOS > drag mycert.cer to Xcode project, mark your target and 'Copy items if needed'
+   Android > Place your .cer files under src/main/assets/.
