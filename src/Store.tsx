@@ -55,7 +55,7 @@ const initialState = {
   region: '天山区',
   user: {},
   news: [],
-  last_news: {},
+  last_note: {},
   notifications: [],
   messages: [],
 };
@@ -80,8 +80,8 @@ const StateProvider = ({children}) => {
           ...action.payload,
         };
       }
-      case 'setLastNews': {
-        return {...state, last_news: action.payload};
+      case 'setLastNote': {
+        return {...state, last_note: action.payload};
       }
       case 'setNews': {
         return {...state, news: action.payload};
@@ -126,8 +126,8 @@ const StateProvider = ({children}) => {
       next_message = value;
     });
     ///////////////////////////////////////////////////////////////
-    state.socket.on('data_last_news', value => {
-      dispatch({type: 'setLastNews', payload: value});
+    state.socket.on('data_last_note', value => {
+      dispatch({type: 'setLastNote', payload: value});
     });
   }, []);
 

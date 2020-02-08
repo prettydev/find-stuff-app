@@ -16,12 +16,11 @@ import {BaiduMapManager, Geolocation} from 'react-native-baidu-map';
 import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel';
 import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
-import {baseUrl} from 'src/constants';
+
 import axios from 'axios';
+import {baseUrl} from 'src/constants';
 // import RNFetchBlob from 'react-native-fetch-blob';
 // import {fetch, removeCookieByName} from 'react-native-ssl-pinning';
-
-import {socket} from 'src/socket';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import regionJson from 'src/Lib/rn-wheel-picker-china-region/regionJson';
@@ -64,25 +63,6 @@ function HomeView(props) {
 
   const [citys, setCitys] = useState(_filterCitys('新疆'));
 
-  const getNote = () => {
-    // socket.on('data_last_news', value => {
-    //   dispatch({type: 'setLastNews', payload: value});
-    // });
-    // axios
-    //   .post(baseUrl + 'api/notification/last')
-    //   .then(function(response) {
-    //     if (response.data.item) {
-    //       setNote(response.data.item.content);
-    //     }
-    //   })
-    //   .catch(function(error) {
-    //     console.log(error);
-    //   })
-    //   .finally(function() {
-    //     // always executed
-    //   });
-  };
-
   const getList = () => {
     axios
       .get(baseUrl + 'api/stuffpost', {
@@ -105,10 +85,6 @@ function HomeView(props) {
   };
 
   useEffect(() => {
-    // AsyncStorage.clear();
-
-    getNote();
-
     Geolocation.getCurrentPosition().then(data => {
       if (data.city) {
         dispatch({type: 'setRegion', payload: data.city});
@@ -121,7 +97,7 @@ function HomeView(props) {
   useEffect(() => {
     console.log('changed region... ... .. ', state.region, tabState.index, key);
     getList();
-  }, [state.region, tabState.index, key, state.last_news]);
+  }, [state.region, tabState.index, key, state.last_note]);
 
   const ListArea = () => (
     <ScrollView style={{backgroundColor: '#fff', flex: 1}}>
@@ -265,14 +241,14 @@ function HomeView(props) {
             </View>
           </View>
           <View style={styles.HomeCategoryContainer}>
-            {state.last_news.length > 0 && (
+            {state.last_note.length > 0 && (
               <View style={styles.HomeNotificationArea}>
                 <Image
                   source={Images.RedSound}
                   style={{width: 40, height: 40}}
                 />
                 <Text style={styles.HomeNotificationText} numberOfLines={2}>
-                  {state.last_news}
+                  {state.last_note}
                 </Text>
               </View>
             )}
