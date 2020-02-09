@@ -8,7 +8,9 @@ import {Card} from 'react-native-shadow-cards';
 import moment from 'moment';
 import {baseUrl} from 'src/constants';
 
-export default function StuffCard({item, proc, navigation}) {
+export default function StuffCard(props) {
+  const {item, proc} = props;
+
   return (
     <TouchableOpacity onPress={proc} style={Style.CardWrap}>
       <Card style={{padding: 12}}>
@@ -29,8 +31,7 @@ export default function StuffCard({item, proc, navigation}) {
               item.user.photo.length > 0 && (
                 <TouchableOpacity
                   onPress={() => {
-                    if (navigation)
-                      navigation.navigate('UserInfo', {item: item.user});
+                    props.navigation.navigate('UserInfo', {item: item.user});
                   }}>
                   <Image
                     style={Style.AvatarStyle}
@@ -51,12 +52,10 @@ export default function StuffCard({item, proc, navigation}) {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              {item.user !== null && item.user.name !== null && (
-                <Text>{item.user.name}</Text>
-              )}
+              <Text>{item.title}</Text>
               {item.kind === 'lost' && (
                 <RectBtn
-                  RectBtnTitle={'寻物招领'}
+                  RectBtnTitle={'寻物启事'}
                   RectBtnColor={'blueTransparent90'}
                 />
               )}
@@ -85,6 +84,12 @@ export default function StuffCard({item, proc, navigation}) {
                 <RoundBtn
                   RoundBtnTitle={'联系TA'}
                   RoundBtnColor={'MainYellow'}
+                  proc={() => {
+                    props.navigation.navigate('ChatDetail', {
+                      item: item.user,
+                      msg: {},
+                    });
+                  }}
                 />
               </View>
             </View>
@@ -97,12 +102,14 @@ export default function StuffCard({item, proc, navigation}) {
             </Text>
           </View>
           <View style={Style.CardImageSection}>
-            <Image
-              source={{
-                uri: baseUrl + 'download/photo?path=' + item.photos[0].path,
-              }}
-              style={Style.CardImage}
-            />
+            {item.photos.length > 0 && (
+              <Image
+                source={{
+                  uri: baseUrl + 'download/photo?path=' + item.photos[0].path,
+                }}
+                style={Style.CardImage}
+              />
+            )}
           </View>
         </View>
         <View style={Style.CardLocation}>

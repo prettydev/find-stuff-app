@@ -92,13 +92,12 @@ const LostStuffScreen = props => {
               description,
               photos,
               user: state.user._id,
+              title: state.user.name,
             })
             .then(function(response2) {
-              if (response2.data) {
-                Toast.show('成功!');
+              Toast.show(response2.data.msg);
+              if (response2.data.success) {
                 props.navigation.navigate('AppHome');
-              } else {
-                Toast.show('失败了!');
               }
             })
             .catch(function(error) {
@@ -109,11 +108,29 @@ const LostStuffScreen = props => {
           console.log(JSON.stringify(error));
         });
     } else {
-      Toast.show('未选择照片!');
+      axios
+        .post(baseUrl + 'api/stuffpost', {
+          kind: 'lost',
+          tag,
+          place,
+          address,
+          fee,
+          description,
+          photos: [],
+          user: state.user._id,
+          title: state.user.name,
+        })
+        .then(function(response2) {
+          Toast.show(response2.data.msg);
+          if (response2.data.success) {
+            props.navigation.navigate('AppHome');
+          }
+        })
+        .catch(function(error) {
+          Toast.show(error);
+        });
     }
   }
-
-  useEffect(() => {}, []);
 
   return (
     <ScrollView style={Styles.FindStuffScreenContainer}>
@@ -173,9 +190,6 @@ const LostStuffScreen = props => {
               onChangeText={value => setAddress(value)}
             />
           </View>
-          <TouchableOpacity>
-            <Text style={Styles.FindStuffDetailAreaBtn}>定位</Text>
-          </TouchableOpacity>
         </View>
       </View>
       <View style={Styles.FindStuffPriceBtnContainer}>

@@ -14,6 +14,9 @@ import moment from 'moment';
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import {baseUrl} from 'src/constants';
+
+import {NavigationEvents} from 'react-navigation';
+
 const axios = require('axios');
 
 export default function ChatDetail(props) {
@@ -22,11 +25,15 @@ export default function ChatDetail(props) {
   const [msg, setMsg] = useState(props.navigation.getParam('msg'));
   const [reply, setReply] = useState('');
   const handleSubmit = async () => {
-    if (reply === '') {
-      Toast.show('Input values correctly!');
+    if (item === null) {
+      Toast.show('错误的接收者!');
       return;
     }
 
+    if (reply === '') {
+      Toast.show('正确输入值！');
+      return;
+    }
     await axios
       .post(baseUrl + 'api/message', {
         content: reply,
@@ -48,8 +55,16 @@ export default function ChatDetail(props) {
   useEffect(() => {
     if (!state.auth_token) props.navigation.navigate('Signin');
   }, []);
+
+  useEffect(() => {}, [item]);
+
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
+      <NavigationEvents
+        onDidFocus={() => {
+          if (!state.user._id) props.navigation.navigate('Signin');
+        }}
+      />
       <View style={Styles.FindStuffHeaderContainer}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('MainScreenWithBottomNav')}
@@ -61,7 +76,12 @@ export default function ChatDetail(props) {
             borderRadius={30}
           />
         </TouchableOpacity>
-        <Text style={{fontSize: 20, color: '#fff'}}>{item.name}</Text>
+        {item !== null && (
+          <Text style={{fontSize: 20, color: '#fff'}}>{item.name}</Text>
+        )}
+        {item === null && (
+          <Text style={{fontSize: 20, color: '#fff'}}>{''}</Text>
+        )}
         <Text style={{flex: 1}} />
       </View>
       <View style={Styles.MessageDetailContainer}>
@@ -78,12 +98,17 @@ export default function ChatDetail(props) {
             />
             <View>
               <View style={Styles.nickNameContainer}>
-                <Text style={Styles.CommonText}>{item.name}</Text>
+                {item !== null && (
+                  <Text style={Styles.CommonText}>{item.name}</Text>
+                )}
+                {item === null && <Text style={Styles.CommonText}>{''}</Text>}
               </View>
               <View style={Styles.nickNameContainer}>
-                <Text style={{fontSize: 12, color: Colors.grey}}>
-                  {moment(item.createAt).format('M月D日 hh时mm分')}
-                </Text>
+                {item !== null && (
+                  <Text style={{fontSize: 12, color: Colors.grey}}>
+                    {moment(item.createAt).format('M月D日 hh时mm分')}
+                  </Text>
+                )}
               </View>
             </View>
           </View>
@@ -98,7 +123,7 @@ export default function ChatDetail(props) {
             <TextInput
               style={Styles.newMesssageText}
               underlineColorAndroid="transparent"
-              placeholder="Type something"
+              placeholder="内容"
               placeholderTextColor="grey"
               numberOfLines={5}
               onChangeText={value => setReply(value)}
@@ -107,7 +132,7 @@ export default function ChatDetail(props) {
         </View>
         <View style={Styles.replyBtnContainer}>
           <TouchableOpacity style={Styles.replyBtnWrap} onPress={handleSubmit}>
-            <Text style={{color: '#fff', fontSize: 18}}>Reply Button</Text>
+            <Text style={{color: '#fff', fontSize: 18}}>发送</Text>
           </TouchableOpacity>
         </View>
       </View>

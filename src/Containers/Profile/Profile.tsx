@@ -246,7 +246,6 @@ const Profile = props => {
           </TouchableOpacity>
           <View>
             <View style={{flexDirection: 'row'}}>
-              <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
               <TouchableOpacity
                 onPress={() => {
                   setIsEdit(!isEdit);

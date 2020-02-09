@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {
   View,
   Text,
@@ -16,9 +16,12 @@ import StuffCard from 'src/Components/Card/StuffCard';
 import {tagJson} from 'src/constants';
 import {NavigationEvents} from 'react-navigation';
 import {baseUrl} from 'src/constants';
+import {store} from 'src/Store';
 const axios = require('axios');
 
 export default function CategoryList(props) {
+  const [state, dispatch] = useContext(store);
+
   const [list, setList] = useState([]);
   const [tag, setTag] = useState('');
 
@@ -39,6 +42,7 @@ export default function CategoryList(props) {
           kind: props.navigation.getParam('kind'),
           tag,
           key,
+          region: state.region,
         },
       })
       .then(function(response) {
@@ -60,7 +64,6 @@ export default function CategoryList(props) {
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>
       <NavigationEvents
         onDidFocus={() => {
-          console.log('wweweweewe', props.navigation.getParam('kind'));
           getList();
         }}
       />

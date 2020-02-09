@@ -19,6 +19,10 @@ export default function StuffPostDetail({navigation}) {
   const [state, dispatch] = useContext(store);
   const [item, setItem] = useState(navigation.getParam('item'));
 
+  const sendMsg = item => {
+    navigation.navigate('ChatDetail', {item: item.user, msg: {}});
+  };
+
   const increaseBrowseCnt = () => {
     axios
       .post(baseUrl + 'api2/stuffpost/browse', {_id: item._id})
@@ -110,9 +114,7 @@ export default function StuffPostDetail({navigation}) {
               <View style={Styles.UserNameContainer}>
                 <View style={Styles.UserNameWrap}>
                   <View>
-                    {item.user != null && item.user.name !== null && (
-                      <Text>{item.user.name}</Text>
-                    )}
+                    <Text>{item.title}</Text>
                   </View>
                 </View>
                 <View style={{paddingTop: 5}}>
@@ -175,6 +177,7 @@ export default function StuffPostDetail({navigation}) {
                   <RoundBtn
                     RoundBtnTitle={'联系TA'}
                     RoundBtnColor={'MainYellow'}
+                    proc={() => sendMsg(item)}
                   />
                 </View>
                 <View style={{flex: 1}}></View>
@@ -186,15 +189,16 @@ export default function StuffPostDetail({navigation}) {
               <Text style={{color: Colors.grey}}>{item.description}</Text>
             </View>
             <View style={Styles.StuffImgContainer}>
-              {item.photos.map((photo, i) => (
-                <Image
-                  key={i}
-                  source={{
-                    uri: baseUrl + 'download/photo?path=' + photo.path,
-                  }}
-                  style={Styles.StuffImg}
-                />
-              ))}
+              {item.photos.length > 0 &&
+                item.photos.map((photo, i) => (
+                  <Image
+                    key={i}
+                    source={{
+                      uri: baseUrl + 'download/photo?path=' + photo.path,
+                    }}
+                    style={Styles.StuffImg}
+                  />
+                ))}
             </View>
             <View style={Styles.StuffReportContainer}>
               <View>

@@ -28,10 +28,6 @@ export default StyleSheet.create({
     height: 60,
     zIndex: 100,
   },
-  ProfileHeaderAvatarText: {
-    color: 'white',
-    fontSize: 18,
-  },
   ProfileBtnGroupContainer: {
     padding: 5,
     marginTop: 15,

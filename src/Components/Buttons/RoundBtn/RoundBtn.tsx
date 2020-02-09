@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, Text} from 'react-native';
+import {Image, View, Text, TouchableOpacity} from 'react-native';
 import Style from './RoundBtnStyle';
 import {Colors} from 'src/Theme';
 
@@ -10,7 +10,9 @@ export default function RoundBtn(props) {
         Style.RoundBtnWrap,
         {backgroundColor: Colors[props.RoundBtnColor]},
       ]}>
-      <Text style={Style.RoundBtnText}>{props.RoundBtnTitle}</Text>
+      <TouchableOpacity onPress={props.proc}>
+        <Text style={Style.RoundBtnText}>{props.RoundBtnTitle}</Text>
+      </TouchableOpacity>
     </View>
   );
 }

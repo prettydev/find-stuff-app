@@ -44,9 +44,9 @@ function HomeView(props) {
   const [tabState, setTabState] = useState({
     index: 0,
     routes: [
-      {key: 'createAt', title: '最新'},
-      {key: 'browse', title: '热门'},
       {key: 'ads', title: '精华'},
+      {key: 'browse', title: '热门'},
+      {key: 'createAt', title: '最新'},
     ],
   });
 
@@ -99,12 +99,14 @@ function HomeView(props) {
     getList();
   }, [state.region, tabState.index, key, state.last_note]);
 
+  useEffect(() => {}, [list]);
+
   const ListArea = () => (
     <ScrollView style={{backgroundColor: '#fff', flex: 1}}>
       {list.map((item, i) => (
         <StuffCard
           key={i}
-          navigation
+          navigation={props.navigation}
           item={item}
           proc={() => {
             props.navigation.navigate('StuffPostDetail', {item});
@@ -269,6 +271,7 @@ function HomeView(props) {
                   />
                 )}
                 onIndexChange={index => {
+                  setKey(keyTmp);
                   setTabState({...tabState, index});
                 }}
                 initialLayout={{width: Dimensions.get('window').width}}

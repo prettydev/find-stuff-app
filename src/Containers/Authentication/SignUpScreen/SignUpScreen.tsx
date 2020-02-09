@@ -30,7 +30,7 @@ export default function SignUpScreen(props) {
           Toast.show(response.data.msg); //check your inbox
           console.log('success', response.data.msg);
         } else {
-          Toast.show('正在发送验证码....');
+          Toast.show(response.data.msg);
           console.log('failed', response.data.msg);
         }
       })

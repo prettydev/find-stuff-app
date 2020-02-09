@@ -55,7 +55,7 @@ const FoundStuffScreen = props => {
 
   async function handleSubmit() {
     if (tag === '' || place === '' || address === '' || description === '') {
-      Toast.show('Input values correctly!');
+      Toast.show('正确输入值!');
       return;
     }
 
@@ -84,13 +84,12 @@ const FoundStuffScreen = props => {
               photos,
               fee: 0,
               user: state.user._id,
+              title: state.user.name,
             })
             .then(function(response2) {
-              if (response2.data) {
-                Toast.show('成功!');
+              Toast.show(response2.data.msg);
+              if (response2.data.success) {
                 props.navigation.navigate('AppHome');
-              } else {
-                Toast.show('失败了!');
               }
             })
             .catch(function(error) {
@@ -101,11 +100,29 @@ const FoundStuffScreen = props => {
           console.log(JSON.stringify(error));
         });
     } else {
-      Toast.show('未选择照片!');
+      axios
+        .post(baseUrl + 'api/stuffpost', {
+          kind: 'found',
+          tag,
+          place,
+          address,
+          description,
+          photos: [],
+          fee: 0,
+          user: state.user._id,
+          title: state.user.name,
+        })
+        .then(function(response2) {
+          Toast.show(response2.data.msg);
+          if (response2.data.success) {
+            props.navigation.navigate('AppHome');
+          }
+        })
+        .catch(function(error) {
+          Toast.show(error);
+        });
     }
   }
-
-  useEffect(() => {}, []);
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
@@ -170,9 +187,6 @@ const FoundStuffScreen = props => {
               onChangeText={value => setAddress(value)}
             />
           </View>
-          <TouchableOpacity>
-            <Text style={Styles.FindStuffDetailAreaBtn}>定位</Text>
-          </TouchableOpacity>
         </View>
       </View>
 

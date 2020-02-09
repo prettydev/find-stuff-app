@@ -7,7 +7,6 @@ import {
   Image,
   TextInput,
   FlatList,
-  ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Styles from './ChatStyle';
