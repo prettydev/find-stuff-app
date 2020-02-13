@@ -74,87 +74,83 @@ const Profile = props => {
         } else if (response.error) {
         } else if (response.customButton) {
         } else {
-          const name = response.uri;
           const source = {uri: response.uri};
           const data = 'data:image/jpeg;base64,' + response.data;
 
-          setPhoto({source, data, name});
+          setPhoto({source, data, name: response.uri});
+
+          let formData = new FormData();
+
+          const file = {
+            uri: response.uri,
+            name: Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
+            type: 'image/jpeg',
+          };
+          formData.append('file', file);
+
+          changePhoto(formData);
         }
       },
     );
   };
+
+  async function changePhoto(formData) {
+    await axios
+      .post(baseUrl + 'upload/file', formData)
+      .then(response => {
+        axios
+          .put(
+            baseUrl + 'api2/user/' + state.user._id,
+            {
+              photo: response.data.file.path,
+            },
+            {
+              headers: {auth_token: state.auth_token},
+            },
+          )
+          .then(function(response) {
+            Toast.show('成功!');
+          })
+          .catch(function(error) {
+            console.log('eeeeeerrrrrrrrr', error);
+            // Toast.show(error);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        Toast.show('失败了!');
+      });
+  }
+
   async function handleSubmit() {
     if (name === '') {
       Toast.show('正确输入值!');
       return;
     }
-    if (photo && photo.uri) {
-      let formData = new FormData();
 
-      const file = {
-        uri: photo.name,
-        name: Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
-        type: photo.mime || 'image/jpeg',
-      };
-      formData.append('file', file);
-
-      await axios
-        .post(baseUrl + 'upload/file', formData)
-        .then(response => {
-          axios
-            .put(
-              baseUrl + 'api2/user/' + state.user._id,
-              {
-                photo: response.data.file.path,
-                name,
-              },
-              {
-                headers: {auth_token: state.auth_token},
-              },
-            )
-            .then(function(response2) {
-              if (response2.data.success) {
-                dispatch({type: 'setUser', payload: response2.data.user});
-                Toast.show('成功!');
-                setIsEdit(false);
-              } else {
-                Toast.show('失败了!');
-              }
-            })
-            .catch(function(error) {
-              console.log('eeeeeerrrrrrrrr', error);
-              // Toast.show(error);
-            });
-        })
-        .catch(error => {
-          console.log(error);
+    axios
+      .put(
+        baseUrl + 'api2/user/' + state.user._id,
+        {
+          name,
+        },
+        {
+          headers: {auth_token: state.auth_token},
+        },
+      )
+      .then(function(response) {
+        if (response.data.success) {
+          dispatch({type: 'setUser', payload: response.data.user});
+          Toast.show('成功!');
+          setIsEdit(false);
+        } else {
           Toast.show('失败了!');
-        });
-    } else {
-      axios
-        .put(
-          baseUrl + 'api2/user/' + state.user._id,
-          {
-            name,
-          },
-          {
-            headers: {auth_token: state.auth_token},
-          },
-        )
-        .then(function(response2) {
-          if (response2.data.success) {
-            dispatch({type: 'setUser', payload: response2.data.user});
-            Toast.show('成功!');
-            setIsEdit(false);
-          } else {
-            Toast.show('失败了!');
-          }
-        })
-        .catch(function(error) {
-          console.log('eeeeeerrrrrrrrr', error);
-          // Toast.show(error);
-        });
-    }
+        }
+      })
+      .catch(function(error) {
+        console.log('eeeeeerrrrrrrrr', error);
+        // Toast.show(error);
+      });
   }
   useEffect(() => {
     (async () => {
@@ -194,7 +190,7 @@ const Profile = props => {
 
       console.log('refreshing...........................');
     })();
-  }, [isModalVisible, photo]);
+  }, []);
   return (
     <ScrollView style={Style.ProfileContainer}>
       <NavigationEvents
