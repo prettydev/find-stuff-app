@@ -26,6 +26,7 @@ export default StyleSheet.create({
     padding: 5,
     paddingTop: 6,
     paddingBottom: 6,
+    marginRight: 10,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -46,12 +47,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 5,
+    marginRight: 10,
+    borderBottomWidth: 0.3,
+    borderBottomColor: Colors.grey,
   },
   FindStuffDetailAreaInput: {
     height: 40,
     textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.paleGrey3,
   },
   FindStuffDetailAreaBtn: {
     color: '#0084da',

@@ -31,6 +31,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 0.3,
     borderBottomColor: Colors.grey,
+    marginRight: 10,
   },
   FindStuffAreaTextWrap: {
     flexDirection: 'row',
@@ -46,12 +47,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 5,
+    borderBottomWidth: 0.3,
+    borderBottomColor: Colors.grey,
+    marginRight: 10,
   },
   FindStuffDetailAreaInput: {
     height: 40,
     textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.paleGrey3,
   },
   FindStuffDetailAreaBtn: {
     color: '#0084da',
@@ -71,10 +73,10 @@ export default StyleSheet.create({
     height: 40,
     flex: 1,
     textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.paleGrey3,
-    marginRight: 12,
+    borderBottomWidth: 0.3,
+    borderBottomColor: Colors.grey,
     marginLeft: 5,
+    marginRight: 10,
   },
   FindStuffFooter: {
     padding: 5,

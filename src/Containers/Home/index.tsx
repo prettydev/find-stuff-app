@@ -19,10 +19,7 @@ import {Images} from 'src/Theme';
 
 import axios from 'axios';
 import {baseUrl} from 'src/constants';
-// import RNFetchBlob from 'react-native-fetch-blob';
-// import {fetch, removeCookieByName} from 'react-native-ssl-pinning';
 
-import AsyncStorage from '@react-native-community/async-storage';
 import regionJson from 'src/Lib/rn-wheel-picker-china-region/regionJson';
 import {NavigationEvents} from 'react-navigation';
 import Modal from 'react-native-modal';
@@ -36,7 +33,6 @@ function HomeView(props) {
   const [isGpsDlgVisible, setIsGpsDlgVisible] = useState(false);
   const [showMoreInfo, setShowMoreInfo] = useState(false);
 
-  const [note, setNote] = useState('');
   const [list, setList] = useState([]);
   const [key, setKey] = useState('');
   const [keyTmp, setKeyTmp] = useState('');

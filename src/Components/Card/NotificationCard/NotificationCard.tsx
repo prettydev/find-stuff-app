@@ -17,7 +17,7 @@ export default function Card({item, proc}) {
           flex: 10,
           paddingLeft: 30,
         }}>
-        <Text>Administrator</Text>
+        <Text>管理员</Text>
 
         <View style={Style.CardDescription}>
           <Text numberOfLines={2} style={Style.CardDescriptionText}>

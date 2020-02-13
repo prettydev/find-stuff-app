@@ -7,11 +7,9 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  CardInfoWrap: {
-    flexDirection: 'row',
-  },
   ImageSection: {
     paddingRight: 10,
+    flex: 1,
   },
   AvatarStyle: {
     width: 45,
@@ -20,12 +18,6 @@ export default StyleSheet.create({
   Userdate: {
     color: Colors.grey,
   },
-  CardBtnGroup: {
-    paddingLeft: 10,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   CardCatName: {
     borderColor: 'blue',
     fontSize: 5,
@@ -33,17 +25,13 @@ export default StyleSheet.create({
   CardPriceBtn: {
     marginTop: 5,
   },
-  CardCatBtnWrap: {
-    flexDirection: 'row',
-  },
   CardDesAndImgContainer: {
     flexDirection: 'row',
+    paddingLeft: 15,
   },
   CardDescription: {
     flex: 1,
     marginTop: 8,
-    alignItems: 'center',
-    paddingLeft: 5,
     paddingRight: 5,
   },
   CardImageSection: {

@@ -1,12 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Image,
-} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import {Images, Colors} from 'src/Theme';
 import Styles from './CategoryDetailStyle';
 import {store} from 'src/Store';
@@ -119,6 +112,11 @@ export default function StuffPostDetail({navigation}) {
                 </View>
                 <View style={{paddingTop: 5}}>
                   <Text style={{color: Colors.grey, fontSize: 12}}>
+                    {item.phone}
+                  </Text>
+                </View>
+                <View style={{paddingTop: 5}}>
+                  <Text style={{color: Colors.grey, fontSize: 12}}>
                     {moment(item.createAt).format('M月D日 hh时mm分')}
                   </Text>
                 </View>
@@ -141,7 +139,6 @@ export default function StuffPostDetail({navigation}) {
                 </View>
               </View>
               <View style={{flex: 2, flexDirection: 'column'}}>
-                <View style={{flex: 1}}></View>
                 <View
                   style={{
                     flexDirection: 'row',

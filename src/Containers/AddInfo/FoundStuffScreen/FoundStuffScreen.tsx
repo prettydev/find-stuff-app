@@ -24,6 +24,7 @@ const FoundStuffScreen = props => {
   const [tag, setTag] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState([]);
 
@@ -83,6 +84,7 @@ const FoundStuffScreen = props => {
               description,
               photos,
               fee: 0,
+              phone,
               user: state.user._id,
               title: state.user.name,
             })
@@ -109,6 +111,7 @@ const FoundStuffScreen = props => {
           description,
           photos: [],
           fee: 0,
+          phone,
           user: state.user._id,
           title: state.user.name,
         })
@@ -185,6 +188,18 @@ const FoundStuffScreen = props => {
             <TextInput
               style={Styles.FindStuffDetailAreaInput}
               onChangeText={value => setAddress(value)}
+            />
+          </View>
+        </View>
+        <View style={Styles.FindStuffDetailAreaContainer}>
+          <View>
+            <Text>联系电话</Text>
+          </View>
+          <View style={{flex: 1}}>
+            <TextInput
+              style={Styles.FindStuffDetailAreaInput}
+              onChangeText={value => setPhone(value)}
+              keyboardType={'numeric'}
             />
           </View>
         </View>

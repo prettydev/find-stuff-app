@@ -45,7 +45,7 @@ export default function StuffPostDetail({navigation}) {
                 <View style={Styles.UserNameContainer}>
                   <View style={Styles.UserNameWrap}>
                     <View>
-                      <Text>{'Administrator'}</Text>
+                      <Text>{'管理员'}</Text>
                     </View>
                   </View>
                   <View>

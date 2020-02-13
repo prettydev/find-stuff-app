@@ -23,6 +23,7 @@ const LostStuffScreen = props => {
   const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
   const [place, setPlace] = useState('');
+  const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [fee, setFee] = useState(0);
   const [description, setDescription] = useState('');
@@ -89,6 +90,7 @@ const LostStuffScreen = props => {
               place,
               address,
               fee,
+              phone,
               description,
               photos,
               user: state.user._id,
@@ -115,6 +117,7 @@ const LostStuffScreen = props => {
           place,
           address,
           fee,
+          phone,
           description,
           photos: [],
           user: state.user._id,
@@ -188,6 +191,18 @@ const LostStuffScreen = props => {
             <TextInput
               style={Styles.FindStuffDetailAreaInput}
               onChangeText={value => setAddress(value)}
+            />
+          </View>
+        </View>
+        <View style={Styles.FindStuffDetailAreaContainer}>
+          <View>
+            <Text>联系电话</Text>
+          </View>
+          <View style={{flex: 1}}>
+            <TextInput
+              style={Styles.FindStuffDetailAreaInput}
+              onChangeText={value => setPhone(value)}
+              keyboardType={'numeric'}
             />
           </View>
         </View>
