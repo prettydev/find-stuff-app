@@ -35,10 +35,10 @@ export default function StuffCard(props) {
                   }}>
                   <Image
                     style={Style.AvatarStyle}
-                    // source={{
-                    //   uri: baseUrl + 'download/photo?path=' + item.user.photo,
-                    // }}
-                    source={Images.maleProfile}
+                    source={{
+                      uri: baseUrl + 'download/photo?path=' + item.user.photo,
+                    }}
+                    // source={Images.maleProfile}
                     resizeMode="cover"
                     borderRadius={30}
                   />

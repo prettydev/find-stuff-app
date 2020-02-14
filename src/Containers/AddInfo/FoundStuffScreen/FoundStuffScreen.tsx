@@ -71,6 +71,8 @@ const FoundStuffScreen = props => {
         formData.append('photo', file);
       });
 
+      console.log('name or phone', state.user.name || state.user.phone);
+
       await axios
         .post(baseUrl + 'upload/photo', formData)
         .then(response => {
@@ -86,7 +88,7 @@ const FoundStuffScreen = props => {
               fee: 0,
               phone,
               user: state.user._id,
-              title: state.user.name,
+              title: state.user.name || state.user.phone,
             })
             .then(function(response2) {
               Toast.show(response2.data.msg);

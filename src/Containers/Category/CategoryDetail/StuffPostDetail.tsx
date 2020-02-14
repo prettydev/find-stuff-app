@@ -94,10 +94,10 @@ export default function StuffPostDetail({navigation}) {
                   item.user.photo.length > 0 && (
                     <Image
                       style={Styles.AvatarPhoto}
-                      // source={{
-                      //   uri: baseUrl + 'download/photo?path=' + item.user.photo,
-                      // }}
-                      source={Images.maleProfile}
+                      source={{
+                        uri: baseUrl + 'download/photo?path=' + item.user.photo,
+                      }}
+                      // source={Images.maleProfile}
                       resizeMode="cover"
                       borderRadius={30}
                     />
