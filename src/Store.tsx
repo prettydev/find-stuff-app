@@ -28,8 +28,9 @@ const alertMessage = () => {
 
 BackgroundJob.setGlobalWarnings(true);
 const backgroundJob = {
-  jobKey: 'liveMsg',
+  jobKey: 'findStuffLiveMsg',
   job: () => {
+    console.log(Math.random() * 99999);
     alertMessage();
   },
 };
@@ -37,15 +38,17 @@ const backgroundJob = {
 BackgroundJob.register(backgroundJob);
 
 let backgroundSchedule = {
-  jobKey: 'liveMsg',
+  jobKey: 'findStuffLiveMsg',
   period: 5000,
   exact: true,
   allowExecutionInForeground: true,
+  persist: true,
+  alwaysRunning: true,
 };
 
 BackgroundJob.schedule(backgroundSchedule)
   .then(() => console.log('Success: job registered.'))
-  .catch(err => console.err(err));
+  .catch(err => console.log('Failed....', err));
 
 ///////////////////////////////////////////////////////////////
 
