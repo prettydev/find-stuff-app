@@ -93,7 +93,7 @@ function HomeView(props) {
   useEffect(() => {
     console.log('changed region... ... .. ', state.region, tabState.index, key);
     getList();
-  }, [state.region, tabState.index, key, state.last_note]);
+  }, [state.region, tabState.index, key]);
 
   useEffect(() => {}, [list]);
 

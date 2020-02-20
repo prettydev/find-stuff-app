@@ -124,6 +124,8 @@ const StateProvider = ({children}) => {
     }
     ///////////////////////////////////////////////////////////////
     state.socket.on('data_last_note', value => {
+      console.log('data_last_note... ... ... ', value);
+      next_message = value;
       dispatch({type: 'setLastNote', payload: value});
     });
   }, [state.socket]);
