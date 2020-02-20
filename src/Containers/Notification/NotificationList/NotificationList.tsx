@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
@@ -12,13 +12,12 @@ import {NavigationEvents} from 'react-navigation';
 
 const NotificationList = props => {
   const [state, dispatch] = useContext(store);
-  const [list, setList] = useState([]);
 
   const getList = () => {
     axios
       .get(baseUrl + 'api/notification', {})
       .then(function(response) {
-        setList(response.data);
+        dispatch({type: 'setNotifications', payload: response.data});
       })
       .catch(function(error) {
         console.log(error);
@@ -35,9 +34,6 @@ const NotificationList = props => {
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
-          else {
-            getList();
-          }
         }}
       />
       <View style={Styles.CategoryListContainer}>
@@ -54,7 +50,7 @@ const NotificationList = props => {
           <View style={{flex: 1}}></View>
         </View>
         <View style={Styles.NotificationTabContainer}>
-          {list.map((item, i) => (
+          {state.notifications.map((item, i) => (
             <NotificationCard
               key={i}
               item={item}

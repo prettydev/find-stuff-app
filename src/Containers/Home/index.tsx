@@ -242,17 +242,16 @@ function HomeView(props) {
             </View>
           </View>
           <View style={styles.HomeCategoryContainer}>
-            {state.last_note.length > 0 && (
-              <View style={styles.HomeNotificationArea}>
-                <FastImage
-                  source={Images.RedSound}
-                  style={{width: 40, height: 40}}
-                />
-                <Text style={styles.HomeNotificationText} numberOfLines={2}>
-                  {state.last_note}
-                </Text>
-              </View>
-            )}
+            <View style={styles.HomeNotificationArea}>
+              <FastImage
+                source={Images.RedSound}
+                style={{width: 40, height: 40}}
+              />
+              <Text style={styles.HomeNotificationText} numberOfLines={2}>
+                {state.last_note.content ? state.last_note.content : ''}
+              </Text>
+            </View>
+
             <View>
               <TabView
                 navigationState={tabState}
