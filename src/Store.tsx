@@ -96,7 +96,13 @@ const StateProvider = ({children}) => {
       case 'addNotification': {
         return {
           ...state,
-          notifications: [action.payload, ...state.notifications],
+          notifications: Array.from(
+            new Set(
+              [action.payload, ...state.notifications].map(x =>
+                JSON.stringify(x),
+              ),
+            ),
+          ).map(x => JSON.parse(x)),
         };
       }
       default:
@@ -129,6 +135,8 @@ const StateProvider = ({children}) => {
       dispatch({type: 'setLastNote', payload: value});
       dispatch({type: 'addNotification', payload: value});
     });
+
+    console.log('socket changed... ... ...');
   }, [state.socket]);
 
   return <Provider value={[state, dispatch]}>{children}</Provider>;
