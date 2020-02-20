@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,12 @@ import {
 import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Style from './UserInfoStyle';
-
+import Toast from 'react-native-simple-toast';
 import {baseUrl} from 'src/constants';
+import {store} from 'src/Store';
 
 export default function Profile(props) {
+  const [state, dispatch] = useContext(store);
   const [item, setItem] = useState(props.navigation.getParam('item'));
   return (
     <ScrollView style={Style.ProfileContainer}>
@@ -68,7 +70,11 @@ export default function Profile(props) {
         <TouchableOpacity
           style={Style.ProfileMessageContainer}
           onPress={() => {
-            props.navigation.navigate('ChatDetail', {item, msg: {}});
+            if (item._id === state.user._id) {
+              Toast.show('错误');
+              return;
+            }
+            props.navigation.navigate('ChatDetail', {quest: item});
           }}>
           <View style={Style.ProfileMessageWrap}>
             <View style={Style.ProfileMessageLeft}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
@@ -8,8 +8,11 @@ import RectBtn from 'src/Components/Buttons/RectBtn/RectBtn';
 import {Card} from 'react-native-shadow-cards';
 import moment from 'moment';
 import {baseUrl} from 'src/constants';
+import Toast from 'react-native-simple-toast';
+import {store} from 'src/Store';
 
 export default function StuffCard(props) {
+  const [state, dispatch] = useContext(store);
   const {item, proc} = props;
 
   return (
@@ -84,9 +87,12 @@ export default function StuffCard(props) {
                       RoundBtnTitle={'联系TA'}
                       RoundBtnColor={'MainYellow'}
                       proc={() => {
+                        if (item.user._id === state.user._id) {
+                          Toast.show('错误');
+                          return;
+                        }
                         props.navigation.navigate('ChatDetail', {
-                          item: item.user,
-                          msg: {},
+                          guest: item.user,
                         });
                       }}
                     />

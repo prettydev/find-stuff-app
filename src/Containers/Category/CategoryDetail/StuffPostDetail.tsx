@@ -8,13 +8,18 @@ import moment from 'moment';
 import {baseUrl} from 'src/constants';
 import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
 import axios from 'axios';
+import Toast from 'react-native-simple-toast';
 
 export default function StuffPostDetail({navigation}) {
   const [state, dispatch] = useContext(store);
   const [item, setItem] = useState(navigation.getParam('item'));
 
   const sendMsg = item => {
-    navigation.navigate('ChatDetail', {item: item.user, msg: {}});
+    if (item.user._id === state.user._id) {
+      Toast.show('错误');
+      return;
+    }
+    navigation.navigate('ChatDetail', {guest: item.user});
   };
 
   const increaseBrowseCnt = () => {
