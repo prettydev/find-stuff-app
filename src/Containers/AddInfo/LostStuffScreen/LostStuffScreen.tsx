@@ -13,11 +13,13 @@ import {Colors, Images} from 'src/Theme';
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
 
 import {store} from 'src/Store';
-import {baseUrl} from 'src/constants';
 import axios from 'axios';
 import {NavigationEvents} from 'react-navigation';
+import {baseUrl, photoSize} from 'src/constants';
+
 const LostStuffScreen = props => {
   const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
@@ -27,8 +29,6 @@ const LostStuffScreen = props => {
   const [fee, setFee] = useState(0);
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState([]);
-
-  console.log('loststuff state', state);
 
   const handlePhoto = () => {
     ImagePicker.showImagePicker(
@@ -46,11 +46,22 @@ const LostStuffScreen = props => {
         } else if (response.customButton) {
           console.log('User tapped custom button: ', response.customButton);
         } else {
-          const name = response.uri;
-          const source = {uri: response.uri};
-          const data = 'data:image/jpeg;base64,' + response.data;
+          ImageResizer.createResizedImage(
+            response.uri,
+            photoSize,
+            photoSize,
+            'JPEG',
+            100,
+            0,
+          )
+            .then(({uri, path, name, size}) => {
+              console.log('uri', uri, 'path', path, 'name', name, 'size', size);
 
-          setPhoto([...photo, {source, data, name}]);
+              setPhoto([...photo, {uri, name, type: 'image/jpeg'}]);
+            })
+            .catch(err => {
+              console.log('resize error... ... ...', err);
+            });
         }
       },
     );
@@ -58,11 +69,6 @@ const LostStuffScreen = props => {
 
   async function handleSubmit() {
     if (tag === '' || place === '' || address === '' || description === '') {
-      if (tag === '') console.log(11, tag, place, address, description);
-      if (place === '') console.log(22, tag, place, address, description);
-      if (address === '') console.log(33, tag, place, address, description);
-      if (description === '') console.log(44, tag, place, address, description);
-
       Toast.show('正确输入值!');
       return;
     }
@@ -70,12 +76,7 @@ const LostStuffScreen = props => {
     if (photo && photo.length > 0) {
       let formData = new FormData();
       photo.forEach(ph => {
-        const file = {
-          uri: ph.name,
-          name: Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
-          type: ph.mime || 'image/jpeg',
-        };
-        formData.append('photo', file);
+        formData.append('photo', ph);
       });
 
       console.log('name or phone ???', state.user.name || state.user.phone);
@@ -241,11 +242,7 @@ const LostStuffScreen = props => {
         <View style={Styles.FindStuffImgGroupContainer}>
           {photo &&
             photo.map((ph, i) => (
-              <FastImage
-                key={i}
-                source={ph.source}
-                style={{width: 70, height: 70}}
-              />
+              <FastImage key={i} source={ph} style={{width: 70, height: 70}} />
             ))}
         </View>
       </View>

@@ -17,15 +17,11 @@ import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
-
 import QRCode from 'react-native-qrcode-svg';
-
-import {baseUrl, appVersion} from 'src/constants';
 import axios from 'axios';
-
 import {NavigationEvents} from 'react-navigation';
-
 import Modal from 'react-native-modal';
+import {baseUrl, appVersion, avatarSize} from 'src/constants';
 
 const Profile = props => {
   const [state, dispatch] = useContext(store);
@@ -81,8 +77,8 @@ const Profile = props => {
         } else {
           ImageResizer.createResizedImage(
             response.uri,
-            128,
-            128,
+            avatarSize,
+            avatarSize,
             'JPEG',
             100,
             0,
