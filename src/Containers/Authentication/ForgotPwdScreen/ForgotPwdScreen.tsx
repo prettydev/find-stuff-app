@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import Styles from './ForgotPwdScreenStyle';
 import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 import CustomPwdInput from 'src/Components/CustomForm/CustomPwdInput/CustomPwdInput';
@@ -80,7 +80,7 @@ export default function ForgotPWScreen(props) {
           <TouchableOpacity
             onPress={() => props.navigation.navigate('Signin')}
             style={{flex: 1}}>
-            <Image
+            <FastImage
               source={Images.whiteLeftChevron}
               style={Styles.SignUpHeaderImg}
             />

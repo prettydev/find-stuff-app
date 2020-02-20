@@ -4,11 +4,11 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   TextInput,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Styles from './ChatDetailStyle';
-import {Images, Colors} from 'src/Theme';
+import {Images} from 'src/Theme';
 import moment from 'moment';
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
@@ -96,11 +96,10 @@ export default function ChatDetail(props) {
         <TouchableOpacity
           onPress={() => props.navigation.navigate('MainScreenWithBottomNav')}
           style={{flex: 1}}>
-          <Image
+          <FastImage
             source={Images.whiteLeftChevron}
             style={Styles.FindStuffHeaderImg}
             resizeMode="cover"
-            borderRadius={30}
           />
         </TouchableOpacity>
         {guest !== null && (
@@ -114,7 +113,7 @@ export default function ChatDetail(props) {
       <View style={Styles.MessageDetailContainer}>
         <View style={Styles.LastMessageContainer}>
           <View style={Styles.AvatarContainer}>
-            <Image
+            <FastImage
               style={Styles.AvartarImg}
               source={
                 guest.photo
@@ -124,7 +123,6 @@ export default function ChatDetail(props) {
                   : Images.maleProfile
               }
               resizeMode="cover"
-              borderRadius={30}
             />
             <View>
               <View style={Styles.nickNameContainer}>

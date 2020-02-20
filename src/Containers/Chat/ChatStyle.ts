@@ -19,6 +19,7 @@ export default StyleSheet.create({
   MessageListAvatar: {
     width: 35,
     height: 35,
+    borderRadius: 50,
   },
   AvatarBadgeContainer: {
     width: 15,

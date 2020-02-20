@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Images, Colors} from 'src/Theme';
 import Styles from './CategoryDetailStyle';
 import {store} from 'src/Store';
@@ -68,7 +69,7 @@ export default function StuffPostDetail({navigation}) {
             <TouchableOpacity
               style={{flex: 1}}
               onPress={() => navigation.navigate('StuffPostView')}>
-              <Image
+              <FastImage
                 source={Images.whiteLeftChevron}
                 style={Styles.FindStuffHeaderImg}
               />
@@ -81,27 +82,22 @@ export default function StuffPostDetail({navigation}) {
           <View style={Styles.UserInfoContainer}>
             <View style={Styles.AvatarContainer}>
               <View style={Styles.AvatarPhotoContainer}>
-                {(!item.user || !item.user.photo) && (
-                  <Image
-                    style={Styles.AvatarPhoto}
-                    source={Images.maleProfile}
-                    resizeMode="cover"
-                    borderRadius={30}
-                  />
-                )}
-                {item.user !== null &&
-                  item.user.photo !== null &&
-                  item.user.photo.length > 0 && (
-                    <Image
-                      style={Styles.AvatarPhoto}
-                      source={{
-                        uri: baseUrl + 'download/photo?path=' + item.user.photo,
-                      }}
-                      // source={Images.maleProfile}
-                      resizeMode="cover"
-                      borderRadius={30}
-                    />
-                  )}
+                <FastImage
+                  style={Styles.AvatarPhoto}
+                  source={
+                    item.user
+                      ? item.user.photo
+                        ? {
+                            uri:
+                              baseUrl +
+                              'download/photo?path=' +
+                              item.user.photo,
+                          }
+                        : Images.maleProfile
+                      : Images.maleProfile
+                  }
+                  resizeMode="cover"
+                />
                 <View style={{flex: 3}}></View>
               </View>
               <View style={Styles.UserNameContainer}>
@@ -129,7 +125,7 @@ export default function StuffPostDetail({navigation}) {
                   </View>
                 )}
                 <View style={Styles.UserLocationContainer}>
-                  <Image
+                  <FastImage
                     source={Images.BlueMapIcon}
                     style={Styles.UserLocationImg}
                   />
@@ -188,7 +184,7 @@ export default function StuffPostDetail({navigation}) {
             <View style={Styles.StuffImgContainer}>
               {item.photos.length > 0 &&
                 item.photos.map((photo, i) => (
-                  <Image
+                  <FastImage
                     key={i}
                     source={{
                       uri: baseUrl + 'download/photo?path=' + photo.path,
@@ -213,7 +209,7 @@ export default function StuffPostDetail({navigation}) {
         <TouchableOpacity
           style={Styles.LikeCommentContainer}
           onPress={increaseLikesCnt}>
-          <Image source={Images.RedLike} />
+          <FastImage source={Images.RedLike} />
           <Text>{item.likes.length}</Text>
         </TouchableOpacity>
       </View>

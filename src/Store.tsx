@@ -59,7 +59,6 @@ const initialState = {
   news: [],
   last_note: {},
   notifications: [],
-  messages: [],
 };
 const store = createContext(initialState);
 const {Provider} = store;
@@ -99,12 +98,6 @@ const StateProvider = ({children}) => {
           ...state,
           notifications: [...state.notifications, action.payload],
         };
-      }
-      case 'setMessages': {
-        return {...state, messages: action.payload};
-      }
-      case 'addMessage': {
-        return {...state, messages: [...state.messages, action.payload]};
       }
       default:
         throw new Error();

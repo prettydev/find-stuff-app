@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import Style from './RoundBtnStyle';
 import {Colors} from 'src/Theme';
 

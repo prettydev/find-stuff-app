@@ -1,5 +1,6 @@
-import React, {createRef, ReactElement, useContext} from 'react';
-import {Image, Linking, Text, View} from 'react-native';
+import React, {ReactElement} from 'react';
+import {View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {BottomTabBar, createBottomTabNavigator} from 'react-navigation-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
 import AddInfoView from 'src/Containers/AddInfo/AddInfo';
@@ -7,7 +8,6 @@ import ProfileView from 'src/Containers/Profile/Profile';
 import HomeView from 'src/Containers/Home';
 import Style from './BottomTabNavStyle';
 import ChatView from 'src/Containers/Chat/Chat';
-import {store} from 'src/Store';
 import {Colors, Images} from 'src/Theme';
 
 import StuffPostView from 'src/Containers/Category/CategoryList/StuffPostView';
@@ -124,7 +124,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         if (routeName === 'AppHome') {
           return (
             <>
-              <Image
+              <FastImage
                 source={focused ? Images.BottomNavHome2 : Images.BottomNavHome}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
@@ -134,7 +134,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         } else if (routeName === 'Profile') {
           return (
             <>
-              <Image
+              <FastImage
                 source={
                   focused ? Images.BottomNavProfile2 : Images.BottomNavProfile
                 }
@@ -146,7 +146,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         } else if (routeName === 'AddInfo') {
           return (
             <View style={Style.AddInfoContainer}>
-              <Image
+              <FastImage
                 source={Images.BottomNavAdd}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
@@ -156,7 +156,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         } else if (routeName === 'Chat') {
           return (
             <>
-              <Image
+              <FastImage
                 source={focused ? Images.BottomNavChat2 : Images.BottomNavChat}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
@@ -166,7 +166,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         } else if (routeName === 'Notification') {
           return (
             <>
-              <Image
+              <FastImage
                 source={focused ? Images.BottomNavNews2 : Images.BottomNavNews}
                 style={Style.tabBarIcon}
                 resizeMode="contain"

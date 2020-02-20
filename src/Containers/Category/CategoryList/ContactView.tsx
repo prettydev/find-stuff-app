@@ -1,13 +1,13 @@
-import React, {useState, useEffect, useContext, useRef} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   ScrollView,
-  Image,
   TextInput,
 } from 'react-native';
-import {Images, Colors} from 'src/Theme';
+import FastImage from 'react-native-fast-image';
+import {Images} from 'src/Theme';
 import Styles from './CategoryListStyle';
 import {baseUrl} from 'src/constants';
 import axios from 'axios';
@@ -79,7 +79,7 @@ export default function CategoryList(props) {
           <TouchableOpacity
             style={{flex: 1}}
             onPress={() => props.navigation.navigate('HomeView')}>
-            <Image
+            <FastImage
               source={Images.whiteLeftChevron}
               style={Styles.FindStuffHeaderImg}
             />
@@ -92,7 +92,7 @@ export default function CategoryList(props) {
         <View style={Styles.HomeSearchContainer}>
           <View style={Styles.HomeSearchArea}>
             <TouchableOpacity onPress={handleSearch}>
-              <Image source={Images.Search} style={Styles.HomeSearchImg} />
+              <FastImage source={Images.Search} style={Styles.HomeSearchImg} />
             </TouchableOpacity>
             <View style={Styles.HomeSearchInputContainer}>
               <TextInput

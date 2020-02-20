@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Styles from './CategoryListStyle';
 import NewsCard from 'src/Components/Card/NewsCard/NewsCard';
@@ -33,7 +34,7 @@ export default function CategoryList(props) {
           <TouchableOpacity
             style={{flex: 1}}
             onPress={() => props.navigation.navigate('HomeView')}>
-            <Image
+            <FastImage
               source={Images.whiteLeftChevron}
               style={Styles.FindStuffHeaderImg}
             />

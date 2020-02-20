@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, Text} from 'react-native';
+import {View, Text} from 'react-native';
 import Style from './RoundBtnStyle';
 import {Colors} from './node_modules/src/Theme';
 

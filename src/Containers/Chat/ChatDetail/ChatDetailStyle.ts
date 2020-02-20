@@ -16,6 +16,7 @@ export default StyleSheet.create({
   FindStuffHeaderImg: {
     height: 35,
     width: 35,
+    borderRadius: 50,
     transform: [{rotate: '90deg'}],
   },
   CommonText: {
@@ -50,6 +51,7 @@ export default StyleSheet.create({
   AvartarImg: {
     width: 35,
     height: 35,
+    borderRadius: 50,
     marginRight: 10,
     marginLeft: 10,
   },

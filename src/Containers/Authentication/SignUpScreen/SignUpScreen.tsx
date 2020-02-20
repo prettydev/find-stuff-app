@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import Styles from './SignUpScreenStyle';
 import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 import CustomPwdInput from 'src/Components/CustomForm/CustomPwdInput/CustomPwdInput';
 import CustomPhoneInput from 'src/Components/CustomForm/CustomPhoneInput/CustomPhoneInput';
 import FormCommonBtn from 'src/Components/Buttons/FormCommonBtn/FormCommonBtn';
-import CustomVerifyInput from 'src/Components/CustomForm/CustomVerifyInput/CustomVerifyInput';
+
 import {Images} from 'src/Theme';
 
 import Toast from 'react-native-simple-toast';
@@ -87,7 +87,7 @@ export default function SignUpScreen(props) {
           <TouchableOpacity
             onPress={() => props.navigation.navigate('Signin')}
             style={{flex: 1}}>
-            <Image
+            <FastImage
               source={Images.whiteLeftChevron}
               style={Styles.SignUpHeaderImg}
             />

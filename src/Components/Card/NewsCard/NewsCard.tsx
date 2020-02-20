@@ -1,10 +1,10 @@
 import React from 'react';
-import {Image, View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Style from './NewsCardStyle';
 import {Card} from 'react-native-shadow-cards';
 import moment from 'moment';
-import {baseUrl} from 'src/constants';
 
 export default function NewsCard({item, proc}) {
   return (
@@ -12,7 +12,7 @@ export default function NewsCard({item, proc}) {
       <Card style={{padding: 12, flexDirection: 'row'}}>
         <View style={{flex: 1}}>
           <View style={Style.ImageSection}>
-            <Image style={Style.AvatarStyle} source={Images.maleProfile} />
+            <FastImage style={Style.AvatarStyle} source={Images.maleProfile} />
           </View>
         </View>
         <View style={{flex: 5}}>

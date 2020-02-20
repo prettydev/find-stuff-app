@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
-import {Colors, Images} from 'src/Theme';
+import {Colors} from 'src/Theme';
 export default StyleSheet.create({
   FindStuffHeaderContainer: {
     width: Dimensions.get('window').width,
@@ -26,6 +26,7 @@ export default StyleSheet.create({
   AvatarPhoto: {
     width: 35,
     height: 35,
+    borderRadius: 50,
   },
   AvatarContainer: {
     flexDirection: 'row',

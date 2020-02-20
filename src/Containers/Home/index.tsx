@@ -5,11 +5,11 @@ import {
   TextInput,
   View,
   ScrollView,
-  Image,
   TouchableOpacity,
   TouchableHighlight,
   Dimensions,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
 import {BaiduMapManager, Geolocation} from 'react-native-baidu-map';
@@ -140,7 +140,7 @@ function HomeView(props) {
               <Text style={{color: 'white', marginLeft: 10}}>
                 {state.region}
               </Text>
-              <Image
+              <FastImage
                 source={Images.DownArrow}
                 style={{width: 10, height: 10, margin: 3}}
               />
@@ -155,7 +155,10 @@ function HomeView(props) {
                 onPress={() => {
                   setKey(keyTmp);
                 }}>
-                <Image source={Images.Search} style={styles.HomeSearchImg} />
+                <FastImage
+                  source={Images.Search}
+                  style={styles.HomeSearchImg}
+                />
               </TouchableOpacity>
               <View style={styles.HomeSearchInputContainer}>
                 <TextInput
@@ -179,7 +182,7 @@ function HomeView(props) {
                 onPress={() =>
                   props.navigation.navigate('StuffPostView', {kind: 'lost'})
                 }>
-                <Image
+                <FastImage
                   style={{width: 52, height: 52}}
                   source={Images.HomeFindBtn}
                 />
@@ -196,7 +199,7 @@ function HomeView(props) {
                 onPress={() =>
                   props.navigation.navigate('StuffPostView', {kind: 'found'})
                 }>
-                <Image
+                <FastImage
                   style={{width: 52, height: 52}}
                   source={Images.HomeGetBtn}
                 />
@@ -213,7 +216,7 @@ function HomeView(props) {
                 props.navigation.navigate('NewsView', {kind: 'found'})
               }>
               <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                <Image
+                <FastImage
                   style={{width: 52, height: 52}}
                   source={Images.HomeNewsBtn}
                 />
@@ -230,7 +233,7 @@ function HomeView(props) {
                 onPress={() =>
                   props.navigation.navigate('ContactView', {kind: 'found'})
                 }>
-                <Image
+                <FastImage
                   style={{width: 52, height: 52}}
                   source={Images.HomeMapBtn}
                 />
@@ -241,7 +244,7 @@ function HomeView(props) {
           <View style={styles.HomeCategoryContainer}>
             {state.last_note.length > 0 && (
               <View style={styles.HomeNotificationArea}>
-                <Image
+                <FastImage
                   source={Images.RedSound}
                   style={{width: 40, height: 40}}
                 />

@@ -1,16 +1,15 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   ScrollView,
   View,
   Text,
   TouchableOpacity,
-  Image,
   TextInput,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Styles from './LostStuffScreenStyle';
 import CustomFormSelect from 'src/Components/CustomForm/CustomFormSelect/CustomFormSelect';
 import {Colors, Images} from 'src/Theme';
-import AsyncStorage from '@react-native-community/async-storage';
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
@@ -148,7 +147,7 @@ const LostStuffScreen = props => {
         <TouchableOpacity
           onPress={() => props.navigation.navigate('AppHome')}
           style={{flex: 1}}>
-          <Image
+          <FastImage
             source={Images.whiteLeftChevron}
             style={Styles.FindStuffHeaderImg}
           />
@@ -232,14 +231,17 @@ const LostStuffScreen = props => {
           <TouchableOpacity
             style={Styles.FindStuffImgUploadWrap}
             onPress={handlePhoto}>
-            <Image source={Images.Camera} style={Styles.FindStuffImgUpload} />
+            <FastImage
+              source={Images.Camera}
+              style={Styles.FindStuffImgUpload}
+            />
             <Text style={{color: Colors.grey}}>添加图片</Text>
           </TouchableOpacity>
         </View>
         <View style={Styles.FindStuffImgGroupContainer}>
           {photo &&
             photo.map((ph, i) => (
-              <Image
+              <FastImage
                 key={i}
                 source={ph.source}
                 style={{width: 70, height: 70}}

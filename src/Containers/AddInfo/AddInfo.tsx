@@ -1,11 +1,6 @@
 import React, {Component} from 'react';
-import {
-  ImageBackground,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {ImageBackground, Text, View, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Modal from 'react-native-modal';
 import {withNavigation} from 'react-navigation';
 import {Images} from 'src/Theme';
@@ -71,7 +66,7 @@ class AddInfo extends Component {
               <View style={Styles.AddBtnWrap}>
                 <View>
                   <TouchableOpacity onPress={() => this.gotoLostStuffScreen()}>
-                    <Image
+                    <FastImage
                       style={Styles.FindBtnImg}
                       source={Images.HomeFindBtn}
                     />
@@ -80,7 +75,7 @@ class AddInfo extends Component {
                 </View>
                 <View>
                   <TouchableOpacity onPress={() => this.gotoFoundStuffScreen()}>
-                    <Image
+                    <FastImage
                       style={Styles.GetBtnImg}
                       source={Images.HomeGetBtn}
                     />
@@ -94,7 +89,10 @@ class AddInfo extends Component {
                     this.toggleModal();
                     this.props.navigation.navigate('AppHome');
                   }}>
-                  <Image style={Styles.CloseImg} source={Images.CloseIcon} />
+                  <FastImage
+                    style={Styles.CloseImg}
+                    source={Images.CloseIcon}
+                  />
                 </TouchableOpacity>
               </View>
             </View>

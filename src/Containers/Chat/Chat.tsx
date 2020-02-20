@@ -1,12 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  ScrollView,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  FlatList,
-} from 'react-native';
+import {ScrollView, View, Text, TouchableOpacity, FlatList} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Styles from './ChatStyle';
 import {Images, Colors} from 'src/Theme';
 import {store} from 'src/Store';
@@ -89,7 +83,7 @@ const Chat = props => {
                 <View style={{flexDirection: 'column'}}>
                   <View style={{flex: 1, marginRight: 5}}>
                     {item._id && (
-                      <Image
+                      <FastImage
                         source={
                           item._id.photo
                             ? {
@@ -100,10 +94,8 @@ const Chat = props => {
                               }
                             : Images.maleProfile
                         }
-                        // source={Images.maleProfile}
                         style={Styles.MessageListAvatar}
                         resizeMode="cover"
-                        borderRadius={30}
                       />
                     )}
                     {

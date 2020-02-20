@@ -1,14 +1,7 @@
-import React, {useEffect, useState, useContext, useCallback} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-  Image,
-} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import {Images, Colors} from 'src/Theme';
+import React, {useEffect, useState, useContext} from 'react';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {Images} from 'src/Theme';
 import Styles from './NotificationListStyle';
 import NotificationCard from 'src/Components/Card/NotificationCard/NotificationCard';
 import {store} from 'src/Store';
@@ -50,7 +43,7 @@ const NotificationList = props => {
       <View style={Styles.CategoryListContainer}>
         <View style={Styles.FindStuffHeaderContainer}>
           <TouchableOpacity style={{flex: 1}}>
-            <Image
+            <FastImage
               source={Images.whiteLeftChevron}
               style={Styles.FindStuffHeaderImg}
             />

@@ -1,13 +1,12 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   ScrollView,
   View,
   Text,
   TouchableOpacity,
-  Image,
   TextInput,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import FastImage from 'react-native-fast-image';
 import Styles from './FoundStuffScreenStyle';
 import CustomFormSelect from 'src/Components/CustomForm/CustomFormSelect/CustomFormSelect';
 import {Images, Colors} from 'src/Theme';
@@ -140,7 +139,7 @@ const FoundStuffScreen = props => {
         <TouchableOpacity
           onPress={() => props.navigation.navigate('AppHome')}
           style={{flex: 1}}>
-          <Image
+          <FastImage
             source={Images.whiteLeftChevron}
             style={Styles.FindStuffHeaderImg}
           />
@@ -221,14 +220,17 @@ const FoundStuffScreen = props => {
           <TouchableOpacity
             style={Styles.FindStuffImgUploadWrap}
             onPress={handlePhoto}>
-            <Image source={Images.Camera} style={Styles.FindStuffImgUpload} />
+            <FastImage
+              source={Images.Camera}
+              style={Styles.FindStuffImgUpload}
+            />
             <Text style={{color: Colors.grey}}>添加图片</Text>
           </TouchableOpacity>
         </View>
         <View style={Styles.FindStuffImgGroupContainer}>
           {photo &&
             photo.map((ph, i) => (
-              <Image
+              <FastImage
                 key={i}
                 source={ph.source}
                 style={{width: 70, height: 70}}

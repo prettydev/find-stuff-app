@@ -26,6 +26,7 @@ export default StyleSheet.create({
   ProfileHeaderAvatarImg: {
     width: 60,
     height: 60,
+    borderRadius: 50,
     zIndex: 100,
   },
   ProfileBtnGroupContainer: {

@@ -3,11 +3,11 @@ import {
   View,
   Text,
   ImageBackground,
-  Image,
   ScrollView,
   TextInput,
   Button,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Images} from 'src/Theme';
 import Style from './ProfileStyle';
@@ -215,34 +215,31 @@ const Profile = props => {
             {state.user.photo !== undefined &&
               state.user.photo !== '' &&
               photo.source === '' && (
-                <Image
+                <FastImage
                   source={{
                     uri: baseUrl + 'download/photo?path=' + state.user.photo,
                   }}
                   style={Style.ProfileHeaderAvatarImg}
                   resizeMode="cover"
-                  borderRadius={30}
                 />
               )}
             {state.user.photo !== undefined &&
               state.user.photo !== '' &&
               photo.source !== '' && (
-                <Image
+                <FastImage
                   source={photo.source}
                   style={Style.ProfileHeaderAvatarImg}
                   resizeMode="cover"
-                  borderRadius={30}
                 />
               )}
             {(state.user.photo === '' || state.user.photo === undefined) && (
-              <Image
+              <FastImage
                 source={photo.source ? photo.source : Images.femaleProfile}
                 style={Style.ProfileHeaderAvatarImg}
                 resizeMode="cover"
-                borderRadius={30}
               />
             )}
-            <Image source={Images.Camera} style={Style.HeaderImgBadge} />
+            <FastImage source={Images.Camera} style={Style.HeaderImgBadge} />
           </TouchableOpacity>
           <View>
             <View style={{flexDirection: 'row'}}>
@@ -250,7 +247,10 @@ const Profile = props => {
                 onPress={() => {
                   setIsEdit(!isEdit);
                 }}>
-                <Image source={Images.TextEdit} style={Style.HeaderTextBadge} />
+                <FastImage
+                  source={Images.TextEdit}
+                  style={Style.HeaderTextBadge}
+                />
               </TouchableOpacity>
             </View>
             <Text style={{color: Colors.white, fontSize: 12}}>
@@ -291,7 +291,7 @@ const Profile = props => {
             onPress={() => {
               handleModal('service');
             }}>
-            <Image
+            <FastImage
               source={Images.ProfileBtnPublished}
               style={Style.ProfileBtnPublishedImg}
             />
@@ -302,7 +302,7 @@ const Profile = props => {
             onPress={() => {
               handleModal('phone');
             }}>
-            <Image
+            <FastImage
               source={Images.ProfileBtnLike}
               style={Style.ProfileBtnLikeImg}
             />
@@ -318,14 +318,14 @@ const Profile = props => {
           }}>
           <View style={Style.ProfileUpdateWrap}>
             <View style={Style.ProfileUpdateLeft}>
-              <Image
+              <FastImage
                 source={Images.ProfileUpdate}
                 style={Style.ProfileUpdateImg}
               />
               <Text>检查更新</Text>
             </View>
             <View>
-              <Image
+              <FastImage
                 source={Images.RightArrow}
                 style={Style.ProfileRightArrow}
               />
@@ -339,14 +339,14 @@ const Profile = props => {
           }}>
           <View style={Style.ProfileContactUsWrap}>
             <View style={Style.ProfileContactUsLeft}>
-              <Image
+              <FastImage
                 source={Images.ProfileContactus}
                 style={Style.ProfileContactImg}
               />
               <Text>关于寻N</Text>
             </View>
             <View>
-              <Image
+              <FastImage
                 source={Images.RightArrow}
                 style={Style.ProfileRightArrow}
               />
@@ -360,14 +360,14 @@ const Profile = props => {
           }}>
           <View style={Style.ProfileContactUsWrap}>
             <View style={Style.ProfileContactUsLeft}>
-              <Image
+              <FastImage
                 source={Images.ProfileWithFriend}
                 style={Style.ProfileShareImg}
               />
               <Text>分享给朋友</Text>
             </View>
             <View>
-              <Image
+              <FastImage
                 source={Images.RightArrow}
                 style={Style.ProfileRightArrow}
               />

@@ -14,6 +14,7 @@ export default StyleSheet.create({
   AvatarStyle: {
     width: 45,
     height: 45,
+    borderRadius: 50,
   },
   Userdate: {
     color: Colors.grey,

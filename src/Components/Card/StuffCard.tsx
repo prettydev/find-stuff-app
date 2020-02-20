@@ -1,5 +1,6 @@
 import React from 'react';
-import {Image, View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Style from './CardStyle';
 import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
@@ -16,34 +17,25 @@ export default function StuffCard(props) {
       <Card style={{padding: 12, flexDirection: 'column'}}>
         <View style={{flexDirection: 'row'}}>
           <View style={Style.ImageSection}>
-            {item.user !== null &&
-              item.user.photo !== null &&
-              item.user.photo.length === 0 && (
-                <Image
-                  style={Style.AvatarStyle}
-                  source={Images.maleProfile}
-                  resizeMode="cover"
-                  borderRadius={30}
-                />
-              )}
-            {item.user != null &&
-              item.user.photo != null &&
-              item.user.photo.length > 0 && (
-                <TouchableOpacity
-                  onPress={() => {
-                    props.navigation.navigate('UserInfo', {item: item.user});
-                  }}>
-                  <Image
-                    style={Style.AvatarStyle}
-                    source={{
-                      uri: baseUrl + 'download/photo?path=' + item.user.photo,
-                    }}
-                    // source={Images.maleProfile}
-                    resizeMode="cover"
-                    borderRadius={30}
-                  />
-                </TouchableOpacity>
-              )}
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('UserInfo', {item: item.user});
+              }}>
+              <FastImage
+                style={Style.AvatarStyle}
+                source={
+                  item.user
+                    ? item.user.photo
+                      ? {
+                          uri:
+                            baseUrl + 'download/photo?path=' + item.user.photo,
+                        }
+                      : Images.maleProfile
+                    : Images.maleProfile
+                }
+                resizeMode="cover"
+              />
+            </TouchableOpacity>
           </View>
           <View style={{flex: 5}}>
             <View style={{flexDirection: 'column'}}>
@@ -121,7 +113,7 @@ export default function StuffCard(props) {
             </View>
             <View style={Style.CardImageSection}>
               {item.photos.length > 0 && (
-                <Image
+                <FastImage
                   source={{
                     uri: baseUrl + 'download/photo?path=' + item.photos[0].path,
                   }}
@@ -132,7 +124,7 @@ export default function StuffCard(props) {
           </View>
           <View style={Style.CardLocation}>
             <View style={Style.CardLocationGroup}>
-              <Image
+              <FastImage
                 style={Style.CardLocationImg}
                 source={Images.BlueMapIcon}
               />

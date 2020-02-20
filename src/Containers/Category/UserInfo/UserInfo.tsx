@@ -1,17 +1,16 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   ImageBackground,
-  Image,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Style from './UserInfoStyle';
 
 import {baseUrl} from 'src/constants';
-const axios = require('axios');
 
 export default function Profile(props) {
   const [item, setItem] = useState(props.navigation.getParam('item'));
@@ -22,7 +21,7 @@ export default function Profile(props) {
         style={Style.ProfileHeaderContainer}>
         <View style={Style.ProfileHeaderTitleContainer}>
           <TouchableOpacity style={Style.HeaderChevronImg}>
-            <Image
+            <FastImage
               source={Images.whiteLeftChevron}
               style={Style.FindStuffHeaderImg}
             />
@@ -31,13 +30,12 @@ export default function Profile(props) {
         </View>
         <View style={Style.ProfileHeaderAvatarContainer}>
           <View style={Style.ProfileHeaderAvatarWrap}>
-            <Image
+            <FastImage
               source={{
                 uri: baseUrl + 'download/photo?path=' + item.photo,
               }}
               style={Style.ProfileHeaderAvatarImg}
               resizeMode="cover"
-              borderRadius={30}
             />
             <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
           </View>
@@ -47,11 +45,10 @@ export default function Profile(props) {
         <TouchableOpacity style={Style.ProfileUpdateContainer}>
           <View style={Style.ProfileUpdateWrap}>
             <View style={Style.ProfileUpdateLeft}>
-              <Image
+              <FastImage
                 source={Images.BlueMapIcon}
                 style={Style.ProfileUpdateImg}
                 resizeMode="cover"
-                borderRadius={30}
               />
               <Text>上安医大</Text>
             </View>
@@ -60,7 +57,7 @@ export default function Profile(props) {
         <TouchableOpacity style={Style.ProfileContactUsContainer}>
           <View style={Style.ProfileContactUsWrap}>
             <View style={Style.ProfileContactUsLeft}>
-              <Image
+              <FastImage
                 source={Images.ProfileContactus}
                 style={Style.ProfileContactUsImg}
               />
@@ -75,11 +72,14 @@ export default function Profile(props) {
           }}>
           <View style={Style.ProfileMessageWrap}>
             <View style={Style.ProfileMessageLeft}>
-              <Image source={Images.Message1} style={Style.ProfileMessageImg} />
+              <FastImage
+                source={Images.Message1}
+                style={Style.ProfileMessageImg}
+              />
               <Text>私信</Text>
             </View>
             <View>
-              <Image
+              <FastImage
                 source={Images.RightArrow}
                 style={Style.ProfileRightArrow}
               />

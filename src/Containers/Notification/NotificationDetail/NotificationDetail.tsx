@@ -1,19 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Image,
-} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Images, Colors} from 'src/Theme';
 import Styles from './NotificationDetailStyle';
 
 import moment from 'moment';
-import {baseUrl} from 'src/constants';
-
-const axios = require('axios');
 
 export default function StuffPostDetail({navigation}) {
   const [item, setItem] = useState(navigation.getParam('item'));
@@ -27,7 +18,7 @@ export default function StuffPostDetail({navigation}) {
             <TouchableOpacity
               style={{flex: 1}}
               onPress={() => navigation.navigate('NotificationView')}>
-              <Image
+              <FastImage
                 source={Images.whiteLeftChevron}
                 style={Styles.FindStuffHeaderImg}
               />
@@ -40,7 +31,10 @@ export default function StuffPostDetail({navigation}) {
           <View style={Styles.UserInfoContainer}>
             <View style={Styles.AvatarContainer}>
               <View style={Styles.AvatarPhotoContainer}>
-                <Image style={Styles.AvatarPhoto} source={Images.maleProfile} />
+                <FastImage
+                  style={Styles.AvatarPhoto}
+                  source={Images.maleProfile}
+                />
 
                 <View style={Styles.UserNameContainer}>
                   <View style={Styles.UserNameWrap}>

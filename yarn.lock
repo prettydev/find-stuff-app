@@ -6044,6 +6044,11 @@ react-native-collapsible-accordion@^1.0.5:
   resolved "https://registry.yarnpkg.com/react-native-collapsible-accordion/-/react-native-collapsible-accordion-1.0.5.tgz#ccb31f20702996d9fb7e744cd81128bc0c5ebcba"
   integrity sha512-9jswccpbMrPPsDnh+GV/XZzpkdH2DQosNolUjc4yVe0YNR5i1dwGg+Fz06LMv7m2cWQBnaf9NytdzUW93GfdZA==
 
+react-native-fast-image@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-7.0.2.tgz#e06b21f42f4a9786eaa86f3db35d919070fb8403"
+  integrity sha512-MfuzJbC0RjYobR2gFCdqe1I7jvNOCfDkjQ7VGOHXniqjohhULMkcWNBE9Umovi9Dx93lJ6t5utcE2wf/09zvlg==
+
 react-native-gesture-handler@^1.5.6:
   version "1.5.6"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.5.6.tgz#5d90145f624e3707db2930f43ab41579683e2375"

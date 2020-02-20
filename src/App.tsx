@@ -7,10 +7,8 @@ import SignUpScreen from 'src/Containers/Authentication/SignUpScreen/SignUpScree
 import ForgotPwdScreen from 'src/Containers/Authentication/ForgotPwdScreen/ForgotPwdScreen';
 import LostStuffScreen from 'src/Containers/AddInfo/LostStuffScreen/LostStuffScreen';
 import FoundStuffScreen from 'src/Containers/AddInfo/FoundStuffScreen/FoundStuffScreen';
-import Notification from 'src/Containers/Notification/NotificationList/NotificationList';
 import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
 import UserInfo from 'src/Containers/Category/UserInfo/UserInfo';
-import LocalPhone from 'src/Containers/LocalPhone/LocalPhone';
 
 import {StateProvider} from 'src/Store';
 
@@ -24,11 +22,9 @@ const AppNavigator = createStackNavigator(
     LostStuffScreen: LostStuffScreen,
     FoundStuffScreen: FoundStuffScreen,
 
-    Notification: Notification,
     ChatDetail: ChatDetail,
 
     UserInfo: UserInfo,
-    LocalPhone: LocalPhone,
   },
   {
     initialRouteName: 'MainScreenWithBottomNav',
