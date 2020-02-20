@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,6 @@ import {
   ScrollView,
   TextInput,
   Button,
-  Dimensions,
-  // TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Images} from 'src/Theme';
@@ -56,9 +54,15 @@ const Profile = props => {
 
   const [isEdit, setIsEdit] = useState(false);
   const handleSignout = async () => {
-    dispatch({type: 'setTokenUser', payload: {user: {}, token: ''}});
+    state.socket.disconnect({user_id: state.user._id});
+    // state.socket.on('disconnect', reason => {
+    dispatch({
+      type: 'setTokenUser',
+      payload: {user: {}, token: '', socket: null},
+    });
     AsyncStorage.clear();
     props.navigation.navigate('AppHome');
+    // });
   };
 
   const handlePhoto = () => {

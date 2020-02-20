@@ -5,10 +5,8 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  TextInput,
   FlatList,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import Styles from './ChatStyle';
 import {Images, Colors} from 'src/Theme';
 import {store} from 'src/Store';
@@ -26,9 +24,13 @@ const Chat = props => {
   const getList = () => {
     axios
       .get(baseUrl + 'api/message', {
-        params: {},
+        params: {
+          user_id: state.user._id,
+        },
       })
       .then(function(response) {
+        console.log(response.data);
+
         setList(response.data);
       })
       .catch(function(error) {
@@ -57,6 +59,12 @@ const Chat = props => {
         <Text style={{fontSize: 20, color: '#fff'}}>私信</Text>
       </View>
       <View style={Styles.MessageListContainer}>
+        {list.length === 0 && (
+          <View
+            style={{flex: 1, justifyContent: 'center', flexDirection: 'row'}}>
+            <Text>没有讯息</Text>
+          </View>
+        )}
         <FlatList
           horizontal={false}
           data={list}
@@ -64,42 +72,44 @@ const Chat = props => {
             <TouchableOpacity
               style={Styles.MessageListWrap}
               onPress={() => {
-                if (!item.sender) {
-                  Toast.show('No information');
+                if (!item._id) {
+                  Toast.show('错误');
+                  return;
+                }
+
+                if (item._id._id === state.user._id) {
+                  Toast.show('错误');
                   return;
                 }
                 props.navigation.navigate('ChatDetail', {
-                  item: item.sender,
-                  msg: item,
+                  guest: item._id,
                 });
               }}>
               <View style={Styles.MessageListAvatarWrap}>
                 <View style={{flexDirection: 'column'}}>
                   <View style={{flex: 1, marginRight: 5}}>
-                    {!item.sender && (
+                    {item._id && (
                       <Image
-                        source={Images.maleProfile}
-                        style={Styles.MessageListAvatar}
-                        resizeMode="cover"
-                        borderRadius={30}
-                      />
-                    )}
-                    {item.sender && (
-                      <Image
-                        // source={{
-                        //   uri:
-                        //     baseUrl + 'download/photo?path=' + item.sender.photo,
-                        // }}
-                        source={Images.maleProfile}
+                        source={
+                          item._id.photo
+                            ? {
+                                uri:
+                                  baseUrl +
+                                  'download/photo?path=' +
+                                  item._id.photo,
+                              }
+                            : Images.maleProfile
+                        }
+                        // source={Images.maleProfile}
                         style={Styles.MessageListAvatar}
                         resizeMode="cover"
                         borderRadius={30}
                       />
                     )}
                     {
-                      // <View style={Styles.AvatarBadgeContainer}>
-                      //   <Text style={{color: '#fff'}}>2</Text>
-                      // </View>
+                      <View style={Styles.AvatarBadgeContainer}>
+                        <Text style={{color: '#fff'}}>{item.total}</Text>
+                      </View>
                     }
                   </View>
                 </View>
@@ -109,7 +119,7 @@ const Chat = props => {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}>
-                    <Text>{item.sender ? item.sender.name : ''}</Text>
+                    <Text>{item._id ? item._id.name : ''}</Text>
                     <Text style={{color: Colors.grey}}>
                       {moment(item.createAt).format('M月D日 hh时mm分')}
                     </Text>

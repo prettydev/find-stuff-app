@@ -30,7 +30,6 @@ BackgroundJob.setGlobalWarnings(true);
 const backgroundJob = {
   jobKey: 'findStuffLiveMsg',
   job: () => {
-    console.log(Math.random() * 99999);
     alertMessage();
   },
 };
@@ -53,7 +52,7 @@ BackgroundJob.schedule(backgroundSchedule)
 ///////////////////////////////////////////////////////////////
 
 const initialState = {
-  socket: io(baseUrl, {query: {user_id: Date.now.toString()}}),
+  socket: io(baseUrl, {ransports: ['websocket'], jsonp: false}),
   token: '',
   region: '天山区',
   user: {},
@@ -124,15 +123,17 @@ const StateProvider = ({children}) => {
       next_message = value;
     });
 
-    state.socket.on('bg_message', value => {
-      console.log('bg_message', value);
-      next_message = value;
-    });
+    if (state.user._id) {
+      state.socket.on(state.user._id, value => {
+        console.log('message arrived from ', state.user._id, value);
+        next_message = value;
+      });
+    }
     ///////////////////////////////////////////////////////////////
     state.socket.on('data_last_note', value => {
       dispatch({type: 'setLastNote', payload: value});
     });
-  }, []);
+  }, [state.socket]);
 
   return <Provider value={[state, dispatch]}>{children}</Provider>;
 };

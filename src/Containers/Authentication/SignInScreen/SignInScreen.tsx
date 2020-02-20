@@ -11,6 +11,7 @@ import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import {baseUrl} from 'src/constants';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 export default function SignInScreen(props) {
   const [phone, setPhone] = useState('');
@@ -26,18 +27,6 @@ export default function SignInScreen(props) {
     }
   };
 
-  const getAllData = () => {
-    AsyncStorage.getAllKeys().then(keys => {
-      return AsyncStorage.multiGet(keys)
-        .then(result => {
-          console.log(result);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    });
-  };
-
   const handleSubmit = async () => {
     if (phone === '' || password === '') {
       Toast.show('正确输入值！');
@@ -51,11 +40,18 @@ export default function SignInScreen(props) {
       })
       .then(response => {
         if (response.data.success) {
+          console.log('user info...', response.data.user);
+
           dispatch({
             type: 'setTokenUser',
             payload: {
               auth_token: response.headers.auth_token,
               user: response.data.user,
+              socket: io(baseUrl, {
+                query: {user_id: response.data.user._id},
+                ransports: ['websocket'],
+                jsonp: false,
+              }),
             },
           });
 
@@ -86,6 +82,11 @@ export default function SignInScreen(props) {
       return true;
     });
   }, []);
+
+  // useEffect(() => {
+  //   if (!state.socket) return;
+  //   state.socket.connect();
+  // }, [state.socket]);
 
   return (
     <View style={{flex: 1}}>

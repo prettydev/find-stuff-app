@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  FlatList,
 } from 'react-native';
 import Styles from './ChatDetailStyle';
 import {Images, Colors} from 'src/Theme';
@@ -21,11 +20,41 @@ const axios = require('axios');
 
 export default function ChatDetail(props) {
   const [state, dispatch] = useContext(store);
-  const [item, setItem] = useState(props.navigation.getParam('item'));
-  const [msg, setMsg] = useState(props.navigation.getParam('msg'));
   const [reply, setReply] = useState('');
+  const [guest, setGuest] = useState(props.navigation.getParam('guest'));
+  const [list, setList] = useState([]);
+
+  const getDetails = () => {
+    if (!guest._id) {
+      Toast.show('失败了!');
+      return;
+    }
+    axios
+      .get(baseUrl + 'api/message/' + guest._id, {
+        params: {
+          user_id: state.user._id,
+        },
+      })
+      .then(function(response) {
+        console.log('from the server........................', response.data);
+
+        setList(response.data.items);
+      })
+      .catch(function(error) {
+        console.log('from server error.....................', error);
+      })
+      .finally(function() {
+        // always executed
+        console.log('anyway finished.....');
+      });
+  };
+
+  useEffect(() => {
+    console.log('redrawing with the new list................');
+  }, [list]);
+
   const handleSubmit = async () => {
-    if (item === null) {
+    if (guest === null) {
       Toast.show('错误的接收者!');
       return;
     }
@@ -38,7 +67,7 @@ export default function ChatDetail(props) {
       .post(baseUrl + 'api/message', {
         content: reply,
         sender: state.user._id,
-        receiver: item._id,
+        receiver: guest._id,
       })
       .then(function(response2) {
         if (response2.data) {
@@ -52,17 +81,15 @@ export default function ChatDetail(props) {
         Toast.show(error);
       });
   };
-  useEffect(() => {
-    if (!state.auth_token) props.navigation.navigate('Signin');
-  }, []);
-
-  useEffect(() => {}, [item]);
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
+          else {
+            getDetails();
+          }
         }}
       />
       <View style={Styles.FindStuffHeaderContainer}>
@@ -76,10 +103,10 @@ export default function ChatDetail(props) {
             borderRadius={30}
           />
         </TouchableOpacity>
-        {item !== null && (
-          <Text style={{fontSize: 20, color: '#fff'}}>{item.name}</Text>
+        {guest !== null && (
+          <Text style={{fontSize: 20, color: '#fff'}}>{guest.name}</Text>
         )}
-        {item === null && (
+        {guest === null && (
           <Text style={{fontSize: 20, color: '#fff'}}>{''}</Text>
         )}
         <Text style={{flex: 1}} />
@@ -89,33 +116,34 @@ export default function ChatDetail(props) {
           <View style={Styles.AvatarContainer}>
             <Image
               style={Styles.AvartarImg}
-              // source={{
-              //   uri: baseUrl + 'download/photo?path=' + item.photo,
-              // }}
-              source={Images.maleProfile}
+              source={
+                guest.photo
+                  ? {
+                      uri: baseUrl + 'download/photo?path=' + guest.photo,
+                    }
+                  : Images.maleProfile
+              }
               resizeMode="cover"
               borderRadius={30}
             />
             <View>
               <View style={Styles.nickNameContainer}>
-                {item !== null && (
-                  <Text style={Styles.CommonText}>{item.name}</Text>
-                )}
-                {item === null && <Text style={Styles.CommonText}>{''}</Text>}
-              </View>
-              <View style={Styles.nickNameContainer}>
-                {item !== null && (
-                  <Text style={{fontSize: 12, color: Colors.grey}}>
-                    {moment(item.createAt).format('M月D日 hh时mm分')}
-                  </Text>
-                )}
+                <Text style={Styles.CommonText}>
+                  {guest !== null ? guest.name : ''}
+                </Text>
               </View>
             </View>
           </View>
 
-          <View style={Styles.LastMessageDescription}>
-            <Text style={Styles.LastMessageDescriptionText}>{msg.content}</Text>
-          </View>
+          {list.length > 0 &&
+            list.map((msg, i) => (
+              <View style={Styles.LastMessageDescription}>
+                <Text style={{flex: 2}}>{msg.content}</Text>
+                <Text style={{flex: 1}}>
+                  {moment(msg.createAt).format('M月D日 hh时mm分')}
+                </Text>
+              </View>
+            ))}
         </View>
 
         <View style={Styles.NewMessageContainer}>
