@@ -4,8 +4,8 @@ import {baseUrl} from 'src/constants';
 
 import BackgroundJob from 'react-native-background-job';
 import PushNotification from 'react-native-push-notification';
+import axios from 'axios';
 
-///////////////////////////////////////////////////////////////
 let current_message = '';
 let next_message = '';
 
@@ -59,6 +59,9 @@ const initialState = {
   news: [],
   last_note: {},
   notifications: [],
+  messages: [],
+  details: [],
+  current: 'home',
 };
 const store = createContext(initialState);
 const {Provider} = store;
@@ -66,6 +69,9 @@ const {Provider} = store;
 const StateProvider = ({children}) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
+      case 'setCurrent': {
+        return {...state, current: action.payload};
+      }
       case 'setUser': {
         return {...state, user: action.payload};
       }
@@ -88,7 +94,14 @@ const StateProvider = ({children}) => {
         return {...state, news: action.payload};
       }
       case 'addNews': {
-        return {...state, news: [...state.news, action.payload]};
+        return {
+          ...state,
+          news: Array.from(
+            new Set(
+              [action.payload, ...state.news].map(x => JSON.stringify(x)),
+            ),
+          ).map(x => JSON.parse(x)),
+        };
       }
       case 'setNotifications': {
         return {...state, notifications: action.payload};
@@ -105,36 +118,80 @@ const StateProvider = ({children}) => {
           ).map(x => JSON.parse(x)),
         };
       }
+      case 'setMessages': {
+        return {...state, messages: action.payload};
+      }
+      case 'setDetails': {
+        return {...state, details: action.payload};
+      }
       default:
         throw new Error();
     }
   }, initialState);
 
   useEffect(() => {
-    /////////////////////////////////////////////////////////////////
-    state.socket.on('bg_notify', value => {
-      console.log('bg_notify', value);
-      next_message = value;
-    });
-
-    state.socket.on('bg_news', value => {
-      console.log('bg_news', value);
-      next_message = value;
-    });
-
-    if (state.user._id) {
-      state.socket.on(state.user._id, value => {
-        console.log('message arrived from ', state.user._id, value);
-        next_message = value;
-      });
-    }
-    ///////////////////////////////////////////////////////////////
     state.socket.on('data_last_note', value => {
       console.log('data_last_note... ... ... ', value);
       next_message = value.content;
       dispatch({type: 'setLastNote', payload: value});
       dispatch({type: 'addNotification', payload: value});
     });
+
+    state.socket.on('data_news', value => {
+      console.log('data_news... ... ...', value);
+      next_message = value.content;
+      dispatch({type: 'addNews', payload: value});
+    });
+
+    if (state.user._id) {
+      state.socket.on(state.user._id, value => {
+        console.log('message arrived from ', value);
+        next_message = value.content;
+
+        if (state.current === 'chat-list') {
+          console.log('Now you are chat screen....');
+          axios
+            .get(baseUrl + 'api/message', {
+              params: {
+                user_id: state.user._id,
+              },
+            })
+            .then(function(response) {
+              console.log(response.data);
+              dispatch({type: 'setMessages', payload: response.data});
+            })
+            .catch(function(error) {
+              console.log(error);
+            })
+            .finally(function() {
+              // always executed
+            });
+        } else if (state.current === 'chat-details') {
+          console.log('Now you are in the chat details screen....');
+          axios
+            .get(baseUrl + 'api/message/' + value.sender._id, {
+              params: {
+                user_id: state.user._id,
+              },
+            })
+            .then(function(response) {
+              console.log(
+                'from the server.$$$$$$$$$$$$$$$$$$$$$$$$$..',
+                response.data,
+              );
+
+              dispatch({type: 'setDetails', payload: response.data.items});
+            })
+            .catch(function(error) {
+              console.log('from server error.$$$$$$$$$$$$$$$$$$$$$$...', error);
+            })
+            .finally(function() {
+              // always executed
+              console.log('anyway finished.$$$$$$$$$$$$$.');
+            });
+        }
+      });
+    }
 
     console.log('socket changed... ... ...');
   }, [state.socket]);

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {ScrollView, View, Text, TouchableOpacity, FlatList} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Styles from './ChatStyle';
@@ -13,7 +13,6 @@ import {NavigationEvents} from 'react-navigation';
 
 const Chat = props => {
   const [state, dispatch] = useContext(store);
-  const [list, setList] = useState([]);
 
   const getList = () => {
     axios
@@ -24,8 +23,7 @@ const Chat = props => {
       })
       .then(function(response) {
         console.log(response.data);
-
-        setList(response.data);
+        dispatch({type: 'setMessages', payload: response.data});
       })
       .catch(function(error) {
         console.log(error);
@@ -44,16 +42,14 @@ const Chat = props => {
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
-          else {
-            getList();
-          }
+          else dispatch({type: 'setCurrent', payload: 'chat-list'});
         }}
       />
       <View style={Styles.FindStuffHeaderContainer}>
         <Text style={{fontSize: 20, color: '#fff'}}>私信</Text>
       </View>
       <View style={Styles.MessageListContainer}>
-        {list.length === 0 && (
+        {state.messages.length === 0 && (
           <View
             style={{flex: 1, justifyContent: 'center', flexDirection: 'row'}}>
             <Text>没有讯息</Text>
@@ -61,7 +57,7 @@ const Chat = props => {
         )}
         <FlatList
           horizontal={false}
-          data={list}
+          data={state.messages}
           renderItem={({item}) => (
             <TouchableOpacity
               style={Styles.MessageListWrap}

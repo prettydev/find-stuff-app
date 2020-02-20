@@ -22,7 +22,6 @@ export default function ChatDetail(props) {
   const [state, dispatch] = useContext(store);
   const [reply, setReply] = useState('');
   const [guest, setGuest] = useState(props.navigation.getParam('guest'));
-  const [list, setList] = useState([]);
 
   const getDetails = () => {
     if (!guest._id) {
@@ -38,7 +37,7 @@ export default function ChatDetail(props) {
       .then(function(response) {
         console.log('from the server........................', response.data);
 
-        setList(response.data.items);
+        dispatch({type: 'setDetails', payload: response.data.items});
       })
       .catch(function(error) {
         console.log('from server error.....................', error);
@@ -48,10 +47,6 @@ export default function ChatDetail(props) {
         console.log('anyway finished.....');
       });
   };
-
-  useEffect(() => {
-    console.log('redrawing with the new list................');
-  }, [list]);
 
   const handleSubmit = async () => {
     if (guest === null) {
@@ -82,13 +77,17 @@ export default function ChatDetail(props) {
       });
   };
 
+  useEffect(() => {
+    getDetails();
+  }, []);
+
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
           else {
-            getDetails();
+            dispatch({type: 'setCurrent', payload: 'chat-details'});
           }
         }}
       />
@@ -102,12 +101,10 @@ export default function ChatDetail(props) {
             resizeMode="cover"
           />
         </TouchableOpacity>
-        {guest !== null && (
-          <Text style={{fontSize: 20, color: '#fff'}}>{guest.name}</Text>
-        )}
-        {guest === null && (
-          <Text style={{fontSize: 20, color: '#fff'}}>{''}</Text>
-        )}
+
+        <Text style={{fontSize: 20, color: '#fff'}}>
+          {guest.name ? guest.name : ''}
+        </Text>
         <Text style={{flex: 1}} />
       </View>
       <View style={Styles.MessageDetailContainer}>
@@ -133,8 +130,8 @@ export default function ChatDetail(props) {
             </View>
           </View>
 
-          {list.length > 0 &&
-            list.map((msg, i) => (
+          {state.details.length > 0 &&
+            state.details.map((msg, i) => (
               <View style={Styles.LastMessageDescription}>
                 <Text style={{flex: 2}}>{msg.content}</Text>
                 <Text style={{flex: 1}}>

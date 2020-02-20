@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
@@ -11,7 +11,7 @@ import {store} from 'src/Store';
 export default function CategoryList(props) {
   const [state, dispatch] = useContext(store);
 
-  useEffect(() => {
+  const getList = () => {
     axios
       .get(baseUrl + 'api/news', {
         params: {},
@@ -25,6 +25,10 @@ export default function CategoryList(props) {
       .finally(function() {
         // always executed
       });
+  };
+
+  useEffect(() => {
+    getList();
   }, []);
 
   return (

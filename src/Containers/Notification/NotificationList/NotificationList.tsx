@@ -26,9 +26,11 @@ const NotificationList = props => {
         // always executed
       });
   };
+
   useEffect(() => {
     getList();
   }, []);
+
   return (
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>
       <NavigationEvents

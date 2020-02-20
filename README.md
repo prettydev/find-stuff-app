@@ -37,7 +37,7 @@ https://org.modao.cc/app/cbcc45733afb052cfb083f105bcce28c#screen=s59869B75281555
 5. iOS > drag mycert.cer to Xcode project, mark your target and 'Copy items if needed'
    Android > Place your .cer files under src/main/assets/.
 
-#  ios settings
+# ios settings
 
 brew install openssl
 
@@ -45,29 +45,15 @@ brew install openssl
 
 ln -s ../opt/openssl/include/openssl
 
-
 -cd ios
 
 pod deintegrate
 pod install
 
+======================================================================================================================
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- periodical background notificatioin
+- continuos connect, disconnect to the server
+- test message list, detail
+- add report logic
+- ... ... ..
