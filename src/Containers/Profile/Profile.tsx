@@ -16,6 +16,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
 
 import QRCode from 'react-native-qrcode-svg';
 
@@ -29,7 +30,7 @@ import Modal from 'react-native-modal';
 const Profile = props => {
   const [state, dispatch] = useContext(store);
 
-  const [photo, setPhoto] = useState({name: '', source: '', data: ''});
+  const [photo, setPhoto] = useState({uri: ''});
   const [name, setName] = useState(state.user.name ? state.user.name : '');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [service, setService] = useState('aaaaaaaa');
@@ -78,21 +79,31 @@ const Profile = props => {
         } else if (response.error) {
         } else if (response.customButton) {
         } else {
-          const source = {uri: response.uri};
-          const data = 'data:image/jpeg;base64,' + response.data;
+          ImageResizer.createResizedImage(
+            response.uri,
+            128,
+            128,
+            'JPEG',
+            100,
+            0,
+          )
+            .then(({uri, path, name, size}) => {
+              console.log('uri', uri, 'path', path, 'name', name, 'size', size);
 
-          setPhoto({source, data, name: response.uri});
+              setPhoto({uri});
+              let formData = new FormData();
+              const file = {
+                uri,
+                name,
+                type: 'image/jpeg',
+              };
+              formData.append('file', file);
 
-          let formData = new FormData();
-
-          const file = {
-            uri: response.uri,
-            name: Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
-            type: 'image/jpeg',
-          };
-          formData.append('file', file);
-
-          changePhoto(formData);
+              changePhoto(formData);
+            })
+            .catch(err => {
+              console.log('resize error... ... ...', err);
+            });
         }
       },
     );
@@ -195,6 +206,7 @@ const Profile = props => {
       console.log('refreshing...........................');
     })();
   }, []);
+  useEffect(() => {}, [photo]);
   return (
     <ScrollView style={Style.ProfileContainer}>
       <NavigationEvents
@@ -212,29 +224,20 @@ const Profile = props => {
           <TouchableOpacity
             onPress={handlePhoto}
             style={{marginRight: 15, resizeMode: 'cover', borderRadius: 30}}>
-            {state.user.photo !== undefined &&
-              state.user.photo !== '' &&
-              photo.source === '' && (
-                <FastImage
-                  source={{
-                    uri: baseUrl + 'download/photo?path=' + state.user.photo,
-                  }}
-                  style={Style.ProfileHeaderAvatarImg}
-                  resizeMode="cover"
-                />
-              )}
-            {state.user.photo !== undefined &&
-              state.user.photo !== '' &&
-              photo.source !== '' && (
-                <FastImage
-                  source={photo.source}
-                  style={Style.ProfileHeaderAvatarImg}
-                  resizeMode="cover"
-                />
-              )}
-            {(state.user.photo === '' || state.user.photo === undefined) && (
+            {state.user.photo !== undefined && state.user.photo !== '' && (
               <FastImage
-                source={photo.source ? photo.source : Images.femaleProfile}
+                source={
+                  state.user.photo !== undefined && state.user.photo !== ''
+                    ? photo.uri === ''
+                      ? {
+                          uri:
+                            baseUrl + 'download/photo?path=' + state.user.photo,
+                        }
+                      : photo
+                    : photo
+                    ? photo
+                    : Images.femaleProfile
+                }
                 style={Style.ProfileHeaderAvatarImg}
                 resizeMode="cover"
               />
