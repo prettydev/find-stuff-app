@@ -77,15 +77,15 @@ export default function StuffCard({item, navigation}) {
                   </View>
                 </View>
                 <View style={{flexDirection: 'row', flex: 1}}>
-                  <View style={{flex: 1}}>
+                  <View style={{flex: 13}}>
                     {item.fee > 0 && (
                       <RoundBtn
-                        RoundBtnTitle={'赏 ¥ ' + item.fee}
+                        RoundBtnTitle={'赏 ¥' + item.fee}
                         RoundBtnColor={'MainRed'}
                       />
                     )}
                   </View>
-                  <View style={{flex: 1}}>
+                  <View style={{flex: 11}}>
                     <RoundBtn
                       RoundBtnTitle={'联系TA'}
                       RoundBtnColor={'MainYellow'}

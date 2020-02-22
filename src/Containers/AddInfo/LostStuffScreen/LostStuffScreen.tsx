@@ -31,6 +31,13 @@ const LostStuffScreen = props => {
   const [photo, setPhoto] = useState([]);
 
   const handlePhoto = () => {
+    console.log(photo.length, '***********************');
+
+    if (photo.length > 5) {
+      Toast.show('您选择的图像不能超过6张。');
+      return;
+    }
+
     ImagePicker.showImagePicker(
       {
         title: '选择一张照片',
@@ -56,8 +63,8 @@ const LostStuffScreen = props => {
           )
             .then(({uri, path, name, size}) => {
               console.log('uri', uri, 'path', path, 'name', name, 'size', size);
-
               setPhoto([...photo, {uri, name, type: 'image/jpeg'}]);
+              if (photo.length > 4) Toast.show('您选择所有最多6张图像');
             })
             .catch(err => {
               console.log('resize error... ... ...', err);
