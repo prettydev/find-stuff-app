@@ -246,10 +246,35 @@ const LostStuffScreen = props => {
             <Text style={{color: Colors.grey}}>添加图片</Text>
           </TouchableOpacity>
         </View>
+
         <View style={Styles.FindStuffImgGroupContainer}>
           {photo &&
             photo.map((ph, i) => (
-              <FastImage key={i} source={ph} style={{width: 70, height: 70}} />
+              <View style={{}}>
+                <FastImage
+                  key={i}
+                  source={ph}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    marginBottom: -15,
+                    marginTop: 5,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setPhoto(photo.filter(p => p.uri != ph.uri));
+                  }}
+                  style={{
+                    width: 15,
+                    height: 15,
+                    backgroundColor: Colors.warmBlue,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text style={{color: '#fff'}}>{'×'}</Text>
+                </TouchableOpacity>
+              </View>
             ))}
         </View>
       </View>

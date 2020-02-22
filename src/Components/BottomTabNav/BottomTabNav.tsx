@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import {View} from 'react-native';
+import {View, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {BottomTabBar, createBottomTabNavigator} from 'react-navigation-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -124,7 +124,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         if (routeName === 'AppHome') {
           return (
             <>
-              <FastImage
+              <Image
                 source={focused ? Images.BottomNavHome2 : Images.BottomNavHome}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
@@ -134,7 +134,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         } else if (routeName === 'Profile') {
           return (
             <>
-              <FastImage
+              <Image
                 source={
                   focused ? Images.BottomNavProfile2 : Images.BottomNavProfile
                 }
@@ -146,7 +146,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         } else if (routeName === 'AddInfo') {
           return (
             <View style={Style.AddInfoContainer}>
-              <FastImage
+              <Image
                 source={Images.BottomNavAdd}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
@@ -156,7 +156,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         } else if (routeName === 'Chat') {
           return (
             <>
-              <FastImage
+              <Image
                 source={focused ? Images.BottomNavChat2 : Images.BottomNavChat}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
@@ -166,7 +166,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         } else if (routeName === 'Notification') {
           return (
             <>
-              <FastImage
+              <Image
                 source={focused ? Images.BottomNavNews2 : Images.BottomNavNews}
                 style={Style.tabBarIcon}
                 resizeMode="contain"

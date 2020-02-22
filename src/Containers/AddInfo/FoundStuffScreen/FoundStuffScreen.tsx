@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Alert,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Styles from './FoundStuffScreenStyle';
@@ -20,6 +19,8 @@ import ImageResizer from 'react-native-image-resizer';
 import axios from 'axios';
 import {NavigationEvents} from 'react-navigation';
 import {baseUrl, photoSize} from 'src/constants';
+
+import {UploadImage} from 'src/Components/UploadImage';
 
 const FoundStuffScreen = props => {
   const [state, dispatch] = useContext(store);
@@ -246,7 +247,31 @@ const FoundStuffScreen = props => {
         <View style={Styles.FindStuffImgGroupContainer}>
           {photo &&
             photo.map((ph, i) => (
-              <FastImage key={i} source={ph} style={{width: 70, height: 70}} />
+              <View style={{}}>
+                <FastImage
+                  key={i}
+                  source={ph}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    marginBottom: -15,
+                    marginTop: 5,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setPhoto(photo.filter(p => p.uri != ph.uri));
+                  }}
+                  style={{
+                    width: 15,
+                    height: 15,
+                    backgroundColor: Colors.warmBlue,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text style={{color: '#fff'}}>{'×'}</Text>
+                </TouchableOpacity>
+              </View>
             ))}
         </View>
       </View>

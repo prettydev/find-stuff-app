@@ -63,7 +63,7 @@ const Profile = props => {
 
   const [isEdit, setIsEdit] = useState(false);
   const handleSignout = async () => {
-    state.socket.disconnect({user_id: state.user._id});
+    // state.socket.disconnect({user_id: state.user._id});
     // state.socket.on('disconnect', reason => {
     dispatch({
       type: 'setTokenUser',

@@ -142,8 +142,10 @@ const StateProvider = ({children}) => {
   useEffect(() => {
     if (!state.socket) return;
 
-    state.socket.on('data_last_note', value => {
-      console.log('data_last_note... ... ... ', value);
+    state.socket.emit('getLastNote');
+
+    state.socket.on('data_note', value => {
+      console.log('data_note... ... ... ', value);
       next_message = value.content;
       dispatch({type: 'setLastNote', payload: value});
       dispatch({type: 'addNotification', payload: value});
