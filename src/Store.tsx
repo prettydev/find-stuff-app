@@ -1,6 +1,6 @@
 import React, {createContext, useReducer, useEffect} from 'react';
 import io from 'socket.io-client';
-import {baseUrl} from 'src/constants';
+import {baseUrl, appVersion} from 'src/constants';
 
 import BackgroundJob from 'react-native-background-job';
 import PushNotification from 'react-native-push-notification';
@@ -61,6 +61,13 @@ const initialState = {
   notifications: [],
   messages: [],
   details: [],
+  profile: {
+    version: appVersion,
+    service: 'OurCompany....',
+    share: 'https:///',
+    about: 'We are the whole...',
+    phone: '11111',
+  },
   current: 'home',
 };
 const store = createContext(initialState);
@@ -124,12 +131,17 @@ const StateProvider = ({children}) => {
       case 'setDetails': {
         return {...state, details: action.payload};
       }
+      case 'setProfile': {
+        return {...state, profile: action.payload};
+      }
       default:
         throw new Error();
     }
   }, initialState);
 
   useEffect(() => {
+    if (!state.socket) return;
+
     state.socket.on('data_last_note', value => {
       console.log('data_last_note... ... ... ', value);
       next_message = value.content;
@@ -144,6 +156,11 @@ const StateProvider = ({children}) => {
     });
 
     if (state.user._id) {
+      state.socket.on('data_profile', value => {
+        console.log('data_profile... ... ...', value);
+        dispatch({type: 'setProfile', payload: value});
+      });
+
       state.socket.on(state.user._id, value => {
         console.log('message arrived from ', value);
         next_message = value.content;

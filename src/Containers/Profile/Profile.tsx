@@ -26,27 +26,39 @@ import {baseUrl, appVersion, avatarSize} from 'src/constants';
 const Profile = props => {
   const [state, dispatch] = useContext(store);
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const [photo, setPhoto] = useState({uri: ''});
   const [name, setName] = useState(state.user.name ? state.user.name : '');
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [service, setService] = useState('aaaaaaaa');
   const [current, setCurrent] = useState('');
 
-  const [profile, setProfile] = useState({
-    version: appVersion,
-    service: 'OurCompany....',
-    share: 'https:///',
-    about: 'We are the whole...',
-    phone: '11111',
-  });
   const handleModal = idx => {
     setCurrent(idx);
-    if (idx === 'service') setService(profile.service);
-    else if (idx === 'about') setService(profile.about);
-    else if (idx === 'share') setService(profile.share);
-    else if (idx === 'upgrade') setService(profile.version);
-    else if (idx === 'phone') setService(profile.phone);
+    updateProfile(idx);
     setIsModalVisible(!isModalVisible);
+  };
+
+  const updateProfile = idx => {
+    if (idx === 'service') setService(state.profile.service);
+    else if (idx === 'about') setService(state.profile.about);
+    else if (idx === 'share') setService(state.profile.share);
+    else if (idx === 'phone') setService(state.profile.phone);
+    else if (idx === 'upgrade') {
+      let versionDescription = '';
+      if (appVersion === state.profile.version) {
+        versionDescription =
+          '您的应用是最新版本(' + state.profile.version + ').';
+      } else {
+        versionDescription =
+          '您的应用是旧版本(' +
+          appVersion +
+          ').最新版本是' +
+          state.profile.version +
+          '.';
+      }
+      setService(versionDescription);
+    }
   };
 
   const [isEdit, setIsEdit] = useState(false);
@@ -169,27 +181,7 @@ const Profile = props => {
         .post(baseUrl + 'api/profile/last')
         .then(function(response) {
           if (response.data.item) {
-            let {version, share, about, service, phone} = response.data.item;
-
-            let versionDescription = '';
-            if (appVersion === version) {
-              versionDescription = '您的应用是最新版本(' + version + ').';
-            } else {
-              versionDescription =
-                '您的应用是旧版本(' +
-                appVersion +
-                ').最新版本是' +
-                version +
-                '.';
-            }
-
-            setProfile({
-              version: versionDescription,
-              share,
-              about,
-              service,
-              phone,
-            });
+            dispatch({type: 'setProfile', payload: response.data.item});
           }
         })
         .catch(function(error) {
@@ -202,7 +194,10 @@ const Profile = props => {
       console.log('refreshing...........................');
     })();
   }, []);
-  useEffect(() => {}, [photo]);
+  useEffect(() => {
+    console.log('4444444444444444444444');
+    updateProfile(current);
+  }, [photo, state.profile]);
   return (
     <ScrollView style={Style.ProfileContainer}>
       <NavigationEvents
@@ -411,7 +406,7 @@ const Profile = props => {
                   alignItems: 'center',
                   marginTop: 30,
                 }}>
-                <QRCode value={profile.share} size={200} />
+                <QRCode value={state.profile.share} size={200} />
               </View>
             )}
             <View
