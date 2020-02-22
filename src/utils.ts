@@ -6,3 +6,12 @@ export const dotedBadge = (str: string): string => {
   }
   return ret;
 };
+
+export const dotedTitle = (str: string): string => {
+  let len: number = str.length;
+  let ret: string = str;
+  if (len > 8) {
+    ret = str.substring(0, 8) + '...';
+  }
+  return ret;
+};

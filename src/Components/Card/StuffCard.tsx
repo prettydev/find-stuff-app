@@ -11,6 +11,8 @@ import {baseUrl} from 'src/constants';
 import Toast from 'react-native-simple-toast';
 import {store} from 'src/Store';
 
+import {dotedTitle} from 'src/utils';
+
 export default function StuffCard({item, navigation}) {
   const [state, dispatch] = useContext(store);
 
@@ -59,7 +61,7 @@ export default function StuffCard({item, navigation}) {
                     alignItems: 'center',
                   }}>
                   <View>
-                    <Text>{item.title}</Text>
+                    <Text>{dotedTitle(item.title)}</Text>
                   </View>
                   <View>
                     {item.kind === 'lost' && (
