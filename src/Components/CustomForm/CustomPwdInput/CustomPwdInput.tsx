@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, TextInput, Text} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {View, TouchableOpacity, TextInput, Text, Image} from 'react-native';
 import Styles from './CustomPwdInputStyle';
 import {Images} from 'src/Theme';
 
@@ -26,7 +25,7 @@ export default function CustomPwdInput(props) {
           activeOpacity={0.8}
           style={Styles.touachableButton}
           onPress={() => setHidePassword(!hidePassword)}>
-          <FastImage
+          <Image
             resizeMode="contain"
             style={{width: 25}}
             source={hidePassword ? Images.HideIcon : Images.ShowIcon}

@@ -103,10 +103,7 @@ function HomeView(props) {
         <StuffCard
           key={i}
           navigation={props.navigation}
-          item={item}
-          proc={() => {
-            props.navigation.navigate('StuffPostDetail', {item});
-          }}></StuffCard>
+          item={item}></StuffCard>
       ))}
     </ScrollView>
   );

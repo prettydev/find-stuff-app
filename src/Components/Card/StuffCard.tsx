@@ -11,18 +11,21 @@ import {baseUrl} from 'src/constants';
 import Toast from 'react-native-simple-toast';
 import {store} from 'src/Store';
 
-export default function StuffCard(props) {
+export default function StuffCard({item, navigation}) {
   const [state, dispatch] = useContext(store);
-  const {item, proc} = props;
 
   return (
-    <TouchableOpacity onPress={proc} style={Style.CardWrap}>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('StuffPostDetail', {item});
+      }}
+      style={Style.CardWrap}>
       <Card style={{padding: 12, flexDirection: 'column'}}>
         <View style={{flexDirection: 'row'}}>
           <View style={Style.ImageSection}>
             <TouchableOpacity
               onPress={() => {
-                props.navigation.navigate('UserInfo', {item: item.user});
+                navigation.navigate('UserInfo', {item: item.user});
               }}>
               <FastImage
                 style={Style.AvatarStyle}
@@ -91,7 +94,7 @@ export default function StuffCard(props) {
                           Toast.show('错误');
                           return;
                         }
-                        props.navigation.navigate('ChatDetail', {
+                        navigation.navigate('ChatDetail', {
                           guest: item.user,
                         });
                       }}
