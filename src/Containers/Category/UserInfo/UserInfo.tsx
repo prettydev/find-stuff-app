@@ -54,7 +54,7 @@ export default function Profile(props) {
                 style={Style.ProfileUpdateImg}
                 resizeMode="cover"
               />
-              <Text>上安医大</Text>
+              <Text>{item.location}</Text>
             </View>
           </View>
         </TouchableOpacity>
