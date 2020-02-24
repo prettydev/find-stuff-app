@@ -80,10 +80,33 @@ function HomeView(props) {
       });
   };
 
+  const updateLocation = location => {
+    if (!state.user._id || !location) return;
+
+    axios
+      .get(baseUrl + 'api2/location', {
+        params: {
+          user_id: state.user._id,
+          location,
+        },
+      })
+      .then(function(response) {
+        console.log(response.data, 'setLocation result...');
+      })
+      .catch(function(error) {
+        console.log(error, 'setLocation error...');
+      })
+      .finally(function() {
+        // always executed
+        console.log('get list request finished...');
+      });
+  };
+
   useEffect(() => {
     Geolocation.getCurrentPosition().then(data => {
       if (data.city) {
         dispatch({type: 'setRegion', payload: data.city});
+        updateLocation(data.city);
       }
     });
 
