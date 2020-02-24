@@ -17,12 +17,13 @@ export default function StuffPostDetail({navigation}) {
           <View style={Styles.FindStuffHeaderContainer}>
             <TouchableOpacity
               style={{flex: 1}}
-              onPress={() => navigation.navigate('NotificationView')}>
+              onPress={() => navigation.goBack()}>
               <FastImage
                 source={Images.whiteLeftChevron}
                 style={Styles.FindStuffHeaderImg}
               />
             </TouchableOpacity>
+
             <View style={{alignItems: 'center'}}>
               <Text style={{fontSize: 20, color: '#fff'}}>详情</Text>
             </View>

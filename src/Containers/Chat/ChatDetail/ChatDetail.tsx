@@ -15,8 +15,7 @@ import Toast from 'react-native-simple-toast';
 import {baseUrl} from 'src/constants';
 
 import {NavigationEvents} from 'react-navigation';
-
-const axios = require('axios');
+import axios from 'axios';
 
 export default function ChatDetail(props) {
   const [state, dispatch] = useContext(store);
@@ -93,12 +92,11 @@ export default function ChatDetail(props) {
       />
       <View style={Styles.FindStuffHeaderContainer}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('MainScreenWithBottomNav')}
-          style={{flex: 1}}>
+          style={{flex: 1}}
+          onPress={() => props.navigation.goBack()}>
           <FastImage
             source={Images.whiteLeftChevron}
             style={Styles.FindStuffHeaderImg}
-            resizeMode="cover"
           />
         </TouchableOpacity>
 

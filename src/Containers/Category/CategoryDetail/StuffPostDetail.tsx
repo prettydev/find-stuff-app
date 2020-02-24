@@ -1,12 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  Alert,
-} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Images, Colors} from 'src/Theme';
 import Styles from './CategoryDetailStyle';
@@ -14,6 +7,7 @@ import {store} from 'src/Store';
 import moment from 'moment';
 import {baseUrl} from 'src/constants';
 import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
+import {NavigationEvents} from 'react-navigation';
 import axios from 'axios';
 import Toast from 'react-native-simple-toast';
 import DialogInput from 'react-native-dialog-input';
@@ -36,6 +30,7 @@ export default function StuffPostDetail({navigation}) {
       .post(baseUrl + 'api2/stuffpost/browse', {_id: item._id})
       .then(function(response) {
         if (response.data.item) {
+          console.log('asdfa');
           setItem(response.data.item);
         }
       })
@@ -50,6 +45,11 @@ export default function StuffPostDetail({navigation}) {
   const increaseLikesCnt = () => {
     if (state.user._id === undefined) {
       navigation.navigate('Signin');
+      return;
+    }
+
+    if (item.user._id === state.user._id) {
+      Toast.show('错误');
       return;
     }
 
@@ -128,12 +128,13 @@ export default function StuffPostDetail({navigation}) {
 
   return (
     <>
+      <NavigationEvents onDidFocus={increaseBrowseCnt} />
       <ScrollView style={{backgroundColor: '#f4f6f8'}}>
         <View>
           <View style={Styles.FindStuffHeaderContainer}>
             <TouchableOpacity
               style={{flex: 1}}
-              onPress={() => navigation.navigate('StuffPostView')}>
+              onPress={() => navigation.goBack()}>
               <FastImage
                 source={Images.whiteLeftChevron}
                 style={Styles.FindStuffHeaderImg}
@@ -232,11 +233,13 @@ export default function StuffPostDetail({navigation}) {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <RoundBtn
-                    RoundBtnTitle={'联系TA'}
-                    RoundBtnColor={'MainYellow'}
-                    proc={() => sendMsg(item)}
-                  />
+                  {item.user._id !== state.user._id && (
+                    <RoundBtn
+                      RoundBtnTitle={'联系TA'}
+                      RoundBtnColor={'MainYellow'}
+                      proc={() => sendMsg(item)}
+                    />
+                  )}
                 </View>
                 <View style={{flex: 1}}></View>
               </View>
@@ -263,8 +266,11 @@ export default function StuffPostDetail({navigation}) {
                 onPress={() => {
                   checkReport();
                 }}>
-                <Text style={{color: Colors.grey}}>举报</Text>
+                {item.user._id !== state.user._id && (
+                  <Text style={{color: Colors.grey}}>举报</Text>
+                )}
               </TouchableOpacity>
+
               <View>
                 <Text style={{color: Colors.grey}}>浏览{item.browse}次</Text>
               </View>

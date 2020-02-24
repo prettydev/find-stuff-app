@@ -37,7 +37,7 @@ export default function CategoryList(props) {
         <View style={Styles.FindStuffHeaderContainer}>
           <TouchableOpacity
             style={{flex: 1}}
-            onPress={() => props.navigation.navigate('HomeView')}>
+            onPress={() => props.navigation.goBack()}>
             <FastImage
               source={Images.whiteLeftChevron}
               style={Styles.FindStuffHeaderImg}

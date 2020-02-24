@@ -112,10 +112,8 @@ const Chat = props => {
                       {moment(item.createAt).format('M月D日 hh时mm分')}
                     </Text>
                   </View>
-                  <Text style={{color: Colors.grey}}>
-                    {item.content.length > 84
-                      ? item.content.substring(0, 84) + '...'
-                      : item.content}
+                  <Text numberOfLines={2} style={{color: Colors.grey}}>
+                    {item.content}
                   </Text>
                 </View>
               </View>

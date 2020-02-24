@@ -40,12 +40,19 @@ const NotificationList = props => {
       />
       <View style={Styles.CategoryListContainer}>
         <View style={Styles.FindStuffHeaderContainer}>
-          <TouchableOpacity style={{flex: 1}}>
-            <FastImage
-              source={Images.whiteLeftChevron}
-              style={Styles.FindStuffHeaderImg}
-            />
+          <TouchableOpacity
+            style={{flex: 1}}
+            onPress={() => {
+              props.navigation.navigate('AppHome');
+            }}>
+            {
+              <FastImage
+                source={Images.whiteLeftChevron}
+                style={Styles.FindStuffHeaderImg}
+              />
+            }
           </TouchableOpacity>
+
           <View style={{alignItems: 'center'}}>
             <Text style={{fontSize: 20, color: '#fff'}}>通知</Text>
           </View>

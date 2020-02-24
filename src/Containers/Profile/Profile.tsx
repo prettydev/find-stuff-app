@@ -6,6 +6,7 @@ import {
   ScrollView,
   TextInput,
   Button,
+  Image,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -195,7 +196,7 @@ const Profile = props => {
     })();
   }, []);
   useEffect(() => {
-    console.log('4444444444444444444444');
+    console.log('refreshing...');
     updateProfile(current);
   }, [photo, state.profile]);
   return (
@@ -214,25 +215,24 @@ const Profile = props => {
         <View style={Style.ProfileHeaderAvatarContainer}>
           <TouchableOpacity
             onPress={handlePhoto}
-            style={{marginRight: 15, resizeMode: 'cover', borderRadius: 30}}>
-            {state.user.photo !== undefined && state.user.photo !== '' && (
-              <FastImage
-                source={
-                  state.user.photo !== undefined && state.user.photo !== ''
-                    ? photo.uri === ''
-                      ? {
-                          uri:
-                            baseUrl + 'download/photo?path=' + state.user.photo,
-                        }
-                      : photo
-                    : photo
-                    ? photo
-                    : Images.femaleProfile
-                }
-                style={Style.ProfileHeaderAvatarImg}
-                resizeMode="cover"
-              />
-            )}
+            style={{
+              marginRight: 15,
+              // resizeMode: 'cover',
+              borderRadius: 30,
+            }}>
+            <Image
+              source={
+                state.user.photo !== undefined && state.user.photo !== ''
+                  ? {
+                      uri: baseUrl + 'download/photo?path=' + state.user.photo,
+                    }
+                  : photo.uri !== undefined && photo.uri !== ''
+                  ? photo
+                  : Images.maleProfile
+              }
+              style={Style.ProfileHeaderAvatarImg}
+              // resizeMode="cover"
+            />
             <FastImage source={Images.Camera} style={Style.HeaderImgBadge} />
           </TouchableOpacity>
           <View>

@@ -22,7 +22,9 @@ export default function Profile(props) {
         source={Images.ProfileBannerImg}
         style={Style.ProfileHeaderContainer}>
         <View style={Style.ProfileHeaderTitleContainer}>
-          <TouchableOpacity style={Style.HeaderChevronImg}>
+          <TouchableOpacity
+            style={Style.HeaderChevronImg}
+            onPress={() => props.navigation.goBack()}>
             <FastImage
               source={Images.whiteLeftChevron}
               style={Style.FindStuffHeaderImg}
@@ -67,31 +69,34 @@ export default function Profile(props) {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={Style.ProfileMessageContainer}
-          onPress={() => {
-            if (item._id === state.user._id) {
-              Toast.show('错误');
-              return;
-            }
-            props.navigation.navigate('ChatDetail', {guest: item});
-          }}>
-          <View style={Style.ProfileMessageWrap}>
-            <View style={Style.ProfileMessageLeft}>
-              <FastImage
-                source={Images.Message1}
-                style={Style.ProfileMessageImg}
-              />
-              <Text>私信</Text>
+
+        {item._id !== state.user._id && (
+          <TouchableOpacity
+            style={Style.ProfileMessageContainer}
+            onPress={() => {
+              if (item._id === state.user._id) {
+                Toast.show('错误');
+                return;
+              }
+              props.navigation.navigate('ChatDetail', {guest: item});
+            }}>
+            <View style={Style.ProfileMessageWrap}>
+              <View style={Style.ProfileMessageLeft}>
+                <FastImage
+                  source={Images.Message1}
+                  style={Style.ProfileMessageImg}
+                />
+                <Text>私信</Text>
+              </View>
+              <View>
+                <FastImage
+                  source={Images.RightArrow}
+                  style={Style.ProfileRightArrow}
+                />
+              </View>
             </View>
-            <View>
-              <FastImage
-                source={Images.RightArrow}
-                style={Style.ProfileRightArrow}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );

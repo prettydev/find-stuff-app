@@ -79,6 +79,10 @@ export default function StuffCard({item, navigation}) {
                   </View>
                 </View>
                 <View style={{flexDirection: 'row', flex: 1}}>
+                  {item.user._id === state.user._id && (
+                    <View style={{flex: 11}}></View>
+                  )}
+
                   <View style={{flex: 13}}>
                     {item.fee > 0 && (
                       <RoundBtn
@@ -87,21 +91,24 @@ export default function StuffCard({item, navigation}) {
                       />
                     )}
                   </View>
-                  <View style={{flex: 11}}>
-                    <RoundBtn
-                      RoundBtnTitle={'联系TA'}
-                      RoundBtnColor={'MainYellow'}
-                      proc={() => {
-                        if (item.user._id === state.user._id) {
-                          Toast.show('错误');
-                          return;
-                        }
-                        navigation.navigate('ChatDetail', {
-                          guest: item.user,
-                        });
-                      }}
-                    />
-                  </View>
+
+                  {item.user._id !== state.user._id && (
+                    <View style={{flex: 11}}>
+                      <RoundBtn
+                        RoundBtnTitle={'联系TA'}
+                        RoundBtnColor={'MainYellow'}
+                        proc={() => {
+                          if (item.user._id === state.user._id) {
+                            Toast.show('错误');
+                            return;
+                          }
+                          navigation.navigate('ChatDetail', {
+                            guest: item.user,
+                          });
+                        }}
+                      />
+                    </View>
+                  )}
                 </View>
               </View>
             </View>

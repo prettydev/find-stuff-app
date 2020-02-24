@@ -17,7 +17,7 @@ export default function StuffPostDetail({navigation}) {
         <View style={Styles.FindStuffHeaderContainer}>
           <TouchableOpacity
             style={{flex: 1}}
-            onPress={() => navigation.navigate('NewsView')}>
+            onPress={() => navigation.goBack()}>
             <FastImage
               source={Images.whiteLeftChevron}
               style={Styles.FindStuffHeaderImg}
