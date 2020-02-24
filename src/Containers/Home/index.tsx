@@ -84,11 +84,9 @@ function HomeView(props) {
     if (!state.user._id || !location) return;
 
     axios
-      .get(baseUrl + 'api2/location', {
-        params: {
-          user_id: state.user._id,
-          location,
-        },
+      .post(baseUrl + 'api2/location', {
+        user_id: state.user._id,
+        location,
       })
       .then(function(response) {
         console.log(response.data, 'setLocation result...');
