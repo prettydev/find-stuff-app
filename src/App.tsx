@@ -9,7 +9,6 @@ import LostStuffScreen from 'src/Containers/AddInfo/LostStuffScreen/LostStuffScr
 import FoundStuffScreen from 'src/Containers/AddInfo/FoundStuffScreen/FoundStuffScreen';
 import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
 import UserInfo from 'src/Containers/Category/UserInfo/UserInfo';
-
 import {StateProvider} from 'src/Store';
 
 const AppNavigator = createStackNavigator(

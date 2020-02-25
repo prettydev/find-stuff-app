@@ -21,17 +21,38 @@ export default function ChatDetail(props) {
   const [state, dispatch] = useContext(store);
   const [reply, setReply] = useState('');
   const [guest, setGuest] = useState(props.navigation.getParam('guest'));
+  const [room_id, setRoom_id] = useState(props.navigation.getParam('room_id'));
+
+  const getRooms = async () => {
+    if (room_id === undefined || room_id === '') {
+      await axios
+        .post(baseUrl + 'api/room', {
+          uid: state.user._id,
+          receiver: guest._id,
+        })
+        .then(function(response) {
+          if (response.data) {
+            Toast.show('成功!');
+            setRoom_id(response.data._id);
+          } else {
+            Toast.show('失败了!');
+          }
+        })
+        .catch(function(error) {
+          Toast.show(error);
+        });
+    }
+  };
 
   const getDetails = () => {
     if (!guest._id) {
       Toast.show('失败了!');
       return;
     }
+
     axios
-      .get(baseUrl + 'api/message/' + guest._id, {
-        params: {
-          user_id: state.user._id,
-        },
+      .get(baseUrl + 'api/message/' + room_id, {
+        params: {},
       })
       .then(function(response) {
         console.log('from the server........................', response.data);
@@ -59,12 +80,12 @@ export default function ChatDetail(props) {
     }
     await axios
       .post(baseUrl + 'api/message', {
-        content: reply,
-        sender: state.user._id,
+        user: state.user._id,
+        room: room_id,
         receiver: guest._id,
       })
-      .then(function(response2) {
-        if (response2.data) {
+      .then(function(response) {
+        if (response.data) {
           Toast.show('成功!');
           props.navigation.navigate('ChatView');
         } else {
@@ -77,6 +98,7 @@ export default function ChatDetail(props) {
   };
 
   useEffect(() => {
+    getRooms();
     getDetails();
   }, []);
 

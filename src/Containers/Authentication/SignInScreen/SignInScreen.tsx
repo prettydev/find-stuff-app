@@ -13,6 +13,8 @@ import {baseUrl} from 'src/constants';
 import axios from 'axios';
 import io from 'socket.io-client';
 
+import Pushy from 'pushy-react-native';
+
 export default function SignInScreen(props) {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -42,11 +44,34 @@ export default function SignInScreen(props) {
         if (response.data.success) {
           console.log('user info...', response.data.user);
 
+          // Register the device for push notifications
+          Pushy.register()
+            .then(async deviceToken => {
+              axios
+                .post(baseUrl + 'auth/device', {
+                  user_id: response.data.user._id,
+                  device: deviceToken,
+                })
+                .then(response => {
+                  console.log(response.data.user, 'user with device token');
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+
+              await fetch(baseUrl + 'api/auth/device?token=' + deviceToken);
+            })
+            .catch(err => {
+              // Handle registration errors
+              console.error(err);
+            });
+
           dispatch({
             type: 'setTokenUser',
             payload: {
               auth_token: response.headers.auth_token,
               user: response.data.user,
+              rooms: response.data.rooms,
               socket: io(baseUrl, {
                 query: {user_id: response.data.user._id},
                 ransports: ['websocket'],

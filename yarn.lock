@@ -1056,13 +1056,6 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.6.tgz#c7f2ac187c1f25aa8c30d11baa8f4398eca3bb84"
   integrity sha512-PpMoeXwPUoldCRKDuSi+zK5rT+sJTW6ri6RdGPkSKRzU77Q1d9IaR0O5IKvBj0XSdL3p+dcOa05gk35aGDffBQ==
 
-"@react-native-community/push-notification-ios@^1.0.1":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.6.tgz#d0e90ec91139a6dfa043a572d41fe694db58bf54"
-  integrity sha512-aTFlFZcYhkPgqq7IdktkubqaG0hVHuSEerjGkR0IwVljbkEahqKMJzTWjVH95YcgEEkPLDqYv39Ie7WYfQdndA==
-  dependencies:
-    invariant "^2.2.4"
-
 "@react-navigation/core@^3.5.2":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.5.2.tgz#3a3d147b8419e5839e0f2ad4dea086bd2d307fe3"
@@ -5974,6 +5967,11 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+pushy-react-native@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/pushy-react-native/-/pushy-react-native-1.0.14.tgz#b126c4da57dbc5b73ad811e46380a4b64167c20f"
+  integrity sha512-qRJNMnVT2mfXn8jklp4lOqYCNGl//2K6oJ+1okh0GYlzToZ7y2uxzCwC/DCixm521HdoGI/dS0xsjlo8EvjQJw==
+
 qrcode@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/qrcode/-/qrcode-1.2.0.tgz#330d24313fbf8d429a806091af9525250239e44a"
@@ -6028,11 +6026,6 @@ react-native-animatable@1.3.3:
   integrity sha512-2ckIxZQAsvWn25Ho+DK3d1mXIgj7tITkrS4pYDvx96WyOttSvzzFeQnM2od0+FUMzILbdHDsDEqZvnz1DYNQ1w==
   dependencies:
     prop-types "^15.7.2"
-
-react-native-background-job@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-background-job/-/react-native-background-job-2.3.1.tgz#c9aa299d9ffb40b84a3156dec5fa40a604a9462b"
-  integrity sha512-6R0krrH+zDNolauCyxjotiSK3X2YIJIP9+YX4HVVLFd/coAUnQKn1oy0fCqQzK4zhcggLN6D27wVOkjl5IjPaw==
 
 react-native-baidu-map@^1.0.26:
   version "1.0.26"
@@ -6094,13 +6087,6 @@ react-native-picker-select@^6.5.0:
   integrity sha512-VuzQAzs3h1PvKH91OAomWqCqzimSttUFHj1jNzC9K2FZ5OG/OuTo2ri3KkBdPU1PjtakPg6OMxxNBANAXgmceA==
   dependencies:
     lodash.isequal "^4.5.0"
-
-react-native-push-notification@^3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.9.tgz#760ee06e743fef74fc9fcb672dac40794fdc4c47"
-  integrity sha512-YpEg9AYBjNgJtHRgHKR0xPB7kk3Gj0uSjUxd0feOIvd7wrfR+zeiBM4NZonGmjlAG6thaE37dfAG5qcsONFM7w==
-  dependencies:
-    "@react-native-community/push-notification-ios" "^1.0.1"
 
 react-native-qrcode-svg@^6.0.3:
   version "6.0.3"
