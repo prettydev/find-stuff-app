@@ -187,7 +187,7 @@ const StateProvider = ({children}) => {
       state.socket.on(state.user._id, value => {
         console.log('message arrived from ', value);
 
-        if (state.current === 'chat-list') {
+        if (state.current === 'room-list') {
           console.log('Now you are chat screen....');
           axios
             .get(baseUrl + 'api/message', {
@@ -205,7 +205,7 @@ const StateProvider = ({children}) => {
             .finally(function() {
               // always executed
             });
-        } else if (state.current === 'chat-details') {
+        } else if (state.current === 'chat-room') {
           console.log('Now you are in the chat details screen....');
           axios
             .get(baseUrl + 'api/message/' + value.sender._id, {

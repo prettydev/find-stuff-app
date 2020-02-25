@@ -22,7 +22,7 @@ export default function StuffPostDetail({navigation}) {
       Toast.show('错误');
       return;
     }
-    navigation.navigate('ChatDetail', {guest: item.user});
+    navigation.navigate('ChatRoom', {guest: item.user});
   };
 
   const increaseBrowseCnt = () => {

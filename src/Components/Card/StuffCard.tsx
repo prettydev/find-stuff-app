@@ -102,7 +102,7 @@ export default function StuffCard({item, navigation}) {
                             Toast.show('错误');
                             return;
                           }
-                          navigation.navigate('ChatDetail', {
+                          navigation.navigate('ChatRoom', {
                             guest: item.user,
                           });
                         }}

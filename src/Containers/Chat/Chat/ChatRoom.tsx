@@ -7,7 +7,7 @@ import {
   TextInput,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Styles from './ChatDetailStyle';
+import Styles from './ChatRoomStyle';
 import {Images} from 'src/Theme';
 import moment from 'moment';
 import {store} from 'src/Store';
@@ -17,7 +17,7 @@ import {baseUrl} from 'src/constants';
 import {NavigationEvents} from 'react-navigation';
 import axios from 'axios';
 
-export default function ChatDetail(props) {
+export default function ChatRoom(props) {
   const [state, dispatch] = useContext(store);
   const [reply, setReply] = useState('');
   const [guest, setGuest] = useState(props.navigation.getParam('guest'));
@@ -27,8 +27,8 @@ export default function ChatDetail(props) {
     if (room_id === undefined || room_id === '') {
       await axios
         .post(baseUrl + 'api/room', {
-          uid: state.user._id,
-          receiver: guest._id,
+          uid1: state.user._id,
+          uid2: guest._id,
         })
         .then(function(response) {
           if (response.data) {
@@ -87,7 +87,7 @@ export default function ChatDetail(props) {
       .then(function(response) {
         if (response.data) {
           Toast.show('成功!');
-          props.navigation.navigate('ChatView');
+          props.navigation.navigate('Room');
         } else {
           Toast.show('失败了!');
         }
@@ -108,7 +108,7 @@ export default function ChatDetail(props) {
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
           else {
-            dispatch({type: 'setCurrent', payload: 'chat-details'});
+            dispatch({type: 'setCurrent', payload: 'chat'});
           }
         }}
       />

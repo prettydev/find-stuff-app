@@ -78,7 +78,7 @@ export default function Profile(props) {
                 Toast.show('错误');
                 return;
               }
-              props.navigation.navigate('ChatDetail', {guest: item});
+              props.navigation.navigate('ChatRoom', {guest: item});
             }}>
             <View style={Style.ProfileMessageWrap}>
               <View style={Style.ProfileMessageLeft}>

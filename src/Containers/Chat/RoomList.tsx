@@ -1,7 +1,7 @@
 import React, {useEffect, useContext} from 'react';
 import {ScrollView, View, Text, TouchableOpacity, FlatList} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Styles from './ChatStyle';
+import Styles from './RoomListStyle';
 import {Images, Colors} from 'src/Theme';
 import {store} from 'src/Store';
 import {baseUrl} from 'src/constants';
@@ -11,12 +11,12 @@ import axios from 'axios';
 
 import {NavigationEvents} from 'react-navigation';
 
-const Chat = props => {
+const RoomList = props => {
   const [state, dispatch] = useContext(store);
 
   const getList = () => {
     axios
-      .get(baseUrl + 'api/message', {
+      .get(baseUrl + 'api/room', {
         params: {
           user_id: state.user._id,
         },
@@ -42,7 +42,7 @@ const Chat = props => {
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
-          else dispatch({type: 'setCurrent', payload: 'chat-list'});
+          else dispatch({type: 'setCurrent', payload: 'room'});
         }}
       />
       <View style={Styles.FindStuffHeaderContainer}>
@@ -71,7 +71,7 @@ const Chat = props => {
                   Toast.show('错误');
                   return;
                 }
-                props.navigation.navigate('ChatDetail', {
+                props.navigation.navigate('ChatRoom', {
                   guest: item._id,
                 });
               }}>
@@ -126,4 +126,4 @@ const Chat = props => {
   );
 };
 
-export default Chat;
+export default RoomList;

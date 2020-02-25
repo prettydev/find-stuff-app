@@ -7,7 +7,7 @@ import SignUpScreen from 'src/Containers/Authentication/SignUpScreen/SignUpScree
 import ForgotPwdScreen from 'src/Containers/Authentication/ForgotPwdScreen/ForgotPwdScreen';
 import LostStuffScreen from 'src/Containers/AddInfo/LostStuffScreen/LostStuffScreen';
 import FoundStuffScreen from 'src/Containers/AddInfo/FoundStuffScreen/FoundStuffScreen';
-import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
+import ChatRoom from 'src/Containers/Chat/Chat/ChatRoom';
 import UserInfo from 'src/Containers/Category/UserInfo/UserInfo';
 import {StateProvider} from 'src/Store';
 
@@ -21,7 +21,7 @@ const AppNavigator = createStackNavigator(
     LostStuffScreen: LostStuffScreen,
     FoundStuffScreen: FoundStuffScreen,
 
-    ChatDetail: ChatDetail,
+    ChatRoom: ChatRoom,
 
     UserInfo: UserInfo,
   },
