@@ -87,10 +87,10 @@ export default function SignUpScreen(props) {
         <View style={Styles.SignUpHeader}>
           <TouchableOpacity
             style={{flex: 1}}
-            onPress={() => props.navigation.goBack()}>
+            onPress={() => props.navigation.navigate('Signin')}>
             <FastImage
               source={Images.whiteLeftChevron}
-              style={Styles.FindStuffHeaderImg}
+              style={Styles.SignUpHeaderImg}
             />
           </TouchableOpacity>
           <Text style={{fontSize: 20, color: '#fff'}}>用户注册</Text>

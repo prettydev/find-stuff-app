@@ -13,6 +13,12 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  FindStuffHeaderImg: {
+    height: 35,
+    width: 35,
+    borderRadius: 50,
+    transform: [{rotate: '90deg'}],
+  },
   MessageListContainer: {
     margin: 10,
   },

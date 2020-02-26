@@ -15,7 +15,6 @@ const initialState = {
   notifications: [],
   rooms: [],
   messages: [],
-  details: [],
   profile: {
     version: appVersion,
     service: 'OurCompany....',
@@ -101,13 +100,10 @@ const StateProvider = ({children}) => {
           ...state,
           messages: Array.from(
             new Set(
-              [action.payload, ...state.massages].map(x => JSON.stringify(x)),
+              [...state.messages, action.payload].map(x => JSON.stringify(x)),
             ),
           ).map(x => JSON.parse(x)),
         };
-      }
-      case 'setDetails': {
-        return {...state, details: action.payload};
       }
       case 'setProfile': {
         return {...state, profile: action.payload};
@@ -140,26 +136,49 @@ const StateProvider = ({children}) => {
         dispatch({type: 'addNews', payload: data});
       else if (data.channel === 'data_note')
         dispatch({type: 'addNotification', payload: data});
-    });
 
-    Pushy.isRegistered().then(isRegistered => {
-      if (isRegistered) {
-        Pushy.subscribe('data_news')
-          .then(() => {
-            console.log('Subscribed to news topic successfully');
-          })
-          .catch(err => {
-            console.error(err);
-          });
-        Pushy.subscribe('data_note')
-          .then(() => {
-            console.log('Subscribed to note topic successfully');
-          })
-          .catch(err => {
-            console.error(err);
-          });
+      if (
+        state.user._id &&
+        state.user.device &&
+        data.channel === state.user.device
+      ) {
+        console.log('add messages', data);
+        // dispatch({type: 'addMessage...', payload: data});
       }
     });
+
+    try {
+      Pushy.isRegistered().then(isRegistered => {
+        if (isRegistered) {
+          try {
+            Pushy.subscribe('data_news')
+              .then(() => {
+                console.log('Subscribed to news topic successfully');
+              })
+              .catch(err => {
+                console.log('data_news subscribe exeption', err);
+              });
+            Pushy.subscribe('data_note')
+              .then(() => {
+                console.log('Subscribed to note topic successfully');
+              })
+              .catch(err => {
+                console.log('data_note subscribe exception', err);
+              });
+          } catch (err) {
+            console.log(
+              err,
+              '..................Pushy.subscribe news, note exception',
+            );
+          }
+        }
+      });
+    } catch (err) {
+      console.log(
+        err,
+        '------------------------------isRegistered().then... exception',
+      );
+    }
   };
 
   const socketInit = () => {
@@ -187,47 +206,44 @@ const StateProvider = ({children}) => {
       state.socket.on(state.user._id, value => {
         console.log('message arrived from ', value);
 
-        if (state.current === 'room-list') {
-          console.log('Now you are chat screen....');
-          axios
-            .get(baseUrl + 'api/message', {
-              params: {
-                user_id: state.user._id,
-              },
-            })
-            .then(function(response) {
-              console.log(response.data);
-              dispatch({type: 'setMessages', payload: response.data});
-            })
-            .catch(function(error) {
-              console.log(error);
-            })
-            .finally(function() {
-              // always executed
-            });
-        } else if (state.current === 'chat-room') {
-          console.log('Now you are in the chat details screen....');
-          axios
-            .get(baseUrl + 'api/message/' + value.sender._id, {
-              params: {
-                user_id: state.user._id,
-              },
-            })
-            .then(function(response) {
-              console.log(
-                'from the server.$$$$$$$$$$$$$$$$$$$$$$$$$..',
-                response.data,
-              );
+        dispatch({type: 'addMessage', payload: value});
 
-              dispatch({type: 'setDetails', payload: response.data.items});
-            })
-            .catch(function(error) {
-              console.log('from server error.$$$$$$$$$$$$$$$$$$$$$$...', error);
-            })
-            .finally(function() {
-              // always executed
-              console.log('anyway finished.$$$$$$$$$$$$$.');
-            });
+        if (state.current === 'room-list') {
+          // console.log('Now you are chat screen....');
+          // axios
+          //   .get(baseUrl + 'api/message', {
+          //     params: {
+          //       user_id: state.user._id,
+          //     },
+          //   })
+          //   .then(function(response) {
+          //     console.log(response.data);
+          //     dispatch({type: 'setMessages', payload: response.data.items});
+          //   })
+          //   .catch(function(error) {
+          //     console.log(error);
+          //   })
+          //   .finally(function() {
+          //     // always executed
+          //   });
+        } else if (state.current === 'chat-room') {
+          // console.log('Now you are in the chat details screen....');
+          // axios
+          //   .get(baseUrl + 'api/message/' + value.sender._id, {
+          //     params: {
+          //       user_id: state.user._id,
+          //     },
+          //   })
+          //   .then(function(response) {
+          //     dispatch({type: 'setMessages', payload: response.data.items});
+          //   })
+          //   .catch(function(error) {
+          //     console.log('from server error.$$$$$$$$$$$$$$...', error);
+          //   })
+          //   .finally(function() {
+          //     // always executed
+          //     console.log('anyway finished.$$$$$$$$$$$$$.');
+          //   });
         }
       });
     }

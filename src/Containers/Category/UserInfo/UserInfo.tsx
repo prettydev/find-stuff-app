@@ -70,7 +70,7 @@ export default function Profile(props) {
           </View>
         </TouchableOpacity>
 
-        {item._id !== state.user._id && (
+        {state.user._id && item._id !== state.user._id && (
           <TouchableOpacity
             style={Style.ProfileMessageContainer}
             onPress={() => {

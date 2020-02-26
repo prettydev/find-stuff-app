@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import {
   ScrollView,
   View,
@@ -17,14 +17,20 @@ import {baseUrl} from 'src/constants';
 import {NavigationEvents} from 'react-navigation';
 import axios from 'axios';
 
+import {Colors} from 'src/Theme';
+
 export default function ChatRoom(props) {
   const [state, dispatch] = useContext(store);
-  const [reply, setReply] = useState('');
+  const [content, setContent] = useState('');
   const [guest, setGuest] = useState(props.navigation.getParam('guest'));
-  const [room_id, setRoom_id] = useState(props.navigation.getParam('room_id'));
+  const [room, setRoom] = useState(props.navigation.getParam('room'));
+
+  const scrollRef = useRef(null);
 
   const getRooms = async () => {
-    if (room_id === undefined || room_id === '') {
+    if (room === undefined || room === '') {
+      console.log(state.user._id, guest._id, '==========================');
+
       await axios
         .post(baseUrl + 'api/room', {
           uid1: state.user._id,
@@ -32,8 +38,30 @@ export default function ChatRoom(props) {
         })
         .then(function(response) {
           if (response.data) {
-            Toast.show('成功!');
-            setRoom_id(response.data._id);
+            setRoom(response.data.item);
+            console.log(response.data.item, '----room number');
+            /////////////////////////////////////////////////
+            const room_id = response.data.item._id;
+            axios
+              .get(baseUrl + 'api/message/', {
+                params: {room_id, user_id: state.user._id},
+              })
+              .then(function(res) {
+                dispatch({type: 'setMessages', payload: res.data.items});
+
+                //remove unread marks
+                room.missed = 0;
+                setRoom(room);
+                // dispatch({type: 'updateRoom', payload: room});
+              })
+              .catch(function(err) {
+                console.log('from server error..........', err);
+              })
+              .finally(function() {
+                // always executed
+                console.log('anyway finished.....');
+              });
+            /////////////////////////////////////////////////
           } else {
             Toast.show('失败了!');
           }
@@ -41,31 +69,14 @@ export default function ChatRoom(props) {
         .catch(function(error) {
           Toast.show(error);
         });
+    } else {
+      console.log(
+        state.user._id,
+        guest._id,
+        room,
+        '==========================',
+      );
     }
-  };
-
-  const getDetails = () => {
-    if (!guest._id) {
-      Toast.show('失败了!');
-      return;
-    }
-
-    axios
-      .get(baseUrl + 'api/message/' + room_id, {
-        params: {},
-      })
-      .then(function(response) {
-        console.log('from the server........................', response.data);
-
-        dispatch({type: 'setDetails', payload: response.data.items});
-      })
-      .catch(function(error) {
-        console.log('from server error.....................', error);
-      })
-      .finally(function() {
-        // always executed
-        console.log('anyway finished.....');
-      });
   };
 
   const handleSubmit = async () => {
@@ -74,20 +85,32 @@ export default function ChatRoom(props) {
       return;
     }
 
-    if (reply === '') {
+    if (content === '') {
       Toast.show('正确输入值！');
       return;
     }
+
+    const msg = {
+      user: state.user._id,
+      room: room._id,
+      content,
+      receiver: guest._id,
+    };
+
     await axios
-      .post(baseUrl + 'api/message', {
-        user: state.user._id,
-        room: room_id,
-        receiver: guest._id,
-      })
+      .post(baseUrl + 'api/message', msg)
       .then(function(response) {
         if (response.data) {
-          Toast.show('成功!');
-          props.navigation.navigate('Room');
+          dispatch({
+            type: 'addMessage',
+            payload: {
+              user: state.user,
+              content,
+              createAt: new Date(),
+            },
+          });
+          setContent('');
+          // props.navigation.navigate('RoomList');
         } else {
           Toast.show('失败了!');
         }
@@ -99,11 +122,10 @@ export default function ChatRoom(props) {
 
   useEffect(() => {
     getRooms();
-    getDetails();
   }, []);
 
   return (
-    <ScrollView style={Styles.GetStuffScreenContainer}>
+    <>
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
@@ -127,58 +149,137 @@ export default function ChatRoom(props) {
         </Text>
         <Text style={{flex: 1}} />
       </View>
-      <View style={Styles.MessageDetailContainer}>
-        <View style={Styles.LastMessageContainer}>
-          <View style={Styles.AvatarContainer}>
-            <FastImage
-              style={Styles.AvartarImg}
-              source={
-                guest.photo
-                  ? {
-                      uri: baseUrl + 'download/photo?path=' + guest.photo,
+
+      <ScrollView
+        style={Styles.GetStuffScreenContainer}
+        ref={scrollRef}
+        onContentSizeChange={(contentWidth, contentHeight) => {
+          scrollRef.current.scrollToEnd({animated: true});
+        }}>
+        <View style={{padding: 12}}>
+          {state.messages &&
+            state.messages.map((msg, i) => {
+              return msg.user._id === state.user._id ? (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingTop: 5,
+                    justifyContent: 'flex-end',
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: Colors.robinSEgg,
+                      margin: 5,
+                      marginRight: 10,
+                      padding: 3,
+                      borderRadius: 3,
+                    }}>
+                    <Text>{msg.content}</Text>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        right: -5,
+                        top: 7,
+                        width: 0,
+                        height: 0,
+                        borderTopColor: 'transparent',
+                        borderTopWidth: 5,
+                        borderLeftWidth: 5,
+                        borderLeftColor: Colors.robinSEgg,
+                        borderBottomWidth: 5,
+                        borderBottomColor: 'transparent',
+                      }}
+                    />
+                  </View>
+                  <FastImage
+                    style={{width: 33, height: 33, borderRadius: 50}}
+                    source={
+                      msg.user.photo
+                        ? {
+                            uri:
+                              baseUrl + 'download/photo?path=' + msg.user.photo,
+                          }
+                        : Images.maleProfile
                     }
-                  : Images.maleProfile
-              }
-              resizeMode="cover"
-            />
-            <View>
-              <View style={Styles.nickNameContainer}>
-                <Text style={Styles.CommonText}>
-                  {guest !== null ? guest.name : ''}
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          {state.details.length > 0 &&
-            state.details.map((msg, i) => (
-              <View style={Styles.LastMessageDescription}>
-                <Text style={{flex: 2}}>{msg.content}</Text>
-                <Text style={{flex: 1}}>
-                  {moment(msg.createAt).format('M月D日 hh时mm分')}
-                </Text>
-              </View>
-            ))}
+                    resizeMode="cover"
+                  />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingTop: 5,
+                  }}>
+                  <FastImage
+                    style={{width: 33, height: 33, borderRadius: 50}}
+                    source={
+                      msg.user.photo
+                        ? {
+                            uri:
+                              baseUrl + 'download/photo?path=' + msg.user.photo,
+                          }
+                        : Images.maleProfile
+                    }
+                    resizeMode="cover"
+                  />
+                  <View
+                    style={{
+                      backgroundColor: '#fff',
+                      margin: 5,
+                      marginLeft: 10,
+                      padding: 3,
+                      borderRadius: 3,
+                    }}>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        left: -5,
+                        top: 7,
+                        width: 0,
+                        height: 0,
+                        borderTopColor: 'transparent',
+                        borderTopWidth: 5,
+                        borderRightWidth: 5,
+                        borderRightColor: '#fff',
+                        borderBottomWidth: 5,
+                        borderBottomColor: 'transparent',
+                      }}
+                    />
+                    <Text>{msg.content}</Text>
+                  </View>
+                </View>
+              );
+            })}
         </View>
-
-        <View style={Styles.NewMessageContainer}>
-          <View>
-            <TextInput
-              style={Styles.newMesssageText}
-              underlineColorAndroid="transparent"
-              placeholder="内容"
-              placeholderTextColor="grey"
-              numberOfLines={5}
-              onChangeText={value => setReply(value)}
-            />
-          </View>
-        </View>
-        <View style={Styles.replyBtnContainer}>
-          <TouchableOpacity style={Styles.replyBtnWrap} onPress={handleSubmit}>
-            <Text style={{color: '#fff', fontSize: 18}}>发送</Text>
-          </TouchableOpacity>
-        </View>
+      </ScrollView>
+      <View style={{flexDirection: 'row', margin: 5}}>
+        <TextInput
+          style={{
+            flex: 7,
+            height: 40,
+            borderWidth: 0,
+            backgroundColor: '#fff',
+          }}
+          underlineColorAndroid="transparent"
+          placeholderTextColor="grey"
+          numberOfLines={1}
+          value={content}
+          onChangeText={value => setContent(value)}
+        />
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            backgroundColor: Colors.active,
+            marginLeft: 4,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={handleSubmit}>
+          <Text style={{color: '#fff'}}>发送</Text>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </>
   );
 }

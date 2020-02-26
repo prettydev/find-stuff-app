@@ -63,7 +63,7 @@ export default function SignInScreen(props) {
             })
             .catch(err => {
               // Handle registration errors
-              console.error(err);
+              console.log('Device registration exception.......', err);
             });
 
           dispatch({
@@ -107,11 +107,6 @@ export default function SignInScreen(props) {
       return true;
     });
   }, []);
-
-  // useEffect(() => {
-  //   if (!state.socket) return;
-  //   state.socket.connect();
-  // }, [state.socket]);
 
   return (
     <View style={{flex: 1}}>
