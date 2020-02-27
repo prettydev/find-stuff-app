@@ -18,7 +18,7 @@ import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 import axios from 'axios';
 import {NavigationEvents} from 'react-navigation';
-import {baseUrl, photoSize} from 'src/constants';
+import {baseUrl, photoSize} from 'src/config';
 
 import {UploadImage} from 'src/Components/UploadImage';
 
@@ -150,6 +150,7 @@ const FoundStuffScreen = props => {
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
+          dispatch({type: 'setCurrentScreen', payload: 'found-screen'});
         }}
       />
       <View style={Styles.FindStuffHeaderContainer}>

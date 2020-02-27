@@ -10,7 +10,7 @@ import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Style from './UserInfoStyle';
 import Toast from 'react-native-simple-toast';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 import {store} from 'src/Store';
 
 export default function Profile(props) {

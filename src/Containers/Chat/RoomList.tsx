@@ -4,8 +4,7 @@ import FastImage from 'react-native-fast-image';
 import Styles from './RoomListStyle';
 import {Images, Colors} from 'src/Theme';
 import {store} from 'src/Store';
-import {baseUrl} from 'src/constants';
-import Toast from 'react-native-simple-toast';
+import {baseUrl} from 'src/config';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -23,27 +22,25 @@ const RoomList = props => {
       })
       .then(function(response) {
         console.log(response.data.items, 'rooms data.................');
-        console.log(response.data.missed, 'missed data.................');
         dispatch({type: 'setRooms', payload: response.data.items});
       })
       .catch(function(error) {
-        console.log(error);
+        console.log('get room data error....', error);
       })
       .finally(function() {
         // always executed
       });
   };
 
-  useEffect(() => {
-    getList();
-  }, []);
-
   return (
     <>
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
-          else dispatch({type: 'setCurrent', payload: 'room'});
+          else {
+            getList();
+            dispatch({type: 'setCurrentScreen', payload: 'room-list'});
+          }
         }}
       />
       <View style={Styles.FindStuffHeaderContainer}>
@@ -102,7 +99,9 @@ const RoomList = props => {
                       )}
                       {item.missed > 0 && (
                         <View style={Styles.AvatarBadgeContainer}>
-                          <Text style={{color: '#fff'}}>{item.missed}</Text>
+                          <Text style={{color: '#fff', fontSize: 10}}>
+                            {item.missed}
+                          </Text>
                         </View>
                       )}
                     </View>

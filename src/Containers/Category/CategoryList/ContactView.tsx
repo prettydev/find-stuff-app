@@ -9,7 +9,7 @@ import {
 import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Styles from './CategoryListStyle';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 import axios from 'axios';
 
 import {Table, Row} from 'react-native-table-component';

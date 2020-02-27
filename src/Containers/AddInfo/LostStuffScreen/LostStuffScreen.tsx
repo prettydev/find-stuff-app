@@ -18,7 +18,7 @@ import ImageResizer from 'react-native-image-resizer';
 import {store} from 'src/Store';
 import axios from 'axios';
 import {NavigationEvents} from 'react-navigation';
-import {baseUrl, photoSize} from 'src/constants';
+import {baseUrl, photoSize} from 'src/config';
 
 const LostStuffScreen = props => {
   const [state, dispatch] = useContext(store);
@@ -149,6 +149,7 @@ const LostStuffScreen = props => {
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
+          dispatch({type: 'setCurrentScreen', payload: 'lost-screen'});
         }}
       />
       <View style={Styles.FindStuffHeaderContainer}>

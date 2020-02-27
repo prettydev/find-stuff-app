@@ -18,7 +18,7 @@ import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
 
 import axios from 'axios';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 
 import regionJson from 'src/Lib/rn-wheel-picker-china-region/regionJson';
 import {NavigationEvents} from 'react-navigation';
@@ -135,6 +135,7 @@ function HomeView(props) {
         <NavigationEvents
           onDidFocus={() => {
             getList();
+            dispatch({type: 'setCurrentScreen', payload: 'home'});
           }}
         />
         <View style={styles.homeScrollView}>

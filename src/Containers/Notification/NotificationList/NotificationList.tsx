@@ -5,7 +5,7 @@ import {Images} from 'src/Theme';
 import Styles from './NotificationListStyle';
 import NotificationCard from 'src/Components/Card/NotificationCard/NotificationCard';
 import {store} from 'src/Store';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 import axios from 'axios';
 
 import {NavigationEvents} from 'react-navigation';
@@ -36,6 +36,7 @@ const NotificationList = props => {
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
+          else dispatch({type: 'setCurrentScreen', payload: 'note-list'});
         }}
       />
       <View style={Styles.CategoryListContainer}>

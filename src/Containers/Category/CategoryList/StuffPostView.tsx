@@ -12,9 +12,9 @@ import {Images} from 'src/Theme';
 import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn';
 import Styles from './CategoryListStyle';
 import StuffCard from 'src/Components/Card/StuffCard';
-import {tagJson} from 'src/constants';
+import {tagJson} from 'src/config';
 import {NavigationEvents} from 'react-navigation';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 import {store} from 'src/Store';
 const axios = require('axios');
 
@@ -64,6 +64,7 @@ export default function CategoryList(props) {
       <NavigationEvents
         onDidFocus={() => {
           getList();
+          dispatch({type: 'setCurrentScreen', payload: 'post-list'});
         }}
       />
       <View style={Styles.CategoryListContainer}>

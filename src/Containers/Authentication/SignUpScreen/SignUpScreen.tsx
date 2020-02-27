@@ -10,7 +10,7 @@ import FormCommonBtn from 'src/Components/Buttons/FormCommonBtn/FormCommonBtn';
 import {Images} from 'src/Theme';
 
 import Toast from 'react-native-simple-toast';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 const axios = require('axios');
 
 export default function SignUpScreen(props) {

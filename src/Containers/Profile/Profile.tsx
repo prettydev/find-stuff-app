@@ -22,7 +22,7 @@ import QRCode from 'react-native-qrcode-svg';
 import axios from 'axios';
 import {NavigationEvents} from 'react-navigation';
 import Modal from 'react-native-modal';
-import {baseUrl, appVersion, avatarSize} from 'src/constants';
+import {baseUrl, appVersion, avatarSize} from 'src/config';
 
 const Profile = props => {
   const [state, dispatch] = useContext(store);
@@ -204,6 +204,7 @@ const Profile = props => {
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
+          else dispatch({type: 'setCurrentScreen', payload: 'profile'});
         }}
       />
       <ImageBackground

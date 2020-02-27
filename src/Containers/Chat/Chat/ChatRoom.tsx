@@ -12,7 +12,7 @@ import {Images} from 'src/Theme';
 import moment from 'moment';
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 
 import {NavigationEvents} from 'react-navigation';
 import axios from 'axios';
@@ -130,7 +130,7 @@ export default function ChatRoom(props) {
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
           else {
-            dispatch({type: 'setCurrent', payload: 'chat'});
+            dispatch({type: 'setCurrentScreen', payload: 'chat-room'});
           }
         }}
       />
@@ -170,8 +170,8 @@ export default function ChatRoom(props) {
                   <View
                     style={{
                       backgroundColor: Colors.robinSEgg,
-                      margin: 5,
                       marginRight: 10,
+                      marginLeft: 70,
                       padding: 3,
                       borderRadius: 3,
                     }}>
@@ -227,8 +227,8 @@ export default function ChatRoom(props) {
                   <View
                     style={{
                       backgroundColor: '#fff',
-                      margin: 5,
                       marginLeft: 10,
+                      marginRight: 70,
                       padding: 3,
                       borderRadius: 3,
                     }}>

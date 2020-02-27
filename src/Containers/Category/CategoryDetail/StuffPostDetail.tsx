@@ -5,7 +5,7 @@ import {Images, Colors} from 'src/Theme';
 import Styles from './CategoryDetailStyle';
 import {store} from 'src/Store';
 import moment from 'moment';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
 import {NavigationEvents} from 'react-navigation';
 import axios from 'axios';
@@ -128,7 +128,12 @@ export default function StuffPostDetail({navigation}) {
 
   return (
     <>
-      <NavigationEvents onDidFocus={increaseBrowseCnt} />
+      <NavigationEvents
+        onDidFocus={() => {
+          increaseBrowseCnt();
+          dispatch({type: 'setCurrentScreen', payload: 'post-detail'});
+        }}
+      />
       <ScrollView style={{backgroundColor: '#f4f6f8'}}>
         <View>
           <View style={Styles.FindStuffHeaderContainer}>

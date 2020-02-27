@@ -7,7 +7,7 @@ import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
 import RectBtn from 'src/Components/Buttons/RectBtn/RectBtn';
 import {Card} from 'react-native-shadow-cards';
 import moment from 'moment';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 import Toast from 'react-native-simple-toast';
 import {store} from 'src/Store';
 

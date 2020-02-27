@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {store} from 'src/Store';
 
 import Toast from 'react-native-simple-toast';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 import axios from 'axios';
 import io from 'socket.io-client';
 

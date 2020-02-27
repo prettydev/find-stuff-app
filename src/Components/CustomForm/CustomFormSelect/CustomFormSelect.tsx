@@ -3,7 +3,7 @@ import {View, Text} from 'react-native';
 import Styles from './CustomFormSelectStyle';
 import RNPickerSelect from 'react-native-picker-select';
 import {Colors} from 'src/Theme';
-import {tagArr} from 'src/constants';
+import {tagArr} from 'src/config';
 
 export default function CustomFormSelect(props) {
   const {CustomFormSelectPlaceholder, CustomFormSelectLabel, procFunc} = props;

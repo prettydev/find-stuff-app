@@ -1,9 +1,9 @@
 import React, {createContext, useReducer, useEffect} from 'react';
 import {Platform, PermissionsAndroid} from 'react-native';
 import Pushy from 'pushy-react-native';
-import axios from 'axios';
 import io from 'socket.io-client';
-import {baseUrl, appVersion} from 'src/constants';
+import {baseUrl, appVersion} from 'src/config';
+import axios from 'axios';
 
 const initialState = {
   socket: io(baseUrl, {ransports: ['websocket'], jsonp: false}),
@@ -22,7 +22,7 @@ const initialState = {
     about: 'We are the whole...',
     phone: '11111',
   },
-  current: 'home',
+  current_screen: 'home',
 };
 const store = createContext(initialState);
 const {Provider} = store;
@@ -30,8 +30,8 @@ const {Provider} = store;
 const StateProvider = ({children}) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
-      case 'setCurrent': {
-        return {...state, current: action.payload};
+      case 'setCurrentScreen': {
+        return {...state, current_screen: action.payload};
       }
       case 'setUser': {
         return {...state, user: action.payload};
@@ -82,6 +82,22 @@ const StateProvider = ({children}) => {
       case 'setRooms': {
         return {...state, rooms: action.payload};
       }
+      case 'updateRoom': {
+        console.log('uuuuuuuuuuuuupdateRom,...', state.rooms);
+        return {
+          ...state,
+          rooms: state.rooms.map((r, i) =>
+            r._id === action.payload.room
+              ? {
+                  ...r,
+                  label: action.payload.content,
+                  updateAt: action.payload.createAt,
+                  missed: parseInt(r.missed) + 1,
+                }
+              : r,
+          ),
+        };
+      }
       case 'addRoom': {
         return {
           ...state,
@@ -131,18 +147,20 @@ const StateProvider = ({children}) => {
     }
 
     Pushy.setNotificationClickListener(async data => {
-      console.log('Clicked notification: ' + data);
-      if (data.channel === 'data_news')
-        dispatch({type: 'addNews', payload: data});
-      else if (data.channel === 'data_note')
-        dispatch({type: 'addNotification', payload: data});
+      if (data.channel === 'data_news') {
+        console.log('news from the push', data);
+        // dispatch({type: 'addNews', payload: data});
+      } else if (data.channel === 'data_note') {
+        console.log('notes from the push, ', data);
+        // dispatch({type: 'addNotification', payload: data});
+      }
 
       if (
         state.user._id &&
         state.user.device &&
         data.channel === state.user.device
       ) {
-        console.log('add messages', data);
+        console.log('add messages from push', data);
         // dispatch({type: 'addMessage...', payload: data});
       }
     });
@@ -208,42 +226,25 @@ const StateProvider = ({children}) => {
 
         dispatch({type: 'addMessage', payload: value});
 
-        if (state.current === 'room-list') {
-          // console.log('Now you are chat screen....');
-          // axios
-          //   .get(baseUrl + 'api/message', {
-          //     params: {
-          //       user_id: state.user._id,
-          //     },
-          //   })
-          //   .then(function(response) {
-          //     console.log(response.data);
-          //     dispatch({type: 'setMessages', payload: response.data.items});
-          //   })
-          //   .catch(function(error) {
-          //     console.log(error);
-          //   })
-          //   .finally(function() {
-          //     // always executed
-          //   });
-        } else if (state.current === 'chat-room') {
-          // console.log('Now you are in the chat details screen....');
-          // axios
-          //   .get(baseUrl + 'api/message/' + value.sender._id, {
-          //     params: {
-          //       user_id: state.user._id,
-          //     },
-          //   })
-          //   .then(function(response) {
-          //     dispatch({type: 'setMessages', payload: response.data.items});
-          //   })
-          //   .catch(function(error) {
-          //     console.log('from server error.$$$$$$$$$$$$$$...', error);
-          //   })
-          //   .finally(function() {
-          //     // always executed
-          //     console.log('anyway finished.$$$$$$$$$$$$$.');
-          //   });
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@', state.current_screen);
+
+        if (state.current_screen === 'chat-room') {
+          axios
+            .put(baseUrl + 'api/message/' + value._id)
+            .then(function(response) {
+              console.log(
+                'the message checked++++++++++++++++++++++++++++',
+                response.data.item._id,
+              );
+            })
+            .catch(function(error) {
+              console.log('checked setting...', error);
+            })
+            .finally(function() {
+              console.log('anyway finished, checked setting.');
+            });
+        } else {
+          dispatch({type: 'updateRoom', payload: value});
         }
       });
     }
