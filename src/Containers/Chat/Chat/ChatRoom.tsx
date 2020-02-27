@@ -48,11 +48,6 @@ export default function ChatRoom(props) {
               })
               .then(function(res) {
                 dispatch({type: 'setMessages', payload: res.data.items});
-
-                //remove unread marks
-                room.missed = 0;
-                setRoom(room);
-                // dispatch({type: 'updateRoom', payload: room});
               })
               .catch(function(err) {
                 console.log('from server error..........', err);
@@ -129,9 +124,6 @@ export default function ChatRoom(props) {
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
-          else {
-            dispatch({type: 'setCurrentScreen', payload: 'chat-room'});
-          }
         }}
       />
       <View style={Styles.FindStuffHeaderContainer}>

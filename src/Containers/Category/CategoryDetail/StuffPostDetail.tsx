@@ -290,7 +290,7 @@ export default function StuffPostDetail({navigation}) {
         hintInput={''}
         submitInput={inputText => {
           if (inputText === '') {
-            alert('请输入内容');
+            Toast.show('请输入内容');
             return;
           }
           reportPost(inputText);

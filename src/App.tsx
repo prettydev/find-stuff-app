@@ -22,7 +22,6 @@ const AppNavigator = createStackNavigator(
     FoundStuffScreen: FoundStuffScreen,
 
     ChatRoom: ChatRoom,
-
     UserInfo: UserInfo,
   },
   {
@@ -33,16 +32,10 @@ const AppNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-const AppWrapper = () => {
-  return <AppContainer />;
-};
-
-const App = () => {
+export default function App() {
   return (
     <StateProvider>
-      <AppWrapper />
+      <AppContainer />
     </StateProvider>
   );
-};
-
-export default App;
+}

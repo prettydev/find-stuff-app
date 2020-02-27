@@ -28,6 +28,7 @@ export default function CategoryList(props) {
   };
 
   useEffect(() => {
+    console.log('current_screen value is...', state.current_screen);
     getList();
   }, []);
 

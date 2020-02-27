@@ -52,7 +52,7 @@ const StateProvider = ({children}) => {
         return {...state, last_note: action.payload};
       }
       case 'setNews': {
-        return {...state, news: action.payload};
+        return {...state, news: action.payload, current_screen: 'news'};
       }
       case 'addNews': {
         return {
@@ -109,7 +109,11 @@ const StateProvider = ({children}) => {
         };
       }
       case 'setMessages': {
-        return {...state, messages: action.payload};
+        return {
+          ...state,
+          messages: action.payload,
+          current_screen: 'chat-room',
+        };
       }
       case 'addMessage': {
         return {
@@ -146,24 +150,7 @@ const StateProvider = ({children}) => {
       });
     }
 
-    Pushy.setNotificationClickListener(async data => {
-      if (data.channel === 'data_news') {
-        console.log('news from the push', data);
-        // dispatch({type: 'addNews', payload: data});
-      } else if (data.channel === 'data_note') {
-        console.log('notes from the push, ', data);
-        // dispatch({type: 'addNotification', payload: data});
-      }
-
-      if (
-        state.user._id &&
-        state.user.device &&
-        data.channel === state.user.device
-      ) {
-        console.log('add messages from push', data);
-        // dispatch({type: 'addMessage...', payload: data});
-      }
-    });
+    Pushy.setNotificationClickListener(async data => {});
 
     try {
       Pushy.isRegistered().then(isRegistered => {
@@ -194,13 +181,20 @@ const StateProvider = ({children}) => {
     } catch (err) {
       console.log(
         err,
-        '------------------------------isRegistered().then... exception',
+        '------------------------isRegistered().then... exception',
       );
     }
   };
 
   const socketInit = () => {
-    if (!state.socket) return;
+    console.log(
+      '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-----------socket init---------%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',
+    );
+
+    if (!state.socket) {
+      console.log('~~~~~~~~~~~~~no sockect~~~~~~~~~~~~~', state.socket);
+      return;
+    }
 
     state.socket.emit('getLastNote');
 
@@ -222,11 +216,13 @@ const StateProvider = ({children}) => {
       });
 
       state.socket.on(state.user._id, value => {
-        console.log('message arrived from ', value);
-
         dispatch({type: 'addMessage', payload: value});
 
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@', state.current_screen);
+        console.log(
+          '@@@@@@@@@@@@@@@@@@@@@@@@@',
+          state.user._id,
+          state.current_screen,
+        );
 
         if (state.current_screen === 'chat-room') {
           axios
@@ -248,17 +244,12 @@ const StateProvider = ({children}) => {
         }
       });
     }
-
-    console.log('socket changed... ... ...');
   };
 
   useEffect(() => {
     socketInit();
-  }, [state.socket]);
-
-  useEffect(() => {
     pushInit();
-  }, []);
+  }, [state.socket]);
 
   return <Provider value={[state, dispatch]}>{children}</Provider>;
 };

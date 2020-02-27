@@ -74,17 +74,16 @@ function HomeView(props) {
       .catch(function(error) {
         console.log(error);
       })
-      .finally(function() {
-        // always executed
-        console.log('get list request finished...');
-      });
+      .finally(function() {});
   };
 
   const updateLocation = location => {
     if (!state.user._id || !location) return;
 
+    console.log('will update my locatoin as ', location);
+
     axios
-      .post(baseUrl + 'api2/location', {
+      .post(baseUrl + 'api2/user/location', {
         user_id: state.user._id,
         location,
       })
@@ -94,10 +93,7 @@ function HomeView(props) {
       .catch(function(error) {
         console.log(error, 'setLocation error...');
       })
-      .finally(function() {
-        // always executed
-        console.log('get list request finished...');
-      });
+      .finally(function() {});
   };
 
   useEffect(() => {
@@ -109,10 +105,16 @@ function HomeView(props) {
     });
 
     return () => {};
-  }, []);
+  }, [state.user._id]);
 
   useEffect(() => {
-    console.log('changed region... ... .. ', state.region, tabState.index, key);
+    console.log(
+      'changed region... ... .. ',
+      state.current_screen,
+      state.region,
+      tabState.index,
+      key,
+    );
     getList();
   }, [state.region, tabState.index, key]);
 

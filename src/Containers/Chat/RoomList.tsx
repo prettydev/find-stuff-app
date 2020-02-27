@@ -67,67 +67,70 @@ const RoomList = props => {
           <FlatList
             horizontal={false}
             data={state.rooms}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                style={Styles.MessageListWrap}
-                onPress={() => {
-                  props.navigation.navigate('ChatRoom', {
-                    guest:
-                      state.user._id === item.users[0]._id
-                        ? item.users[1]
-                        : item.users[0],
-                  });
-                }}>
-                <View style={Styles.MessageListAvatarWrap}>
-                  <View style={{flexDirection: 'column'}}>
-                    <View style={{flex: 1, marginRight: 5}}>
-                      {item._id && (
-                        <FastImage
-                          source={
-                            item._id.photo
-                              ? {
-                                  uri:
-                                    baseUrl +
-                                    'download/photo?path=' +
-                                    item._id.photo,
-                                }
-                              : Images.maleProfile
-                          }
-                          style={Styles.MessageListAvatar}
-                          resizeMode="cover"
-                        />
-                      )}
-                      {item.missed > 0 && (
-                        <View style={Styles.AvatarBadgeContainer}>
-                          <Text style={{color: '#fff', fontSize: 10}}>
-                            {item.missed}
-                          </Text>
-                        </View>
-                      )}
+            renderItem={({item}) =>
+              item.users[0] &&
+              item.users[1] && (
+                <TouchableOpacity
+                  style={Styles.MessageListWrap}
+                  onPress={() => {
+                    props.navigation.navigate('ChatRoom', {
+                      guest:
+                        state.user._id === item.users[0]._id
+                          ? item.users[1]
+                          : item.users[0],
+                    });
+                  }}>
+                  <View style={Styles.MessageListAvatarWrap}>
+                    <View style={{flexDirection: 'column'}}>
+                      <View style={{flex: 1, marginRight: 5}}>
+                        {item._id && (
+                          <FastImage
+                            source={
+                              item._id.photo
+                                ? {
+                                    uri:
+                                      baseUrl +
+                                      'download/photo?path=' +
+                                      item._id.photo,
+                                  }
+                                : Images.maleProfile
+                            }
+                            style={Styles.MessageListAvatar}
+                            resizeMode="cover"
+                          />
+                        )}
+                        {item.missed > 0 && (
+                          <View style={Styles.AvatarBadgeContainer}>
+                            <Text style={{color: '#fff', fontSize: 10}}>
+                              {item.missed}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                    <View style={{flex: 1}}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text>
+                          {state.user._id === item.users[0]._id
+                            ? item.users[1].name
+                            : item.users[0].name}
+                        </Text>
+                        <Text style={{color: Colors.grey}}>
+                          {moment(item.updateAt).format('M月D日 hh时mm分')}
+                        </Text>
+                      </View>
+                      <Text numberOfLines={2} style={{color: Colors.grey}}>
+                        {item.label}
+                      </Text>
                     </View>
                   </View>
-                  <View style={{flex: 1}}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <Text>
-                        {state.user._id === item.users[0]._id
-                          ? item.users[1].name
-                          : item.users[0].name}
-                      </Text>
-                      <Text style={{color: Colors.grey}}>
-                        {moment(item.updateAt).format('M月D日 hh时mm分')}
-                      </Text>
-                    </View>
-                    <Text numberOfLines={2} style={{color: Colors.grey}}>
-                      {item.label}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            )}
+                </TouchableOpacity>
+              )
+            }
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
