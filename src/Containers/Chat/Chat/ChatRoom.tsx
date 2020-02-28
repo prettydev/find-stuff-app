@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Styles from './ChatRoomStyle';
@@ -29,7 +30,11 @@ export default function ChatRoom(props) {
 
   const getRooms = async () => {
     if (room === undefined || room === '') {
-      console.log(state.user._id, guest._id, '==========================');
+      console.log(
+        state.user._id,
+        guest._id,
+        '========+++++++++++++++=========',
+      );
 
       await axios
         .post(baseUrl + 'api/room', {
@@ -47,6 +52,11 @@ export default function ChatRoom(props) {
                 params: {room_id, user_id: state.user._id},
               })
               .then(function(res) {
+                console.log(
+                  '111111111111111111111',
+                  res.data.items,
+                  '222222222222222222222',
+                );
                 dispatch({type: 'setMessages', payload: res.data.items});
               })
               .catch(function(err) {
@@ -58,11 +68,13 @@ export default function ChatRoom(props) {
               });
             /////////////////////////////////////////////////
           } else {
-            Toast.show('失败了!');
+            // Toast.show('失败了!');
+            console.log('failed to create the room....');
           }
         })
         .catch(function(error) {
-          Toast.show(error);
+          // Toast.show(error);
+          console.log('failed to create the room with exception....', error);
         });
     } else {
       console.log(

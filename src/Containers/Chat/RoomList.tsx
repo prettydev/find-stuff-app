@@ -58,7 +58,7 @@ const RoomList = props => {
       </View>
       <ScrollView style={Styles.GetStuffScreenContainer}>
         <View style={Styles.MessageListContainer}>
-          {state.messages.length === 0 && (
+          {state.rooms.length === 0 && (
             <View
               style={{flex: 1, justifyContent: 'center', flexDirection: 'row'}}>
               <Text>没有讯息</Text>
