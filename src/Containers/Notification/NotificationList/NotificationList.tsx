@@ -27,16 +27,15 @@ const NotificationList = props => {
       });
   };
 
-  useEffect(() => {
-    getList();
-  }, []);
-
   return (
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
-          else dispatch({type: 'setCurrentScreen', payload: 'note-list'});
+          else {
+            dispatch({type: 'setCurrentScreen', payload: 'note-list'});
+            getList();
+          }
         }}
       />
       <View style={Styles.CategoryListContainer}>
