@@ -18,8 +18,12 @@ export default function StuffPostDetail({navigation}) {
   const [dlgVisible, setDlgVisible] = useState(false);
 
   const sendMsg = item => {
+    if (!state.user._id) {
+      Toast.show('请登录！');
+      return;
+    }
     if (item.user._id === state.user._id) {
-      Toast.show('错误');
+      Toast.show('这是你的帖子');
       return;
     }
     navigation.navigate('ChatRoom', {guest: item.user});

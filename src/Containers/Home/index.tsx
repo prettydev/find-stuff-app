@@ -199,6 +199,7 @@ function HomeView(props) {
           onDidFocus={() => {
             getList();
             dispatch({type: 'setCurrentScreen', payload: 'home'});
+            state.socket.emit('getLastNote');
           }}
         />
         <View style={styles.homeScrollView}>

@@ -54,9 +54,10 @@ const Profile = props => {
         versionDescription =
           '您的应用是旧版本(' +
           appVersion +
-          ').最新版本是' +
-          state.profile.version +
-          '.';
+          ').' +
+          (state.profile.version
+            ? '最新版本是' + state.profile.version + '.'
+            : '');
       }
       setService(versionDescription);
     }

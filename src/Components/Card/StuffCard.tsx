@@ -98,8 +98,12 @@ export default function StuffCard({item, navigation}) {
                         RoundBtnTitle={'联系TA'}
                         RoundBtnColor={'MainYellow'}
                         proc={() => {
+                          if (!state.user._id) {
+                            Toast.show('请登录！');
+                            return;
+                          }
                           if (item.user._id === state.user._id) {
-                            Toast.show('错误');
+                            Toast.show('这是你的帖子');
                             return;
                           }
                           navigation.navigate('ChatRoom', {

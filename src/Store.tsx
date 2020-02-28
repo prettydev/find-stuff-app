@@ -200,8 +200,13 @@ const StateProvider = ({children}) => {
 
     state.socket.on('data_note', value => {
       console.log('data_note... ... ... ', value);
-      dispatch({type: 'setLastNote', payload: value});
-      dispatch({type: 'addNotification', payload: value});
+      if (value === 0) {
+        dispatch({type: 'setLastNote', payload: {content: ''}});
+        dispatch({type: 'setNotifications', payload: []});
+      } else {
+        dispatch({type: 'setLastNote', payload: value});
+        dispatch({type: 'addNotification', payload: value});
+      }
     });
 
     state.socket.on('data_news', value => {
