@@ -7,12 +7,16 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableHighlight,
+  PermissionsAndroid,
   Dimensions,
+  NativeModules,
+  NativeEventEmitter,
+  Platform,
+  EmitterSubscription,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
-import {BaiduMapManager, Geolocation} from 'react-native-baidu-map';
 import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel';
 import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
@@ -25,7 +29,13 @@ import {NavigationEvents} from 'react-navigation';
 import Modal from 'react-native-modal';
 import Accordion from 'react-native-collapsible-accordion';
 import {store} from 'src/Store';
-BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
+
+// import {Geolocation} from 'react-native-baidu-map';
+import {init} from 'react-native-amap-geolocation';
+import {Location, ReGeocode} from './types';
+
+const AMapGeolocation = NativeModules.AMapGeolocation;
+const eventEmitter = new NativeEventEmitter(AMapGeolocation);
 
 function HomeView(props) {
   const [state, dispatch] = useContext(store);
@@ -96,13 +106,64 @@ function HomeView(props) {
       .finally(function() {});
   };
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition().then(data => {
-      if (data.city) {
-        dispatch({type: 'setRegion', payload: data.city});
-        updateLocation(data.city);
-      }
+  const getBaiduLocation = () => {
+    // try {
+    //   Geolocation.getCurrentPosition()
+    //     .then(data => {
+    //       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!', data);
+    //       if (data.city) {
+    //         dispatch({type: 'setRegion', payload: data.city});
+    //         updateLocation(data.city);
+    //       }
+    //     })
+    //     .catch(error => console.warn(error, 'geolocation warning...'))
+    //     .then(result => {
+    //       console.log('result.................', result);
+    //     });
+    // } catch (err) {
+    //   console.log('location permission exeption......', err);
+    // }
+  };
+
+  function addLocationListener(
+    listener: (location: Location & ReGeocode) => void,
+  ) {
+    return eventEmitter.addListener('AMapGeolocation', listener);
+  }
+
+  const geoAMapLocation = async () => {
+    await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    );
+
+    await init({
+      ios: '9bd6c82e77583020a73ef1af59d0c759', //need to modify
+      android: '7c09f30df0777beee6f441252b0fa1f2',
     });
+
+    const listener = addLocationListener(location => {
+      if (location.errorCode) {
+        console.log(
+          location.errorCode,
+          location.errorInfo,
+          location,
+          '======> location error',
+        );
+      } else {
+        console.log(location);
+        if (location.city) {
+          dispatch({type: 'setRegion', payload: location.city});
+          updateLocation(location.city);
+        }
+      }
+      AMapGeolocation.stop();
+      listener.remove();
+    });
+    AMapGeolocation.start();
+  };
+
+  useEffect(() => {
+    geoAMapLocation();
 
     return () => {};
   }, [state.user._id]);

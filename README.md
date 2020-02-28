@@ -57,3 +57,11 @@ pod install
 - test message list, detail
 - add report logic
 - ... ... ..
+
+---
+
+- get sha1
+  keytool -list -v -keystore .\findstuff.keystore -alias findstuffkey -storepass 123456 -keypass 123456
+
+-amap setting url
+https://lbs.amap.com/dev/key/app
