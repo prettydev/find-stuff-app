@@ -170,7 +170,6 @@ export default function ChatRoom(props) {
 
         <Text style={{fontSize: 20, color: '#fff'}}>
           {guest.name ? guest.name : ''}
-          {state.current_screen}
         </Text>
         <Text style={{flex: 1}} />
       </View>

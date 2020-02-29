@@ -15,7 +15,7 @@ const NotificationList = props => {
 
   const getList = () => {
     axios
-      .get(baseUrl + 'api/notification', {})
+      .get(baseUrl + 'api/notification', {params: {region: state.region}})
       .then(function(response) {
         dispatch({type: 'setNotifications', payload: response.data});
       })

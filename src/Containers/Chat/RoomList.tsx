@@ -53,9 +53,7 @@ const RoomList = props => {
           />
         </TouchableOpacity>
 
-        <Text style={{fontSize: 20, color: '#fff'}}>
-          私信{state.current_screen}
-        </Text>
+        <Text style={{fontSize: 20, color: '#fff'}}>私信</Text>
         <Text style={{flex: 1}} />
       </View>
       <ScrollView style={Styles.GetStuffScreenContainer}>

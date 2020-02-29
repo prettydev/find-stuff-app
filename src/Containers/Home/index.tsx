@@ -87,6 +87,25 @@ function HomeView(props) {
       .finally(function() {});
   };
 
+  const getLastNote = () => {
+    axios
+      .get(baseUrl + 'api/notification', {
+        params: {region: state.region, limit: 1},
+      })
+      .then(function(response) {
+        console.log('last note =================>', response.data);
+        if (response.data.item === 0) {
+          dispatch({type: 'setLastNote', payload: {content: ''}});
+        } else {
+          dispatch({type: 'setLastNote', payload: response.data});
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      })
+      .finally(function() {});
+  };
+
   const updateLocation = location => {
     if (!state.user._id || !location) return;
 
@@ -181,6 +200,10 @@ function HomeView(props) {
 
   useEffect(() => {}, [list]);
 
+  useEffect(() => {
+    getLastNote();
+  }, [state.region]);
+
   const ListArea = () => (
     <ScrollView style={{backgroundColor: '#fff', flex: 1}}>
       {list.map((item, i) => (
@@ -197,9 +220,9 @@ function HomeView(props) {
       <ScrollView style={{flex: 1}}>
         <NavigationEvents
           onDidFocus={() => {
+            getLastNote();
             getList();
             dispatch({type: 'setCurrentScreen', payload: 'home'});
-            if (state.socket) state.socket.emit('getLastNote');
           }}
         />
         <View style={styles.homeScrollView}>
