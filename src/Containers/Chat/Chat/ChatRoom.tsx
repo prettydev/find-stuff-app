@@ -5,12 +5,10 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Alert,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Styles from './ChatRoomStyle';
 import {Images} from 'src/Theme';
-import moment from 'moment';
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import {baseUrl} from 'src/config';
@@ -127,9 +125,31 @@ export default function ChatRoom(props) {
       });
   };
 
+  const updateCheckedState = () => {
+    if (!room || !guest) return;
+    console.log('will update the state....', room._id, guest._id);
+    axios
+      .get(baseUrl + 'api/message/' + room._id, {
+        params: {user_id: guest._id},
+      })
+      .then(function(response) {
+        console.log('the msg checked-----------++++', response.data.msg);
+      })
+      .catch(function(error) {
+        console.log('checked setting...', error);
+      })
+      .finally(function() {
+        console.log('anyway finished, checked setting.');
+      });
+  };
+
   useEffect(() => {
     getRooms();
   }, []);
+
+  useEffect(() => {
+    updateCheckedState();
+  }, [state.messages]);
 
   return (
     <>
@@ -150,6 +170,7 @@ export default function ChatRoom(props) {
 
         <Text style={{fontSize: 20, color: '#fff'}}>
           {guest.name ? guest.name : ''}
+          {state.current_screen}
         </Text>
         <Text style={{flex: 1}} />
       </View>
