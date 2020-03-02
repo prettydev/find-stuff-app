@@ -6,13 +6,10 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
   PermissionsAndroid,
   Dimensions,
   NativeModules,
   NativeEventEmitter,
-  Platform,
-  EmitterSubscription,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
@@ -255,17 +252,9 @@ function HomeView(props) {
           <View style={styles.HomeBannerContainer}>
             <HomeCarousel />
           </View>
+
           <View style={styles.HomeSearchContainer}>
             <View style={styles.HomeSearchArea}>
-              <TouchableOpacity
-                onPress={() => {
-                  setKey(keyTmp);
-                }}>
-                <FastImage
-                  source={Images.Search}
-                  style={styles.HomeSearchImg}
-                />
-              </TouchableOpacity>
               <View style={styles.HomeSearchInputContainer}>
                 <TextInput
                   placeholder={'请输入关键词进行搜索'}
@@ -274,9 +263,21 @@ function HomeView(props) {
                     setKeyTmp(value);
                   }}
                 />
+                <FastImage
+                  source={Images.Search}
+                  style={styles.HomeSearchImg}
+                />
               </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setKey(keyTmp);
+                }}
+                style={styles.HomeSearchBtn}>
+                <Text>搜索</Text>
+              </TouchableOpacity>
             </View>
           </View>
+
           <View style={styles.HomeMainBtnGroup}>
             <View style={{flexDirection: 'column', alignItems: 'center'}}>
               <TouchableOpacity
@@ -351,8 +352,24 @@ function HomeView(props) {
             <View style={styles.HomeNotificationArea}>
               <FastImage
                 source={Images.RedSound}
-                style={{width: 40, height: 40}}
+                style={{width: 20, height: 18}}
               />
+              {state.user._id ? (
+                state.last_note.users.indexOf(state.user._id) === -1 ? (
+                  <View
+                    style={{
+                      width: 8,
+                      height: 8,
+                      backgroundColor: 'red',
+                      borderRadius: 5,
+                      marginTop: -8,
+                    }}></View>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
               <Text style={styles.HomeNotificationText} numberOfLines={2}>
                 {state.last_note.content ? state.last_note.content : ''}
               </Text>
@@ -418,14 +435,14 @@ function HomeView(props) {
                       backgroundColor: '#0cf',
                     }}>
                     {_filterAreas('新疆', item).map((itemValue, idx) => (
-                      <TouchableHighlight
+                      <TouchableOpacity
                         style={{marginTop: 3}}
                         onPress={() => {
                           dispatch({type: 'setRegion', payload: itemValue});
                           setIsGpsDlgVisible(false);
                         }}>
                         <Text style={{color: '#fff'}}>{itemValue}</Text>
-                      </TouchableHighlight>
+                      </TouchableOpacity>
                     ))}
                   </View>
                 )}

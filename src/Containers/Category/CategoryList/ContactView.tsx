@@ -1,16 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Styles from './CategoryListStyle';
 import {baseUrl} from 'src/config';
 import axios from 'axios';
+
+import SearchBox from './SearchBox';
 
 import {Table, Row} from 'react-native-table-component';
 import {reduceDataForScreenSize} from 'src/Components/Table/responsive/reduceDataForScreenSize';
@@ -73,7 +69,7 @@ export default function CategoryList(props) {
   }, [key]);
 
   return (
-    <ScrollView style={{backgroundColor: '#f4f6f8'}}>
+    <ScrollView style={{backgroundColor: '#fff'}}>
       <View style={Styles.CategoryListContainer}>
         <View style={Styles.FindStuffHeaderContainer}>
           <TouchableOpacity
@@ -89,24 +85,10 @@ export default function CategoryList(props) {
           </View>
           <View style={{flex: 1}}></View>
         </View>
-        <View style={Styles.HomeSearchContainer}>
-          <View style={Styles.HomeSearchArea}>
-            <TouchableOpacity onPress={handleSearch}>
-              <FastImage source={Images.Search} style={Styles.HomeSearchImg} />
-            </TouchableOpacity>
-            <View style={Styles.HomeSearchInputContainer}>
-              <TextInput
-                placeholder={'请输入关键词进行搜索'}
-                style={Styles.HomeSearchInput}
-                onChangeText={value => {
-                  setTmp(value);
-                }}
-              />
-            </View>
-          </View>
-        </View>
+
+        <SearchBox inputProc={setTmp} handleSearch={handleSearch} />
       </View>
-      <View style={Styles.CardsContainer}>
+      <View>
         {data && (
           <Table borderStyle={Styles.border} style={Styles.table}>
             <Row

@@ -1,12 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-  TextInput,
-} from 'react-native';
+import {View, Text, TouchableOpacity, FlatList, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn';
@@ -16,6 +9,9 @@ import {tagJson} from 'src/config';
 import {NavigationEvents} from 'react-navigation';
 import {baseUrl} from 'src/config';
 import {store} from 'src/Store';
+
+import SearchBox from './SearchBox';
+
 const axios = require('axios');
 
 export default function CategoryList(props) {
@@ -84,22 +80,7 @@ export default function CategoryList(props) {
           </View>
           <View style={{flex: 1}}></View>
         </View>
-        <View style={Styles.HomeSearchContainer}>
-          <View style={Styles.HomeSearchArea}>
-            <TouchableOpacity onPress={handleSearch}>
-              <FastImage source={Images.Search} style={Styles.HomeSearchImg} />
-            </TouchableOpacity>
-            <View style={Styles.HomeSearchInputContainer}>
-              <TextInput
-                placeholder={'请输入关键词进行搜索'}
-                style={Styles.HomeSearchInput}
-                onChangeText={value => {
-                  setTmp(value);
-                }}
-              />
-            </View>
-          </View>
-        </View>
+        <SearchBox inputProc={setTmp} handleSearch={handleSearch} />
         <View style={Styles.CategoryListWrap}>
           <FlatList
             horizontal={false}

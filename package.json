@@ -16,7 +16,7 @@
     "moment": "^2.24.0",
     "pushy-react-native": "^1.0.14",
     "react": "16.9.0",
-    "react-native": "0.61.2",
+    "react-native": "0.61.5",
     "react-native-amap-geolocation": "^1.0.4",
     "react-native-collapsible-accordion": "^1.0.5",
     "react-native-dialog-input": "^1.0.7",
