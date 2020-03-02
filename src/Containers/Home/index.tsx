@@ -10,6 +10,7 @@ import {
   Dimensions,
   NativeModules,
   NativeEventEmitter,
+  Platform,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
@@ -150,12 +151,14 @@ function HomeView(props) {
   }
 
   const geoAMapLocation = async () => {
-    await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-    );
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      );
+    }
 
     await init({
-      ios: '9bd6c82e77583020a73ef1af59d0c759', //need to modify
+      ios: '099b23712ab62b8704c42b256553d6dd', //need to modify
       android: '7c09f30df0777beee6f441252b0fa1f2',
     });
 
