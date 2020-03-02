@@ -1,6 +1,6 @@
 import React, {createContext, useReducer, useEffect, useContext} from 'react';
 import {Platform, PermissionsAndroid, Alert} from 'react-native';
-import Pushy from 'pushy-react-native';
+// import Pushy from 'pushy-react-native';
 import io from 'socket.io-client';
 import {baseUrl, appVersion} from 'src/config';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -29,6 +29,7 @@ const initialState = {
 const store = createContext(initialState);
 const {Provider} = store;
 
+/*
 const pushInit = () => {
   Pushy.listen();
   if (Platform.OS === 'android') {
@@ -79,7 +80,7 @@ Pushy.setNotificationListener(async data => {
   let notificationTitle = '寻N';
   Pushy.notify(notificationTitle, data.content, data);
 });
-
+*/
 const StateProvider = ({children}) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
@@ -242,7 +243,7 @@ const StateProvider = ({children}) => {
 
   useEffect(() => {
     socketInit();
-    pushInit();
+    // pushInit();
   }, [state.socket]);
 
   return <Provider value={[state, dispatch]}>{children}</Provider>;
