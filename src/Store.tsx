@@ -1,8 +1,10 @@
 import React, {createContext, useReducer, useEffect, useContext} from 'react';
-import {Platform, PermissionsAndroid} from 'react-native';
+import {Platform, PermissionsAndroid, Alert} from 'react-native';
 import Pushy from 'pushy-react-native';
 import io from 'socket.io-client';
 import {baseUrl, appVersion} from 'src/config';
+import AsyncStorage from '@react-native-community/async-storage';
+import Toast from 'react-native-simple-toast';
 import axios from 'axios';
 
 const initialState = {
@@ -203,6 +205,15 @@ const StateProvider = ({children}) => {
       state.socket.on('data_profile', value => {
         console.log('data_profile... ... ...', value);
         dispatch({type: 'setProfile', payload: value});
+      });
+
+      state.socket.on('banned_' + state.user._id, value => {
+        dispatch({
+          type: 'setTokenUser',
+          payload: {user: {}, token: '', socket: null},
+        });
+        AsyncStorage.clear();
+        Toast.show('您的帐户被禁止。');
       });
 
       state.socket.on(state.user._id, value => {
