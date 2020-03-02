@@ -260,9 +260,10 @@ function HomeView(props) {
           <View
             style={{
               width: Dimensions.get('window').width,
-              height: 25,
+              height: (Platform.OS==='android')?25:55,
+              paddingBottom:5,
               backgroundColor: '#0084da',
-              alignItems: 'center',
+              alignItems: 'flex-end',
               flexDirection: 'row',
             }}>
             <TouchableOpacity

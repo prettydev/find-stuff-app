@@ -86,6 +86,7 @@ export default StyleSheet.create({
     marginTop: 5,
     borderWidth: 0.3,
     textAlignVertical: 'top',
+    height:100
   },
   FindStuffImgUploadContainer: {
     marginTop: 10,

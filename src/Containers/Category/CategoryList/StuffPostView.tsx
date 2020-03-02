@@ -103,7 +103,7 @@ export default function CategoryList(props) {
           />
         </View>
       </View>
-      <View style={Styles.CardsContainer}>
+      <View>
         {list.map((item, i) => (
           <StuffCard
             key={i}

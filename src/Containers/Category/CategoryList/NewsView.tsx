@@ -50,7 +50,7 @@ export default function CategoryList(props) {
           <View style={{flex: 1}}></View>
         </View>
       </View>
-      <View style={Styles.CardsContainer}>
+      <View>
         {state.news &&
           state.news.map((item, i) => (
             <NewsCard
