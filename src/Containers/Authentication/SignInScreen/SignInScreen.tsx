@@ -13,7 +13,7 @@ import {baseUrl} from 'src/config';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-import Pushy from 'pushy-react-native';
+// import Pushy from 'pushy-react-native';
 
 export default function SignInScreen(props) {
   const [phone, setPhone] = useState('');
@@ -45,6 +45,7 @@ export default function SignInScreen(props) {
           console.log('user info...', response.data.user);
 
           // Register the device for push notifications
+          /*
           Pushy.register()
             .then(async deviceToken => {
               axios
@@ -65,7 +66,7 @@ export default function SignInScreen(props) {
               // Handle registration errors
               console.log('Device registration exception.......', err);
             });
-
+          */
           const signInfo = {
             auth_token: response.headers.auth_token,
             user: response.data.user,
