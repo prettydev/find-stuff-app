@@ -168,7 +168,6 @@ function HomeView(props) {
           '======> location error',
         );
       } else {
-        console.log(location);
         if (location.city) {
           dispatch({type: 'setRegion', payload: location.city});
           updateLocation(location);

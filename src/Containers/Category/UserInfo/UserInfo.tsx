@@ -54,7 +54,9 @@ export default function Profile(props) {
                 style={Style.ProfileUpdateImg}
                 resizeMode="cover"
               />
-              <Text>{item.location}</Text>
+              <Text>
+                {item.location && item.location.city ? item.location.city : ''}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
