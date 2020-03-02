@@ -26,10 +26,12 @@ import {NavigationEvents} from 'react-navigation';
 import Modal from 'react-native-modal';
 import Accordion from 'react-native-collapsible-accordion';
 import {store} from 'src/Store';
+import io from 'socket.io-client';
 
 // import {Geolocation} from 'react-native-baidu-map';
 import {init} from 'react-native-amap-geolocation';
 import {Location, ReGeocode} from './types';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const AMapGeolocation = NativeModules.AMapGeolocation;
 const eventEmitter = new NativeEventEmitter(AMapGeolocation);
@@ -169,7 +171,7 @@ function HomeView(props) {
         console.log(location);
         if (location.city) {
           dispatch({type: 'setRegion', payload: location.city});
-          updateLocation(location.city);
+          updateLocation(location);
         }
       }
       AMapGeolocation.stop();
@@ -200,6 +202,36 @@ function HomeView(props) {
   useEffect(() => {
     getLastNote();
   }, [state.region]);
+
+  const getsignInfo = async () => {
+    try {
+      if (state.user._id) return;
+      console.log('will get signinfo from the asyncStorage...');
+      const rawSignInfo = await AsyncStorage.getItem('signInfo');
+      console.log('signInfo=====================>', rawSignInfo);
+      if (!rawSignInfo) return;
+      const signInfo = JSON.parse(rawSignInfo);
+      dispatch({
+        type: 'setTokenUser',
+        payload: signInfo,
+      });
+      dispatch({
+        type: 'setSocket',
+        payload: io(baseUrl, {
+          query: {user_id: signInfo.user._id},
+          ransports: ['websocket'],
+          jsonp: false,
+        }),
+      });
+    } catch (error) {
+      console.log('getSignInfo exception... ... ...', error);
+    }
+    return {};
+  };
+
+  useEffect(() => {
+    getsignInfo();
+  }, []);
 
   const ListArea = () => (
     <ScrollView style={{backgroundColor: '#fff', flex: 1}}>
@@ -354,7 +386,7 @@ function HomeView(props) {
                 source={Images.RedSound}
                 style={{width: 20, height: 18}}
               />
-              {state.user._id ? (
+              {state.user._id && state.last_note.users ? (
                 state.last_note.users.indexOf(state.user._id) === -1 ? (
                   <View
                     style={{

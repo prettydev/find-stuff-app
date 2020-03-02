@@ -34,7 +34,6 @@ export default function StuffPostDetail({navigation}) {
       .post(baseUrl + 'api2/stuffpost/browse', {_id: item._id})
       .then(function(response) {
         if (response.data.item) {
-          console.log('asdfa');
           setItem(response.data.item);
         }
       })

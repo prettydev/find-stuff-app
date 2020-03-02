@@ -84,6 +84,9 @@ const StateProvider = ({children}) => {
       case 'setCurrentScreen': {
         return {...state, current_screen: action.payload};
       }
+      case 'setSocket': {
+        return {...state, socket: action.payload};
+      }
       case 'setUser': {
         return {...state, user: action.payload};
       }
