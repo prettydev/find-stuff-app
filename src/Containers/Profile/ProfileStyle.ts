@@ -11,7 +11,7 @@ export default StyleSheet.create({
   },
   ProfileHeaderTitleContainer: {
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: (Platform.OS==='android')?10:45,
   },
   ProfileHeaderTitleText: {
     color: '#fff',
