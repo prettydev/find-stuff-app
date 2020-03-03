@@ -3,6 +3,8 @@ import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Images, Colors} from 'src/Theme';
 import Styles from './CategoryDetailStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
 import {store} from 'src/Store';
 import moment from 'moment';
 import {baseUrl} from 'src/config';
@@ -139,20 +141,8 @@ export default function StuffPostDetail({navigation}) {
       />
       <ScrollView style={{backgroundColor: '#f4f6f8'}}>
         <View>
-          <View style={Styles.FindStuffHeaderContainer}>
-            <TouchableOpacity
-              style={{flex: 1}}
-              onPress={() => navigation.goBack()}>
-              <FastImage
-                source={Images.whiteLeftChevron}
-                style={Styles.FindStuffHeaderImg}
-              />
-            </TouchableOpacity>
-            <View style={{alignItems: 'center'}}>
-              <Text style={{fontSize: 20, color: '#fff'}}>详情</Text>
-            </View>
-            <View style={{flex: 1}}></View>
-          </View>
+          <Header back={() => navigation.goBack()} label={'详情'} />
+
           <View style={Styles.UserInfoContainer}>
             <View style={Styles.AvatarContainer}>
               <View style={Styles.AvatarPhotoContainer}>

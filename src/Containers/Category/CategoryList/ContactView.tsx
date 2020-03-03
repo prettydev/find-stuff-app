@@ -3,6 +3,8 @@ import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Styles from './CategoryListStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
 import {baseUrl} from 'src/config';
 import axios from 'axios';
 
@@ -71,20 +73,7 @@ export default function CategoryList(props) {
   return (
     <ScrollView style={{backgroundColor: '#fff'}}>
       <View style={Styles.CategoryListContainer}>
-        <View style={Styles.FindStuffHeaderContainer}>
-          <TouchableOpacity
-            style={{flex: 1}}
-            onPress={() => props.navigation.goBack()}>
-            <FastImage
-              source={Images.whiteLeftChevron}
-              style={Styles.FindStuffHeaderImg}
-            />
-          </TouchableOpacity>
-          <View style={{alignItems: 'center'}}>
-            <Text style={{fontSize: 20, color: '#fff'}}>小区电话</Text>
-          </View>
-          <View style={{flex: 1}}></View>
-        </View>
+        <Header back={() => props.navigation.goBack()} label={'小区电话'} />
 
         <SearchBox inputProc={setTmp} handleSearch={handleSearch} />
       </View>

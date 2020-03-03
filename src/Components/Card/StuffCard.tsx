@@ -12,6 +12,7 @@ import Toast from 'react-native-simple-toast';
 import {store} from 'src/Store';
 
 import {dotedTitle} from 'src/utils';
+import {TouchableHighlight} from 'react-native-gesture-handler';
 
 export default function StuffCard({item, navigation}) {
   const [state, dispatch] = useContext(store);

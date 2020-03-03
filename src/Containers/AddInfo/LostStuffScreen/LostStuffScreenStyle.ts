@@ -5,18 +5,6 @@ export default StyleSheet.create({
   FindStuffScreenContainer: {
     backgroundColor: '#f4f6f8',
   },
-  FindStuffHeaderContainer: {
-    width: Dimensions.get('window').width,
-    height: 50,
-    backgroundColor: '#0084da',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  FindStuffHeaderImg: {
-    height: 35,
-    width: 35,
-    transform: [{rotate: '90deg'}],
-  },
   StuffInfoContainer: {
     backgroundColor: '#fff',
     marginTop: 10,
@@ -91,7 +79,7 @@ export default StyleSheet.create({
     marginTop: 5,
     borderWidth: 0.3,
     textAlignVertical: 'top',
-    height:100
+    height: 100,
   },
   FindStuffImgUploadContainer: {
     marginTop: 10,

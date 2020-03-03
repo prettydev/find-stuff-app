@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Styles from './FoundStuffScreenStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
 import CustomFormSelect from 'src/Components/CustomForm/CustomFormSelect/CustomFormSelect';
 import {Images, Colors} from 'src/Theme';
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
@@ -19,8 +21,6 @@ import ImageResizer from 'react-native-image-resizer';
 import axios from 'axios';
 import {NavigationEvents} from 'react-navigation';
 import {baseUrl, photoSize} from 'src/config';
-
-import {UploadImage} from 'src/Components/UploadImage';
 
 const FoundStuffScreen = props => {
   const [state, dispatch] = useContext(store);
@@ -153,24 +153,12 @@ const FoundStuffScreen = props => {
           dispatch({type: 'setCurrentScreen', payload: 'found-screen'});
         }}
       />
-      <View style={Styles.FindStuffHeaderContainer}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('AppHome')}
-          style={{flex: 1}}>
-          <FastImage
-            source={Images.whiteLeftChevron}
-            style={Styles.FindStuffHeaderImg}
-          />
-        </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 20,
-            color: '#fff',
-          }}>
-          详细情况
-        </Text>
-        <Text style={{flex: 1}} />
-      </View>
+
+      <Header
+        back={() => props.navigation.navigate('AppHome')}
+        label={'详细情况'}
+      />
+
       <View style={Styles.StuffInfoContainer}>
         <CustomFormSelect
           CustomFormSelectLabel={'物品类型'}

@@ -2,6 +2,8 @@ import React, {useEffect, useContext} from 'react';
 import {ScrollView, View, Text, TouchableOpacity, FlatList} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Styles from './RoomListStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
 import {Images, Colors} from 'src/Theme';
 import {store} from 'src/Store';
 import {baseUrl} from 'src/config';
@@ -43,19 +45,12 @@ const RoomList = props => {
           }
         }}
       />
-      <View style={Styles.FindStuffHeaderContainer}>
-        <TouchableOpacity
-          style={{flex: 1}}
-          onPress={() => props.navigation.navigate('AppHome')}>
-          <FastImage
-            source={Images.whiteLeftChevron}
-            style={Styles.FindStuffHeaderImg}
-          />
-        </TouchableOpacity>
 
-        <Text style={{fontSize: 20, color: '#fff'}}>私信</Text>
-        <Text style={{flex: 1}} />
-      </View>
+      <Header
+        back={() => props.navigation.navigate('AppHome')}
+        label={'私信'}
+      />
+
       <ScrollView style={Styles.GetStuffScreenContainer}>
         <View style={Styles.MessageListContainer}>
           {state.rooms.length === 0 && (

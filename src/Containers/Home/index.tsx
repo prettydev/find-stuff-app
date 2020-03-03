@@ -260,8 +260,8 @@ function HomeView(props) {
           <View
             style={{
               width: Dimensions.get('window').width,
-              height: (Platform.OS==='android')?25:55,
-              paddingBottom:5,
+              height: Platform.OS === 'android' ? 25 : 55,
+              paddingBottom: 3,
               backgroundColor: '#0084da',
               alignItems: 'flex-end',
               flexDirection: 'row',

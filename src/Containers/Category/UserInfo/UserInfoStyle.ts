@@ -9,10 +9,6 @@ export default StyleSheet.create({
     height: Dimensions.get('window').width / 2,
     padding: 10,
   },
-  ProfileHeaderTitleContainer: {
-    alignItems: 'center',
-    paddingTop: 10,
-  },
   ProfileHeaderTitleText: {
     color: '#fff',
     fontSize: 20,
@@ -109,11 +105,6 @@ export default StyleSheet.create({
     width: 20,
     height: 20,
     marginRight: 10,
-  },
-  FindStuffHeaderImg: {
-    height: 35,
-    width: 35,
-    transform: [{rotate: '90deg'}],
   },
   ProfileMessageContainer: {
     backgroundColor: 'white',

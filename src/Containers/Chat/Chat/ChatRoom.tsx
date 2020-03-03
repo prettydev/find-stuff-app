@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Styles from './ChatRoomStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
 import {Images} from 'src/Theme';
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
@@ -158,21 +160,11 @@ export default function ChatRoom(props) {
           if (!state.user._id) props.navigation.navigate('Signin');
         }}
       />
-      <View style={Styles.FindStuffHeaderContainer}>
-        <TouchableOpacity
-          style={{flex: 1}}
-          onPress={() => props.navigation.goBack()}>
-          <FastImage
-            source={Images.whiteLeftChevron}
-            style={Styles.FindStuffHeaderImg}
-          />
-        </TouchableOpacity>
 
-        <Text style={{fontSize: 20, color: '#fff'}}>
-          {guest.name ? guest.name : ''}
-        </Text>
-        <Text style={{flex: 1}} />
-      </View>
+      <Header
+        back={() => props.navigation.goBack()}
+        label={guest.name ? guest.name : ''}
+      />
 
       <ScrollView
         style={Styles.GetStuffScreenContainer}

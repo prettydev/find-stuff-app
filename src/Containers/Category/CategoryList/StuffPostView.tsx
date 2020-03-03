@@ -4,6 +4,8 @@ import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn';
 import Styles from './CategoryListStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
 import StuffCard from 'src/Components/Card/StuffCard';
 import {tagJson} from 'src/config';
 import {NavigationEvents} from 'react-navigation';
@@ -64,22 +66,11 @@ export default function CategoryList(props) {
         }}
       />
       <View style={Styles.CategoryListContainer}>
-        <View style={Styles.FindStuffHeaderContainer}>
-          <TouchableOpacity
-            style={{flex: 1}}
-            onPress={() => props.navigation.goBack()}>
-            <FastImage
-              source={Images.whiteLeftChevron}
-              style={Styles.FindStuffHeaderImg}
-            />
-          </TouchableOpacity>
-          <View style={{alignItems: 'center'}}>
-            <Text style={{fontSize: 20, color: '#fff'}}>
-              {kind === 'lost' ? '寻物启事' : '失物招领'}
-            </Text>
-          </View>
-          <View style={{flex: 1}}></View>
-        </View>
+        <Header
+          back={() => props.navigation.goBack()}
+          label={kind === 'lost' ? '寻物启事' : '失物招领'}
+        />
+
         <SearchBox inputProc={setTmp} handleSearch={handleSearch} />
         <View style={Styles.CategoryListWrap}>
           <FlatList
