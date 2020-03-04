@@ -16,6 +16,7 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* FindStuffTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FindStuffTests.m */; };
+		42AF21B5240FB1630018BCA7 /* libreact-native-amap-geolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42AF21B4240FB1630018BCA7 /* libreact-native-amap-geolocation.a */; };
 		776A001A6739C126FC82A87A /* libPods-FindStuff-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6036D151C3245A615F315CB9 /* libPods-FindStuff-tvOS.a */; };
 		9135F32B69D8CDB4FEBE1E24 /* libPods-FindStuff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFEE989234EC99D1675200CA /* libPods-FindStuff.a */; };
 		F849F21AA45D023CE3BF4009 /* libPods-FindStuff-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BD6E0E20CE9AD82F864A4D1 /* libPods-FindStuff-tvOSTests.a */; };
@@ -37,6 +38,13 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "FindStuff-tvOS";
 		};
+		42AF21AE240FADCC0018BCA7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42AF21AA240FADCB0018BCA7 /* AMapGeolocation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 832C81801AAF6DEF007FA2F7;
+			remoteInfo = AMapGeolocation;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +64,10 @@
 		21B260956B7172536EC1CB6E /* Pods-FindStuff.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FindStuff.release.xcconfig"; path = "Target Support Files/Pods-FindStuff/Pods-FindStuff.release.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* FindStuff-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FindStuff-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* FindStuff-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FindStuff-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42AF21A6240FA8E50018BCA7 /* libreact-native-amap-geolocation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-amap-geolocation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42AF21AA240FADCB0018BCA7 /* AMapGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AMapGeolocation.xcodeproj; path = "../node_modules/react-native-amap-geolocation/lib/ios/AMapGeolocation.xcodeproj"; sourceTree = "<group>"; };
+		42AF21B1240FAEDA0018BCA7 /* libreact-native-amap-geolocation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-amap-geolocation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42AF21B4240FB1630018BCA7 /* libreact-native-amap-geolocation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-amap-geolocation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1571E0240D728F00183B90 /* FindStuff.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FindStuff.entitlements; path = FindStuff/FindStuff.entitlements; sourceTree = "<group>"; };
 		6036D151C3245A615F315CB9 /* libPods-FindStuff-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FindStuff-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D03C048097194A7696622F2 /* Pods-FindStuff-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FindStuff-tvOS.release.xcconfig"; path = "Target Support Files/Pods-FindStuff-tvOS/Pods-FindStuff-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -83,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42AF21B5240FB1630018BCA7 /* libreact-native-amap-geolocation.a in Frameworks */,
 				9135F32B69D8CDB4FEBE1E24 /* libPods-FindStuff.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,6 +154,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				42AF21B4240FB1630018BCA7 /* libreact-native-amap-geolocation.a */,
+				42AF21B1240FAEDA0018BCA7 /* libreact-native-amap-geolocation.a */,
+				42AF21A6240FA8E50018BCA7 /* libreact-native-amap-geolocation.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				FFEE989234EC99D1675200CA /* libPods-FindStuff.a */,
@@ -149,6 +165,14 @@
 				8137512F05BAE1899376B28F /* libPods-FindStuffTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		42AF21AB240FADCB0018BCA7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42AF21AF240FADCC0018BCA7 /* libAMapGeolocation.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		7BF30D7016CEE52C58895066 /* Pods */ = {
@@ -169,6 +193,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				42AF21AA240FADCB0018BCA7 /* AMapGeolocation.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -328,6 +353,12 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 42AF21AB240FADCB0018BCA7 /* Products */;
+					ProjectRef = 42AF21AA240FADCB0018BCA7 /* AMapGeolocation.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* FindStuff */,
@@ -337,6 +368,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		42AF21AF240FADCC0018BCA7 /* libAMapGeolocation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAMapGeolocation.a;
+			remoteRef = 42AF21AE240FADCC0018BCA7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {
@@ -698,6 +739,7 @@
 				DEVELOPMENT_TEAM = 7B4TRWM586;
 				INFOPLIST_FILE = FindStuff/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -705,7 +747,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.creditcoder.findstuff;
 				PRODUCT_NAME = FindStuff;
-				PROVISIONING_PROFILE_SPECIFIER = dist_findstuff3.1;
+				PROVISIONING_PROFILE_SPECIFIER = "dist-fs-gb";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -722,6 +764,7 @@
 				DEVELOPMENT_TEAM = 7B4TRWM586;
 				INFOPLIST_FILE = FindStuff/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -729,7 +772,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.creditcoder.findstuff;
 				PRODUCT_NAME = FindStuff;
-				PROVISIONING_PROFILE_SPECIFIER = dist_findstuff3.1;
+				PROVISIONING_PROFILE_SPECIFIER = "dist-fs-gb";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
