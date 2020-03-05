@@ -1,7 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-import CountDown from 'react-native-countdown-component';
-import moment from 'moment';
 import Styles from './CustomPhoneInputStyle';
 import Toast from 'react-native-simple-toast';
 
@@ -28,6 +26,12 @@ export default function CustomPhoneInput(props) {
     return () => clearInterval(intervalId);
   }, [duration]);
 
+  useEffect(() => {
+    console.log('changed props.init', props.init);
+    setIsSent(false);
+    setDuration(60);
+  }, [props.init]);
+
   return (
     <View>
       <Text>{props.CustomLabel}</Text>
@@ -44,6 +48,7 @@ export default function CustomPhoneInput(props) {
             setNumber(value);
             props.proc(value);
           }}
+          keyboardType={'numeric'}
         />
         {isSent && (
           <View style={Styles.timer}>
