@@ -225,12 +225,11 @@ const Profile = props => {
             }}>
             <Image
               source={
-                state.user.photo !== undefined && state.user.photo !== ''
+                photo.uri?photo:
+                state.user.photo
                   ? {
                       uri: baseUrl + 'download/photo?path=' + state.user.photo,
                     }
-                  : photo.uri !== undefined && photo.uri !== ''
-                  ? photo
                   : Images.maleProfile
               }
               style={Style.ProfileHeaderAvatarImg}

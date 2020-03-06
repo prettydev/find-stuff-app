@@ -22,6 +22,7 @@ export default function CustomFormSelect(props) {
           placeholder={placeholder}
           onValueChange={procFunc}
           items={tagArr}
+          doneText={'选择'}
         />
       </View>
     </View>

@@ -33,6 +33,7 @@ import io from 'socket.io-client';
 import {init} from 'react-native-amap-geolocation';
 import {Location, ReGeocode} from './types';
 import AsyncStorage from '@react-native-community/async-storage';
+import {geolocationInit, watchPosition, getCurrentPosition} from './position';
 
 const AMapGeolocation = NativeModules.AMapGeolocation;
 const eventEmitter = new NativeEventEmitter(AMapGeolocation);
@@ -93,7 +94,6 @@ function HomeView(props) {
         params: {region: state.region, limit: 1},
       })
       .then(function(response) {
-        console.log('last note =================>', response.data);
         if (response.data.item === 0) {
           dispatch({type: 'setLastNote', payload: {content: ''}});
         } else {
@@ -126,22 +126,25 @@ function HomeView(props) {
   };
 
   const getBaiduLocation = () => {
-    // try {
-    //   Geolocation.getCurrentPosition()
-    //     .then(data => {
+
+    // Geolocation.getCurrentPosition()
+    // .then((data) => {
+    //   console.log('>>>>>>>>>>', data);
+    // });
+
+    // console.log('@@@@@@@@@@@@@@@@');
+    
+    //   const promise= Geolocation.getCurrentPosition("gcj02");
+    //   promise.then(data => {
     //       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!', data);
     //       if (data.city) {
     //         dispatch({type: 'setRegion', payload: data.city});
     //         updateLocation(data.city);
     //       }
-    //     })
-    //     .catch(error => console.warn(error, 'geolocation warning...'))
-    //     .then(result => {
-    //       console.log('result.................', result);
-    //     });
-    // } catch (err) {
-    //   console.log('location permission exeption......', err);
-    // }
+    //     }, err => {
+    //       console.log('promise error====', err);
+    //     });    
+    
   };
 
   function addLocationListener(
@@ -150,40 +153,44 @@ function HomeView(props) {
     return eventEmitter.addListener('AMapGeolocation', listener);
   }
 
-  const geoAMapLocation = async () => {
+  const geoAMapLocation = async () => {  
+
     if (Platform.OS === 'android') {
       await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
       );
     }
 
-    await init({
-      ios: '099b23712ab62b8704c42b256553d6dd', //need to modify
-      android: '7c09f30df0777beee6f441252b0fa1f2',
-    });
+    try {
+      await init({
+        ios: '099b23712ab62b8704c42b256553d6dd', 
+        android: '7c09f30df0777beee6f441252b0fa1f2',
+      });
 
-    const listener = addLocationListener(location => {
-      if (location.errorCode) {
-        console.log(
-          location.errorCode,
-          location.errorInfo,
-          location,
-          '======> location error',
-        );
-      } else {
+      AMapGeolocation.setLocatingWithReGeocode(true)
+
+      const listener = addLocationListener(location => {
+        console.log('##########################>', location);
         if (location.city) {
           dispatch({type: 'setRegion', payload: location.city});
           updateLocation(location);
-        }
-      }
-      AMapGeolocation.stop();
-      listener.remove();
-    });
-    AMapGeolocation.start();
+
+          AMapGeolocation.stop();
+          listener.remove();
+          console.log('location listener removed...');
+        }        
+      });
+
+      AMapGeolocation.start();
+      console.log('location listener started...');
+    } catch (err) {
+      console.log('+++++++++++++++++++++++++++>', err);
+    }
   };
 
   useEffect(() => {
     geoAMapLocation();
+    //getBaiduLocation();
 
     return () => {};
   }, [state.user._id]);
@@ -260,7 +267,7 @@ function HomeView(props) {
           <View
             style={{
               width: Dimensions.get('window').width,
-              height: Platform.OS === 'android' ? 25 : 55,
+              height: Platform.OS === 'android' ? 25 : 40,
               paddingBottom: 3,
               backgroundColor: '#0084da',
               alignItems: 'flex-end',
