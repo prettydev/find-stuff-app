@@ -16,6 +16,7 @@ const axios = require('axios');
 export default function SignUpScreen(props) {
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
+  const [init, setInit] = useState(0);
   const [sentOtp, setSentOtp] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -32,6 +33,7 @@ export default function SignUpScreen(props) {
           console.log('success', response.data.msg);
         } else {
           Toast.show(response.data.msg);
+          setInit(init + 1);
           console.log('failed', response.data.msg);
         }
       })
@@ -105,6 +107,7 @@ export default function SignUpScreen(props) {
               proc2={() => {
                 sendOTP();
               }}
+              init={init}
             />
           </View>
           <View style={Styles.FormInput}>

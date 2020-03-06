@@ -15,6 +15,7 @@ const axios = require('axios');
 export default function ForgotPWScreen(props) {
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
+  const [init, setInit] = useState(0);
   const [sentOtp, setSentOtp] = useState(false);
   const [password, setPassword] = useState('');
 
@@ -22,6 +23,7 @@ export default function ForgotPWScreen(props) {
     await axios
       .post(baseUrl + 'auth/otp', {
         phone,
+        kind: 'forgot',
       })
       .then(response => {
         if (response.data.success) {
@@ -30,6 +32,7 @@ export default function ForgotPWScreen(props) {
           console.log('success', response.data.msg);
         } else {
           Toast.show(response.data.msg);
+          setInit(init + 1);
           console.log('failed', response.data.msg);
         }
       })
@@ -98,6 +101,7 @@ export default function ForgotPWScreen(props) {
               proc2={() => {
                 sendOTP();
               }}
+              init={init}
             />
           </View>
           <View style={Styles.FormInput}>

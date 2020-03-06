@@ -204,6 +204,7 @@ const Profile = props => {
     <ScrollView style={Style.ProfileContainer}>
       <NavigationEvents
         onDidFocus={() => {
+          console.log('profile user,,,,', state.user);
           if (!state.user._id) props.navigation.navigate('Signin');
           else dispatch({type: 'setCurrentScreen', payload: 'profile'});
         }}
