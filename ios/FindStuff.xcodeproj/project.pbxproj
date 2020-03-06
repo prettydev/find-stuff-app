@@ -760,14 +760,14 @@
 			baseConfigurationReference = 05C57645F1671D0ED3E8FB51 /* Pods-FindStuff.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 7B4TRWM586;
 				INFOPLIST_FILE = FindStuff/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -775,7 +775,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.creditcoder.findstuff;
 				PRODUCT_NAME = FindStuff;
-				PROVISIONING_PROFILE_SPECIFIER = aaa;
+				PROVISIONING_PROFILE_SPECIFIER = "dist-fs-gb";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -785,13 +785,13 @@
 			baseConfigurationReference = CF75FD2C0D11D4248C3F0E22 /* Pods-FindStuff.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7B4TRWM586;
 				INFOPLIST_FILE = FindStuff/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -799,7 +799,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.creditcoder.findstuff;
 				PRODUCT_NAME = FindStuff;
-				PROVISIONING_PROFILE_SPECIFIER = aaa;
+				PROVISIONING_PROFILE_SPECIFIER = "dist-fs-gb";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
