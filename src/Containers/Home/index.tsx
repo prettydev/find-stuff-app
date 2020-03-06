@@ -33,7 +33,6 @@ import io from 'socket.io-client';
 import {init} from 'react-native-amap-geolocation';
 import {Location, ReGeocode} from './types';
 import AsyncStorage from '@react-native-community/async-storage';
-import {geolocationInit, watchPosition, getCurrentPosition} from './position';
 
 const AMapGeolocation = NativeModules.AMapGeolocation;
 const eventEmitter = new NativeEventEmitter(AMapGeolocation);
@@ -126,14 +125,11 @@ function HomeView(props) {
   };
 
   const getBaiduLocation = () => {
-
     // Geolocation.getCurrentPosition()
     // .then((data) => {
     //   console.log('>>>>>>>>>>', data);
     // });
-
     // console.log('@@@@@@@@@@@@@@@@');
-    
     //   const promise= Geolocation.getCurrentPosition("gcj02");
     //   promise.then(data => {
     //       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!', data);
@@ -143,8 +139,7 @@ function HomeView(props) {
     //       }
     //     }, err => {
     //       console.log('promise error====', err);
-    //     });    
-    
+    //     });
   };
 
   function addLocationListener(
@@ -153,8 +148,7 @@ function HomeView(props) {
     return eventEmitter.addListener('AMapGeolocation', listener);
   }
 
-  const geoAMapLocation = async () => {  
-
+  const geoAMapLocation = async () => {
     if (Platform.OS === 'android') {
       await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
@@ -163,11 +157,11 @@ function HomeView(props) {
 
     try {
       await init({
-        ios: '099b23712ab62b8704c42b256553d6dd', 
+        ios: '099b23712ab62b8704c42b256553d6dd',
         android: '7c09f30df0777beee6f441252b0fa1f2',
       });
 
-      AMapGeolocation.setLocatingWithReGeocode(true)
+      AMapGeolocation.setLocatingWithReGeocode(true);
 
       const listener = addLocationListener(location => {
         console.log('##########################>', location);
@@ -178,7 +172,7 @@ function HomeView(props) {
           AMapGeolocation.stop();
           listener.remove();
           console.log('location listener removed...');
-        }        
+        }
       });
 
       AMapGeolocation.start();
