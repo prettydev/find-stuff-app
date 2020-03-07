@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useContext} from 'react';
 import {View, Image} from 'react-native';
 import {BottomTabBar, createBottomTabNavigator} from 'react-navigation-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -19,6 +19,39 @@ import NewsView from 'src/Containers/Category/CategoryList/NewsView';
 import NewsDetail from 'src/Containers/Category/CategoryDetail/NewsDetail';
 
 import ContactView from 'src/Containers/Category/CategoryList/ContactView';
+
+import {store} from 'src/Store';
+
+const NoteIcon = props => {
+  const [state, dispatch] = useContext(store);
+
+  const {focused} = props;
+  return (
+    <>
+      {state.user._id &&
+      state.last_note.users &&
+      state.last_note.users.indexOf(state.user._id) === -1 ? (
+        <View
+          style={{
+            width: 8,
+            height: 8,
+            backgroundColor: 'red',
+            borderRadius: 5,
+            marginLeft: 15,
+            marginBottom: -10,
+            zIndex: 10,
+          }}></View>
+      ) : (
+        <></>
+      )}
+      <Image
+        source={focused ? Images.BottomNavNews2 : Images.BottomNavNews}
+        style={[Style.tabBarIcon]}
+        resizeMode="contain"
+      />
+    </>
+  );
+};
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
@@ -85,15 +118,14 @@ const BottomTabNavigator = createBottomTabNavigator(
     },
   },
   {
-    tabBarComponent: (props: any): ReactElement => (
-      <TabBarComponent {...props} style={Style.BottomNavTabContainer} />
-    ),
+    tabBarComponent: (props: any): ReactElement => {
+      return <TabBarComponent {...props} style={Style.BottomNavTabContainer} />;
+    },
     initialRouteName: 'AppHome',
     backBehavior: null,
-    defaultNavigationOptions: ({navigation}: any): ReactElement => ({
+    defaultNavigationOptions: ({navigation, test}: any): ReactElement => ({
       tabBarIcon: ({focused}) => {
         const {routeName} = navigation.state;
-
         if (routeName === 'AppHome') {
           return (
             <>
@@ -125,15 +157,7 @@ const BottomTabNavigator = createBottomTabNavigator(
             </View>
           );
         } else if (routeName === 'Notification') {
-          return (
-            <>
-              <Image
-                source={focused ? Images.BottomNavNews2 : Images.BottomNavNews}
-                style={Style.tabBarIcon}
-                resizeMode="contain"
-              />
-            </>
-          );
+          return <NoteIcon focused={focused} />;
         } else if (routeName === 'Profile') {
           return (
             <>

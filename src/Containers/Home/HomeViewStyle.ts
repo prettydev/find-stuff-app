@@ -40,7 +40,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   HomeSearchInputContainer: {
-    flex: 8,
+    flex: 5,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -50,6 +50,7 @@ export default StyleSheet.create({
   HomeSearchInput: {
     height: 40,
   },
+
   HomeSearchBtn: {
     flex: 1,
     borderColor: '#ddd',

@@ -390,22 +390,6 @@ function HomeView(props) {
                 source={Images.RedSound}
                 style={{width: 20, height: 18}}
               />
-              {state.user._id && state.last_note.users ? (
-                state.last_note.users.indexOf(state.user._id) === -1 ? (
-                  <View
-                    style={{
-                      width: 8,
-                      height: 8,
-                      backgroundColor: 'red',
-                      borderRadius: 5,
-                      marginTop: -8,
-                    }}></View>
-                ) : (
-                  <></>
-                )
-              ) : (
-                <></>
-              )}
               <Text style={styles.HomeNotificationText} numberOfLines={2}>
                 {state.last_note.content ? state.last_note.content : ''}
               </Text>
