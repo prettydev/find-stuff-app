@@ -161,7 +161,9 @@ function HomeView(props) {
         android: '7c09f30df0777beee6f441252b0fa1f2',
       });
 
-      AMapGeolocation.setLocatingWithReGeocode(true);
+      if (Platform.OS === 'ios') {
+        AMapGeolocation.setLocatingWithReGeocode(true);
+      }
 
       const listener = addLocationListener(location => {
         console.log('##########################>', location);

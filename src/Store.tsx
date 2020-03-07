@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Toast from 'react-native-simple-toast';
 import axios from 'axios';
 
+import {localNotifTitle} from './Notif';
+
 const initialState = {
   socket: io(baseUrl, {ransports: ['websocket'], jsonp: false}),
   token: '',
@@ -236,6 +238,7 @@ const StateProvider = ({children}) => {
           //   });
         } else {
           dispatch({type: 'updateRoom', payload: value});
+          // localNotifTitle(value.content);
         }
       });
     }
