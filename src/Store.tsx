@@ -202,7 +202,16 @@ const StateProvider = ({children}) => {
     state.socket.on('data_news', value => {
       console.log('data_news... ... ...', value);
       dispatch({type: 'addNews', payload: value});
+      localNotifTitle('新闻息到了！', value.content);
     });
+
+    if (state.user.location && state.user.location.city) {
+      state.socket.on(state.user.location.city, value => {
+        console.log('data_note... ... ...', value);
+        dispatch({type: 'addNews', payload: value});
+        localNotifTitle('通知息到了！', value.content);
+      });
+    }
 
     if (state.user._id) {
       state.socket.on('data_profile', value => {
@@ -238,7 +247,7 @@ const StateProvider = ({children}) => {
           //   });
         } else {
           dispatch({type: 'updateRoom', payload: value});
-          // localNotifTitle(value.content);
+          localNotifTitle('新消息到了！', value.content);
         }
       });
     }
