@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import {
+  ActivityIndicator,
+  Dimensions,
   ScrollView,
   View,
   Text,
@@ -25,6 +27,8 @@ export default function ChatRoom(props) {
   const [content, setContent] = useState('');
   const [guest, setGuest] = useState(props.navigation.getParam('guest'));
   const [room, setRoom] = useState(props.navigation.getParam('room'));
+
+  const [loading, setLoading] = useState(true);
 
   const scrollRef = useRef(null);
 
@@ -52,12 +56,8 @@ export default function ChatRoom(props) {
                 params: {room_id, user_id: state.user._id},
               })
               .then(function(res) {
-                console.log(
-                  '111111111111111111111',
-                  res.data.items,
-                  '222222222222222222222',
-                );
                 dispatch({type: 'setMessages', payload: res.data.items});
+                setLoading(false);
               })
               .catch(function(err) {
                 console.log('from server error..........', err);
@@ -77,12 +77,7 @@ export default function ChatRoom(props) {
           console.log('failed to create the room with exception....', error);
         });
     } else {
-      console.log(
-        state.user._id,
-        guest._id,
-        room,
-        '==========================',
-      );
+      console.log('=======', state.user._id, guest._id, room, '=======');
     }
   };
 
@@ -165,6 +160,20 @@ export default function ChatRoom(props) {
         back={() => props.navigation.goBack()}
         label={guest.name ? guest.name : ''}
       />
+
+      {loading && (
+        <View
+          style={[
+            Styles.GetStuffScreenContainer,
+            {
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+            },
+          ]}>
+          <ActivityIndicator size="large" color={Colors.btnBack} />
+        </View>
+      )}
 
       <ScrollView
         style={Styles.GetStuffScreenContainer}

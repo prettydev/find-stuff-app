@@ -68,6 +68,7 @@ const RoomList = props => {
                 <TouchableOpacity
                   style={Styles.MessageListWrap}
                   onPress={() => {
+                    dispatch({type: 'setMessages', payload: []});
                     props.navigation.navigate('ChatRoom', {
                       guest:
                         state.user._id === item.users[0]._id

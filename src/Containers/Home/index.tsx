@@ -166,7 +166,6 @@ function HomeView(props) {
       }
 
       const listener = addLocationListener(location => {
-        console.log('##########################>', location);
         if (location.city) {
           dispatch({type: 'setRegion', payload: location.city});
           updateLocation(location);
