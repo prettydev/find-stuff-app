@@ -760,7 +760,7 @@
 			baseConfigurationReference = 05C57645F1671D0ED3E8FB51 /* Pods-FindStuff.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -775,7 +775,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.creditcoder.findstuff;
 				PRODUCT_NAME = FindStuff;
-				PROVISIONING_PROFILE_SPECIFIER = "dist-fs-gb";
+				PROVISIONING_PROFILE_SPECIFIER = aaa;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -785,7 +785,7 @@
 			baseConfigurationReference = CF75FD2C0D11D4248C3F0E22 /* Pods-FindStuff.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7B4TRWM586;
@@ -799,7 +799,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.creditcoder.findstuff;
 				PRODUCT_NAME = FindStuff;
-				PROVISIONING_PROFILE_SPECIFIER = "dist-fs-gb";
+				PROVISIONING_PROFILE_SPECIFIER = aaa;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
