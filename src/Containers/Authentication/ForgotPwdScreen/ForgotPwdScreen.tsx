@@ -71,7 +71,7 @@ export default function ForgotPWScreen(props) {
       })
       .catch(function(error) {
         console.log(error);
-        // Toast.show(error);
+        // Toast.show('错误');
       });
   }
 

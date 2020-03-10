@@ -138,7 +138,7 @@ const Profile = props => {
           })
           .catch(function(error) {
             console.log('eeeeeerrrrrrrrr', error);
-            // Toast.show(error);
+            // Toast.show('错误');
           });
       })
       .catch(error => {
@@ -174,7 +174,7 @@ const Profile = props => {
       })
       .catch(function(error) {
         console.log('eeeeeerrrrrrrrr', error);
-        // Toast.show(error);
+        // Toast.show('错误');
       });
   }
   useEffect(() => {
@@ -225,8 +225,9 @@ const Profile = props => {
             }}>
             <Image
               source={
-                photo.uri?photo:
-                state.user.photo
+                photo.uri
+                  ? photo
+                  : state.user.photo
                   ? {
                       uri: baseUrl + 'download/photo?path=' + state.user.photo,
                     }

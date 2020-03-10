@@ -113,7 +113,7 @@ const FoundStuffScreen = props => {
               }
             })
             .catch(function(error) {
-              Toast.show(error);
+              Toast.show('错误');
             });
         })
         .catch(error => {
@@ -140,7 +140,7 @@ const FoundStuffScreen = props => {
           }
         })
         .catch(function(error) {
-          Toast.show(error);
+          Toast.show('错误');
         });
     }
   }

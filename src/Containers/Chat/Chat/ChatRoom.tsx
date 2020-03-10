@@ -73,7 +73,7 @@ export default function ChatRoom(props) {
           }
         })
         .catch(function(error) {
-          // Toast.show(error);
+          // Toast.show('错误');
           console.log('failed to create the room with exception....', error);
         });
     } else {
@@ -118,7 +118,7 @@ export default function ChatRoom(props) {
         }
       })
       .catch(function(error) {
-        Toast.show(error);
+        Toast.show('错误');
       });
   };
 
