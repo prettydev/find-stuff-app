@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Platform,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Styles from './LostStuffScreenStyle';
@@ -22,6 +23,9 @@ import axios from 'axios';
 import {NavigationEvents} from 'react-navigation';
 import {baseUrl, photoSize} from 'src/config';
 
+import {RESULTS} from 'react-native-permissions';
+import {checkCamLibPermission} from 'src/Permissions';
+
 const LostStuffScreen = props => {
   const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
@@ -32,12 +36,18 @@ const LostStuffScreen = props => {
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState([]);
 
-  const handlePhoto = () => {
+  const handlePhoto = async () => {
     console.log(photo.length, '***********************');
 
     if (photo.length > 5) {
       Toast.show('您选择的图像不能超过6张。');
       return;
+    }
+
+    if (Platform.OS === 'android') {
+      const ret = await checkCamLibPermission();
+      console.log('111111111111111', ret);
+      if (!ret) return;
     }
 
     ImagePicker.showImagePicker(

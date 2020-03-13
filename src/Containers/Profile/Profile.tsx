@@ -7,6 +7,7 @@ import {
   TextInput,
   Button,
   Image,
+  Platform,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -23,6 +24,9 @@ import axios from 'axios';
 import {NavigationEvents} from 'react-navigation';
 import Modal from 'react-native-modal';
 import {baseUrl, appVersion, avatarSize} from 'src/config';
+import {RESULTS} from 'react-native-permissions';
+
+import {checkCamLibPermission} from 'src/Permissions';
 
 const Profile = props => {
   const [state, dispatch] = useContext(store);
@@ -76,7 +80,13 @@ const Profile = props => {
     // });
   };
 
-  const handlePhoto = () => {
+  const handlePhoto = async () => {
+    if (Platform.OS === 'android') {
+      const ret = await checkCamLibPermission();
+      console.log('111111111111111', ret);
+      if (!ret) return;
+    }
+
     ImagePicker.showImagePicker(
       {
         title: '选择一张照片',
