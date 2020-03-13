@@ -6,7 +6,7 @@ import {
   RESULTS,
   Permission,
 } from 'react-native-permissions';
-
+import AndroidOpenSettings from 'react-native-android-open-settings';
 async function requestCamPermission() {
   //   return new Promise(async (resolve, reject) => {
   //     const permissions = await PermissionsAndroid.request(
@@ -77,7 +77,16 @@ async function checkPermissions(opt) {
           Alert.alert(
             '通知',
             '要成功使用应用程序的功能，请转到设置并允许权限。',
-            [{text: '知道', onPress: () => console.log('OK Pressed222')}],
+            [
+              {
+                text: '现在设置',
+                onPress: () => AndroidOpenSettings.appDetailsSettings(),
+              },
+              {
+                text: '稍后设置',
+                onPress: () => console.log('alert closed'),
+              },
+            ],
             {cancelable: true},
           );
           break;

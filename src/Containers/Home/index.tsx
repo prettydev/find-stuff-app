@@ -31,12 +31,8 @@ import io from 'socket.io-client';
 // import {Geolocation} from 'react-native-baidu-map';
 import {init} from 'react-native-amap-geolocation';
 import {Location, ReGeocode} from './types';
-import {
-  requestCamPermission,
-  requestLibPermission,
-  requestLocationPermission,
-  checkPermissions,
-} from 'src/Permissions';
+import {checkPermissions} from 'src/Permissions';
+
 import AsyncStorage from '@react-native-community/async-storage';
 
 const AMapGeolocation = NativeModules.AMapGeolocation;
@@ -156,7 +152,8 @@ function HomeView(props) {
   const geoAMapLocation = async () => {
     if (Platform.OS === 'android') {
       //await requestLocationPermission();
-      await checkPermissions('location');
+      const location_ps = await checkPermissions('location');
+      console.log('location_ps...', location_ps);
     }
 
     try {
