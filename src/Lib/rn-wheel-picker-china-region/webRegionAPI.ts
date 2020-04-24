@@ -1,6 +1,4 @@
-const REGION_URL =
-  'https://raw.githubusercontent.com/creditcoder/app-data/master/findstuff_region.json';
-// 'https://raw.githubusercontent.com/beefe/react-native-picker/master/example/PickerTest/area.json';
+const REGION_URL = 'https://raw.githubusercontent.com/prettydev/app-data/master/findstuff_region.json';
 
 const fetchRegionData = () => {
   return new Promise((resolve, reject) => {
